@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save Environment</title>
+    <link rel="stylesheet" href="start.css" />
+  </head>
+  <style></style>
+
+  <body class="page-fade" style="background-color: #afe2fd">
+    <!-- <img src="assets/images/bg2-fram2.png" alt="" style="width: 100%;position: absolute;top: 0;left: 0;height: 100%;"> -->
+    <nav>
+      <div class="back-btn" style="">
+        <a href="index.html"
+          ><img src="./assets/images/back-btn.png" alt="" alt="back"
+        /></a>
+      </div>
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+    <main style="position: relative">
+      <div class="main-body" style="">
+        <img src="./assets/images/bord-frame2.png" alt="" />
+        <h1 class="title" data-lang-key="head">Save Environment</h1>
+        <div class="flower-container">
+          <div class="flower flower1">
+            <a href="destroying-environment.html">
+              <div class="sub-title">
+                <p style="color: #AD93C5;" data-lang-key="title1"></p>
+              </div>
+              <img src="./assets/images/flower1.png" />
+              
+              <span class="num num1" data-lang-key="num.1"></span>
+            </a>
+          </div>
+          <div class="flower flower2">
+            <a href="benefit-from-nature.html">
+              <div class="sub-title">
+                <p style="color: #FBB040;" data-lang-key="title2"></p>
+              </div>
+              <img src="./assets/images/flower2.png" alt="" />
+              <span class="num num2" data-lang-key="num.2"></span>
+            </a>
+          </div>
+          <div class="flower3 flower" id="flower3">
+            <a href="save-environment.html">
+              <div class="sub-title">
+                <p style="color: #F69D9B;" data-lang-key="title3"></p>
+              </div>
+              <img src="./assets/images/flower3.png" alt="" />
+
+              <span class="num num3" data-lang-key="num.3"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        const LANG_KEY = "selectedLanguage";
+        const DEFAULT_LANG = "English";
+        let translations = null;
+
+        async function loadTranslations() {
+          if (translations) return translations;
+          try {
+            const res = await fetch("./json/data.json");
+            if (!res.ok) throw new Error("JSON not found");
+            translations = await res.json();
+          } catch (err) {
+            translations = {};
+          }
+          return translations;
+        }
+
+        function setActiveUI(lang) {
+          const container = document.querySelector(".navbar-language");
+          if (!container) return;
+
+          container.classList.remove("lang-left", "lang-right");
+          if (lang === "English") container.classList.add("lang-left");
+          if (lang === "Gujarati") container.classList.add("lang-right");
+
+          document.querySelectorAll(".navbar-language > div").forEach((btn) => {
+            btn.classList.remove("lang-active");
+          });
+
+          const mapBtn = {
+            English: ".english-button",
+            Hindi: ".hindi-button",
+            Gujarati: ".gujrati-button",
+          };
+
+          document.querySelector(mapBtn[lang])?.classList.add("lang-active");
+        }
+        function applyLanguage(lang) {
+          setActiveUI(lang);
+          if (!translations || !translations[lang]) return;
+
+          document.querySelectorAll("[data-lang-key]").forEach((el) => {
+            if (el.children.length > 0) return;
+            const key = el.getAttribute("data-lang-key");
+            const value = translations[lang][key];
+            if (value == null) return;
+            if (String(value).includes("<br")) el.innerHTML = value;
+            else el.textContent = value;
+          });
+
+          localStorage.setItem(LANG_KEY, lang);
+
+          if (window.swiper && typeof window.swiper.realIndex === "number") {
+            const idx = Math.min(
+              (window.swiper.realIndex ?? 0) + 1,
+              MAX_SLIDES,
+            );
+
+            const board2 = document.getElementById("boardText");
+            const slideKey = `board2.slide${Math.min(idx, 5)}`;
+            const txt = translations[lang][slideKey];
+            if (board2 && txt) board2.innerHTML = `<h2>${txt}</h2>`;
+          }
+        }
+
+        async function initLang() {
+          await loadTranslations();
+
+          const saved = DEFAULT_LANG;
+          localStorage.setItem(LANG_KEY, saved);
+          setActiveUI(saved);
+
+          const waitIntro = () => {
+            if (!document.body.classList.contains("intro")) {
+              applyLanguage(saved);
+              return;
+            }
+            requestAnimationFrame(waitIntro);
+          };
+          waitIntro();
+
+          document
+            .querySelector(".english-button")
+            ?.addEventListener("click", () => applyLanguage("English"));
+          document
+            .querySelector(".hindi-button")
+            ?.addEventListener("click", () => applyLanguage("Hindi"));
+          document
+            .querySelector(".gujrati-button")
+            ?.addEventListener("click", () => applyLanguage("Gujarati"));
+        }
+
+        document.addEventListener("DOMContentLoaded", initLang);
+        window.setLanguage = (lang) => applyLanguage(lang);
+      })();
+    </script>
+  </body>
+</html>

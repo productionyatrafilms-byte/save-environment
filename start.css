@@ -1,0 +1,309 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
+}
+
+    body {
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        overflow: hidden ;
+        background-image: url("./assets/images/bg2-fram2.png");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: relative;
+        display: block;
+        justify-content: center;
+        object-fit: cover;
+    }
+
+    /* Page fade-in on load */
+.page-fade {
+  opacity: 0;
+  animation: pageFadeIn 0.8s ease forwards;
+  animation-delay: 0.15s;
+}
+
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+nav{
+  width: 100vw;
+  height: 10vh!important;
+  display: flex!important;
+  justify-content: space-between!important;
+  align-items: center;
+  padding:1vw 2vw!important;
+}
+
+.navbar-language {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FAA22C;
+  background-color: #fff;
+  padding: 0.5vw 0.5vw;
+  border-radius: 10vb;
+  z-index: 999;
+  width: 11vw;
+  height: auto;
+  gap: 1vh;
+  transition: border-radius 0.3s ease;
+}
+/* English selected → left emphasis */
+.navbar-language.lang-left {
+  border-top-left-radius: 2vw;
+  border-bottom-left-radius: 2vw;
+}
+
+/* Gujarati selected → right emphasis */
+.navbar-language.lang-right {
+  border-top-right-radius: 2vw;
+  border-bottom-right-radius: 2vw;
+}
+
+.english-button,
+.gujrati-button,.hindi-button {
+  border: 0.8vb solid #FAA22C;
+  opacity: 0.7;
+  border-radius: 15vb;
+  cursor: pointer;
+  width: 4vw;
+  height: auto;
+  text-align: center;
+  font-size: 1.7vw;
+  font-weight: bold;
+}
+
+.english-button:hover,
+.hindi-button:hover,
+.gujrati-button:hover {
+  border: 0.8vb solid #FAA22C;
+  opacity: 1;
+}
+/* Base language button */
+.navbar-language > div {
+  background-color: transparent;
+  transition: background-color 0.25s ease,
+              color 0.25s ease,
+              transform 0.2s ease,
+              box-shadow 0.25s ease;
+}
+
+.navbar-language > div.lang-active {
+  opacity: 1;
+  box-shadow: 0 0.35vw 0.7vw rgba(250, 162, 44, 0.45);
+  transform: scale(1.08);
+  border-radius: 2vw;
+}
+
+/* Hover only for NON-active buttons */
+.navbar-language > div:not(.lang-active):hover {
+  background-color: rgba(250, 162, 44, 0.18);
+}
+
+.back-btn{
+  background-color: white;
+  height: 4vw;
+  border-radius: 2vb;
+  width: 4vw;
+  z-index: 10;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+}
+.back-btn img{
+  width: 2vw;
+  display: block;
+  margin: auto;
+  padding: 2vh 0;
+    opacity: 0.6;
+  transition: 
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    width 0.35s ease,
+    filter 0.3s ease;
+  transform-origin: center;
+  rotate: 90deg;
+}
+.back-btn:hover {
+  z-index: 9999;                    /* bring it above everything */
+}
+
+.back-btn:hover img {
+  width: 3vw; 
+  transform: rotate(-90deg);       /* anti-clockwise half rotation */
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25)); 
+  padding: 1vh 0;
+  opacity: 1;
+}
+/* Tooltip */
+.back-btn::after {
+  content: "Back";
+  position: absolute;
+  bottom: -1.7vw;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  color:  #FAA22C;
+  font-size: 1.2vw;
+  font-weight: 600;
+  padding: 0.3vw 0.6vw;
+  border-radius: 0.4vw;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9000;
+}
+
+/* Tooltip hover */
+.back-btn:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.main-body{
+  width: 70vw;
+  height: 90vh;          /* ✅ was 90vw */
+  margin: auto;
+  position: relative;
+}
+.main-body img{
+  width: 85%;
+  height: 100%;
+  padding-bottom: 0vw;
+   display: block;
+  margin: auto;
+  position: relative;
+}
+.title {
+  position: absolute;
+  top: 10vw!important;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color:#006E90;
+  font-size: 6vw;
+  line-height: 13vh;
+  z-index: 100;
+  text-align: center;
+  width: 40vw;
+  transform: translate(-50%, -50%);
+  animation: titleMove 2s ease-in-out forwards;
+text-shadow:
+  0 0.35vw 0.15vw rgba(202, 223, 227, 1),
+  0 0.5vw 0.25vw rgba(202, 223, 227, 0.9),
+  0 0.5vw 0.35vw rgba(202, 223, 227, 0.9);
+}
+.flower-container{
+  position: absolute;
+  bottom: -5vh!important;              /* ✅ fixed from top */
+  left: 50%;
+  transform: translateX(-50%);  /* ✅ center properly */
+  height: 40vh;
+  width: 50vw;
+  height: 30vw;           /* you can keep this, or change to vh if you want */
+  display: flex;
+  justify-content: space-between;
+
+  z-index: 1000;
+  /* background-color: red;  (remove after testing) */
+}
+.flower-container .flower2{
+  margin-top: 1.5vh;
+}
+.flower-container .flower a img{
+  width: 10vw;
+  height: 23vw;
+  border-radius: 1.2vw;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.flower-container .flower a {
+  text-decoration: none;
+}
+.flower-container .flower a .sub-title{
+  text-align: center;
+  padding: 0vh 1.5vw;
+  font-size: 2vw;
+  font-weight: bolder;
+  color:#FAA22C;
+  border-radius: 0.8vw;
+  transition: transform 0.35s ease;
+  width: 15vw;
+  height: 15vh;
+}
+ .sub-title p{
+  display: inline-block;
+  line-height: 1!important;   
+}
+
+.flower-container .flower:hover{
+  transform: scale(1.08);
+}
+.flower-container .flower{
+  position: relative;
+   transition: transform 0.35s ease;
+}
+
+
+.num{
+  position: absolute;
+  font-size: 3vw;
+  font-weight: bold;
+  color: white;
+  z-index: 10!important;
+}
+.num1{
+  top: 36%;
+  left: 42%;
+}
+.num2{
+  top: 38%!important;
+  left: 42%;
+  color: white!important;
+}
+.num3{
+  top:38%;
+  left: 45%;
+}
+@keyframes titleMove {
+  0% {
+    top: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    top: 20%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Flowers appear smoothly */
+@keyframes flowersIn {
+  0% {
+    opacity: 0;
+    transform: translateY(1vw) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+

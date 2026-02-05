@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How can we Save Environment?</title>
+    <link rel="stylesheet" href="save-environment.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+  </head>
+
+  <body style="background-color: #afe2fd" class="intro">
+    <nav>
+      <div class="home-btn" style="">
+        <a href="index.html"
+          ><img src="./assets/images/home-btn.png" alt="" alt="Home"
+        /></a>
+        <span class="home-label" data-lang-key="homeTooltip">Home</span>
+      </div>
+      <div class="title" style="position: relative; color: #f69d9b">
+        <img class="rectangle" src="./assets/images/Rectangle.png" alt="" />
+        <h2 data-lang-key="title3">How can we Save Environment?</h2>
+        <div class="circle">
+          <img src="./assets/images/circle.png" alt="" />
+          <span data-lang-key="num.3">3</span>
+        </div>
+      </div>
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+    <!-- Tooltip box -->
+    <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
+      <span class="tooltip-text"></span>
+    </div>
+
+    <div class="page-content">
+      <div class="vector1"></div>
+      <div class="vector2"></div>
+      <img class="shadow" src="./assets/images/shadow.png" alt="" />
+      <!-- pages -->
+      <div class="pages">
+        <a class="num num1" href="destroying-environment.html"
+          ><img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span></a
+        >
+        <a class="num num2" href="benefit-nature.html"
+          ><img
+            src="./assets/images/circle.png"
+            alt=""
+            data-tip="nature"
+          /><span data-lang-key="num.2">2</span></a
+        >
+        <a class="num num3" href="save-environment.html"
+          ><img src="./assets/images/circle.png" alt="" data-tip="save" /><span
+            data-lang-key="num.3"
+            >3</span
+          ></a
+        >
+      </div>
+      <!-- pages end -->
+      <!-- tooltip content -->
+      <div class="tooltip-content" hidden>
+        <div id="destroy" data-lang-key="page.destroy">
+          How are we destroying Environment?
+        </div>
+        <div id="nature" data-lang-key="page.nature">
+          what do we benefit from the Nature?
+        </div>
+        <div id="save" data-lang-key="page.save">
+          How can we Save Environment?
+        </div>
+      </div>
+
+      <!-- pages ends -->
+
+      <main>
+        <div class="board" style="position: absolute">
+          <img src="./assets/images/bord.png" alt="" />
+          <div
+            class="board-text-overlay"
+            style="position: absolute"
+            id="boardText"
+          >
+            <h2>
+              By <br />
+              Destroying Plants & <br />
+              trees
+            </h2>
+          </div>
+        </div>
+        <div class="image-board">
+          <div class="swiper imageSwiper">
+            <!-- Wrapper for slides -->
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <video src="./assets/videos/save1.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/save2.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/save3.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/save4.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/save5.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/save6.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/save7.mp4" autoplay loop></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <div class="bottom-swiper-ui">
+        <button class="env-prev" type="button" aria-label="Previous">
+          <img src="./assets/images/prev-btn.png" alt="Previous" />
+        </button>
+
+        <div class="env-pagination" aria-label="Pagination"></div>
+
+        <button class="env-next" type="button" aria-label="Next">
+          <img src="./assets/images/next-btn.png" alt="Next" />
+        </button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="save-environment.js"></script>
+
+    <!-- board text and swiper -->
+    <script>
+      (() => {
+        const NEXT_URL = "pranam.html"; 
+
+        const texts = [
+          `By <br/> Using cloth bags`,
+          `By <br/> Turning off lights, <br/> fans, etc. When not in <br/> use`,
+          `By <br/> Using reusable <br/> bottles or cups`,
+          `By <br/> Avoiding shower <br/> baths`,
+          `By <br/> Reducing <br/> paper wastage`,
+          `By <br/> Using glass of water <br/> for brushing`,
+          `By <br/> Reducing use of <br/> packaged <br/> food`,
+        ];
+
+        const boardText = document.getElementById("boardText");
+        const nextBtn = document.querySelector(".env-next");
+        const prevBtn = document.querySelector(".env-prev");
+
+        // ---- helpers ----
+        function updateBoardText(index) {
+          if (!boardText) return;
+          const html = texts[index] ?? texts[0] ?? "";
+          boardText.innerHTML = `<h2>${html}</h2>`;
+        }
+
+        function fadeAndGo(url) {
+          document.documentElement.classList.add("page-exit");
+          window.setTimeout(() => {
+            window.location.href = url;
+          }, 200);
+        }
+
+        // ---- init swiper ----
+        window.swiper = new Swiper(".imageSwiper", {
+          loop: false,
+          speed: 600,
+          pagination: { el: ".env-pagination", clickable: true },
+
+          // ✅ Only prev is handled by Swiper; next is handled manually below
+          navigation: { prevEl: ".env-prev" },
+
+          on: {
+            init: function () {
+              // hide prev on first slide
+              if (this.navigation?.prevEl) {
+                this.navigation.prevEl.style.visibility = "hidden";
+              }
+
+              // set initial board text
+              updateBoardText(this.realIndex);
+
+              // keep your language init behavior
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+              window.setLanguage?.(saved);
+            },
+
+            slideChange: function () {
+              // show/hide prev
+              if (this.navigation?.prevEl) {
+                this.navigation.prevEl.style.visibility = this.isBeginning
+                  ? "hidden"
+                  : "visible";
+              }
+
+              // update board text
+              updateBoardText(this.realIndex);
+
+              // keep your language update behavior
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+              window.setLanguage?.(saved);
+            },
+          },
+        });
+
+        // ---- manual NEXT button behavior ----
+        if (nextBtn) {
+          nextBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const s = window.swiper;
+            if (!s) return;
+
+            // last real index (loop:false)
+            const lastIndex = Math.max(0, s.slides.length - 1);
+
+            // ✅ If already on last slide -> navigate
+            if (s.realIndex >= lastIndex) {
+              fadeAndGo(NEXT_URL);
+              return;
+            }
+
+            // ✅ otherwise go to next slide
+            s.slideNext();
+          });
+        }
+
+        // ---- Optional: if your prev button isn't working for any reason, uncomment this ----
+        // if (prevBtn) {
+        //   prevBtn.addEventListener("click", (e) => {
+        //     e.preventDefault();
+        //     window.swiper?.slidePrev();
+        //   });
+        // }
+      })();
+    </script>
+  </body>
+</html>

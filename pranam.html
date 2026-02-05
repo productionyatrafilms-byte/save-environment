@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="pranam.css">
+</head>
+<body>
+    <body class="intro page-fade" style="background-color: #afe2fd" class="intro">
+    <nav>
+      <div class="home-btn" style="">
+        <a href="index.html"
+          ><img src="./assets/images/home-btn.png" alt="" alt="Home"
+        /></a>
+        <span class="home-label" data-lang-key="homeTooltip">Home</span>
+      </div>
+      
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+    <div class="pranam-container">
+      <img class="pranam-container-img" src="./assets/images/pranam-container.png" alt="">
+      <img class="pranam-img" src="./assets/images/pranam.png" alt="">
+    </div>
+    <div class="pages">
+        <a class="num num1" href="destroying-environment.html"
+          ><img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span></a
+        >
+        <a class="num num2" href="benefit-nature.html"
+          ><img
+            src="./assets/images/circle.png"
+            alt=""
+            data-tip="nature"
+          /><span data-lang-key="num.2">2</span></a
+        >
+        <a class="num num3" href="save-environment.html"
+          ><img src="./assets/images/circle.png" alt="" data-tip="save" /><span
+            data-lang-key="num.3"
+            >3</span
+          ></a
+        >
+      </div>
+            <!-- tooltip content -->
+      <div class="tooltip-content" hidden>
+        <div id="destroy" data-lang-key="page.destroy">
+          How are we destroying Environment?
+        </div>
+        <div id="nature" data-lang-key="page.nature">
+          what do we benefit from the Nature?
+        </div>
+        <div id="save" data-lang-key="page.save">
+          How can we Save Environment?
+        </div>
+      </div>
+    <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
+      <span class="tooltip-text"></span>
+    </div>
+    <script>
+      (() => {
+  const LANG_KEY = "selectedLanguage";
+  const DEFAULT_LANG = "English";
+  let translations = null;
+
+  async function loadTranslations() {
+    if (translations) return translations;
+    try {
+      const res = await fetch("./json/data.json");
+      if (!res.ok) throw new Error("JSON not found");
+      translations = await res.json();
+    } catch (err) {
+      translations = {};
+    }
+    return translations;
+  }
+
+  function setActiveUI(lang) {
+    const container = document.querySelector(".navbar-language");
+    if (!container) return;
+
+    container.classList.remove("lang-left", "lang-right");
+    if (lang === "English") container.classList.add("lang-left");
+    if (lang === "Gujarati") container.classList.add("lang-right");
+
+    document.querySelectorAll(".navbar-language > div").forEach((btn) => {
+      btn.classList.remove("lang-active");
+    });
+
+    const mapBtn = {
+      English: ".english-button",
+      Hindi: ".hindi-button",
+      Gujarati: ".gujrati-button",
+    };
+
+    document.querySelector(mapBtn[lang])?.classList.add("lang-active");
+  }
+  const BOARD_PREFIX = "board3";
+  const MAX_SLIDES = 7; // ✅ only 4 slides
+
+  function applyLanguage(lang) {
+    setActiveUI(lang);
+    if (!translations || !translations[lang]) return;
+
+    document.querySelectorAll("[data-lang-key]").forEach((el) => {
+      if (el.children.length > 0) return;
+      const key = el.getAttribute("data-lang-key");
+      const value = translations[lang][key];
+      if (value == null) return;
+      if (String(value).includes("<br")) el.innerHTML = value;
+      else el.textContent = value;
+    });
+
+    localStorage.setItem(LANG_KEY, lang);
+
+    if (window.swiper && typeof window.swiper.realIndex === "number") {
+      const idx = Math.min((window.swiper.realIndex ?? 0) + 1, MAX_SLIDES);
+
+      const board3 = document.getElementById("boardText");
+      const slideKey = `board3.slide${Math.min(idx, 7)}`;
+      const txt = translations[lang][slideKey];
+      if (board3 && txt) board3.innerHTML = `<h2>${txt}</h2>`;
+    }
+  }
+
+  async function initLang() {
+    await loadTranslations();
+
+    const saved = DEFAULT_LANG;
+    localStorage.setItem(LANG_KEY, saved);
+    setActiveUI(saved);
+
+    const waitIntro = () => {
+      if (!document.body.classList.contains("intro")) {
+        applyLanguage(saved);
+        return;
+      }
+      requestAnimationFrame(waitIntro);
+    };
+    waitIntro();
+
+    document
+      .querySelector(".english-button")
+      ?.addEventListener("click", () => applyLanguage("English"));
+    document
+      .querySelector(".hindi-button")
+      ?.addEventListener("click", () => applyLanguage("Hindi"));
+    document
+      .querySelector(".gujrati-button")
+      ?.addEventListener("click", () => applyLanguage("Gujarati"));
+  }
+
+  document.addEventListener("DOMContentLoaded", initLang);
+  window.setLanguage = (lang) => applyLanguage(lang);
+})();
+
+//  tooltip
+document.addEventListener("DOMContentLoaded", () => {
+  const tooltip = document.getElementById("pageTooltip");
+  const tooltipText = tooltip.querySelector(".tooltip-text");
+
+  const tooltipColors = {
+    destroy: "rgba(173, 147, 197, 0.65)",
+    nature: "rgba(250, 162, 44, 0.65)",
+    save: "rgba(246, 157, 155, 0.65)",
+  };
+
+  function placeTooltipToIcon(link) {
+    const rect = link.getBoundingClientRect();
+    const topVH = ((rect.top + rect.height / 2) / window.innerHeight) * 99;
+    tooltip.style.top = `${topVH}vh`;
+    tooltip.style.right = `1vw`;
+    tooltip.style.left = `auto`;
+  }
+
+  document.querySelectorAll(".pages a").forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      const tipId = link.querySelector("img")?.dataset.tip;
+      const source = document.getElementById(tipId);
+      if (!source) return;
+
+      tooltipText.textContent = source.textContent;
+      tooltip.style.background =
+        tooltipColors[tipId] || "rgba(96, 97, 159, 0.75)";
+
+      placeTooltipToIcon(link);
+
+      tooltip.classList.remove("show");
+      void tooltip.offsetWidth;
+      tooltip.classList.add("show");
+    });
+
+    link.addEventListener("mouseleave", () => {
+      tooltip.classList.remove("show");
+    });
+  });
+
+  window.addEventListener("resize", () => {
+    if (!tooltip.classList.contains("show")) return;
+    const active = document.querySelector(".pages a:hover");
+    if (active) placeTooltipToIcon(active);
+  });
+});
+
+ 
+
+
+    </script>
+</body>
+</html>

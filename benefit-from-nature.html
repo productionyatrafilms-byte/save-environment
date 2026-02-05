@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What do we benefit from Nature?</title>
+    <link rel="stylesheet" href="benefit-from-nature.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+  </head>
+
+  <body style="background-color: #afe2fd" class="intro">
+    <nav>
+      <div class="home-btn" style="">
+        <a href="index.html"
+          ><img src="./assets/images/home-btn.png" alt="" alt="Home"
+        /></a>
+        <span class="home-label" data-lang-key="homeTooltip">Home</span>
+      </div>
+      <div class="title" style="position: relative; color: #fbb040">
+        <img class="rectangle" src="./assets/images/Rectangle.png" alt="" />
+        <h2 data-lang-key="title2">What do we benefit from Nature?</h2>
+        <div class="circle">
+          <img src="./assets/images/circle.png" alt="" />
+          <span data-lang-key="num.2">2</span>
+        </div>
+      </div>
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+    <!-- Tooltip box -->
+    <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
+      <span class="tooltip-text"></span>
+    </div>
+
+    <div class="page-content">
+      <div class="vector1"></div>
+      <div class="vector2"></div>
+      <img class="shadow" src="./assets/images/shadow.png" alt="" />
+      <!-- pages -->
+      <div class="pages">
+        <a class="num num1" href="destroying-environment.html"
+          ><img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span></a
+        >
+        <a class="num num2" href="benefit-nature.html"
+          ><img
+            src="./assets/images/circle.png"
+            alt=""
+            data-tip="nature"
+          /><span data-lang-key="num.2">2</span></a
+        >
+        <a class="num num3" href="save-environment.html"
+          ><img src="./assets/images/circle.png" alt="" data-tip="save" /><span
+            data-lang-key="num.3"
+            >3</span
+          ></a
+        >
+      </div>
+      <!-- tooltip content -->
+      <div class="tooltip-content" hidden>
+        <div id="destroy" data-lang-key="page.destroy">
+          How are we destroying Environment?
+        </div>
+        <div id="nature" data-lang-key="page.nature">
+          what do we benefit from the Nature?
+        </div>
+        <div id="save" data-lang-key="page.save">
+          How can we Save Environment
+        </div>
+      </div>
+
+      <!-- pages ends -->
+
+      <main>
+        <div class="board" style="position: absolute">
+          <img src="./assets/images/bord.png" alt="" />
+          <div
+            class="board-text-overlay"
+            style="position: absolute"
+            id="boardText"
+          >
+            <h2>
+              By <br />
+              Destroying Plants & <br />
+              trees
+            </h2>
+          </div>
+        </div>
+        <div class="image-board">
+          <div class="swiper imageSwiper">
+            <!-- Wrapper for slides -->
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <video src="./assets/videos/nature1.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/nature2.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/nature3.mp4" autoplay loop></video>
+              </div>
+              <div class="swiper-slide">
+                <video src="./assets/videos/nature4.mp4" autoplay loop></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <div class="bottom-swiper-ui">
+        <button class="env-prev" type="button" aria-label="Previous">
+          <img src="./assets/images/prev-btn.png" alt="Previous" />
+        </button>
+
+        <div class="env-pagination" aria-label="Pagination"></div>
+
+        <button class="env-next" type="button" aria-label="Next">
+          <img src="./assets/images/next-btn.png" alt="Next" />
+        </button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="benefit-from-nature.js"></script>
+
+    <!-- board text and swiper -->
+    <script>
+      const texts = [
+        `Trees give us Oxygen, Fruits, Flowers, Shade, etc.`,
+        `River <br/> gives us water`,
+        `We get Fresh Air`,
+        `Sun<br/>gives us Sunlight`,
+      ];
+      const boardText = document.getElementById("boardText");
+
+      window.swiper = new Swiper(".imageSwiper", {
+        loop: false,
+        speed: 600,
+        pagination: { el: ".env-pagination", clickable: true },
+        navigation: { nextEl: ".env-next", prevEl: ".env-prev" },
+
+        on: {
+          init: function () {
+            this.navigation.prevEl.style.visibility = "hidden";
+            const saved = localStorage.getItem("selectedLanguage") || "English";
+            window.setLanguage?.(saved);
+          },
+          slideChange: function () {
+            this.navigation.prevEl.style.visibility = this.isBeginning
+              ? "hidden"
+              : "visible";
+            const saved = localStorage.getItem("selectedLanguage") || "English";
+            window.setLanguage?.(saved);
+          },
+        },
+      });
+    </script>
+    <script></script>
+  </body>
+</html>
