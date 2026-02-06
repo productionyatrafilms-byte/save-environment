@@ -18,10 +18,11 @@
   function setActiveUI(lang) {
     const container = document.querySelector(".navbar-language");
     if (!container) return;
+container.classList.remove("lang-left", "lang-right", "lang-middle");
 
-    container.classList.remove("lang-left", "lang-right");
-    if (lang === "English") container.classList.add("lang-left");
-    if (lang === "Gujarati") container.classList.add("lang-right");
+  if (lang === "English") container.classList.add("lang-left");
+  else if (lang === "Gujarati") container.classList.add("lang-right");
+  else if (lang === "Hindi") container.classList.add("lang-middle");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");

@@ -19,9 +19,11 @@
     const container = document.querySelector(".navbar-language");
     if (!container) return;
 
-    container.classList.remove("lang-left", "lang-right");
-    if (lang === "English") container.classList.add("lang-left");
-    if (lang === "Gujarati") container.classList.add("lang-right");
+    container.classList.remove("lang-left", "lang-right", "lang-middle");
+
+  if (lang === "English") container.classList.add("lang-left");
+  else if (lang === "Gujarati") container.classList.add("lang-right");
+  else if (lang === "Hindi") container.classList.add("lang-middle");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");
@@ -38,6 +40,7 @@
 
   function applyLanguage(lang) {
     setActiveUI(lang);
+    document.documentElement.setAttribute("lang", lang);
     if (!translations || !translations[lang]) return;
 
     document.querySelectorAll("[data-lang-key]").forEach((el) => {
@@ -98,11 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const tooltipColors = {
     destroy: "rgba(173, 147, 197, 0.65)",
-    nature:  "rgba(250, 162, 44, 0.65)",
-    save:    "rgba(246, 157, 155, 0.65)"
+    nature: "rgba(250, 162, 44, 0.65)",
+    save: "rgba(246, 157, 155, 0.65)",
   };
 
-  function placeTooltipToIcon(link){
+  function placeTooltipToIcon(link) {
     const rect = link.getBoundingClientRect();
     const topVH = ((rect.top + rect.height / 2) / window.innerHeight) * 99;
     tooltip.style.top = `${topVH}vh`;
@@ -110,19 +113,20 @@ document.addEventListener("DOMContentLoaded", () => {
     tooltip.style.left = `auto`;
   }
 
-  document.querySelectorAll(".pages a").forEach(link => {
+  document.querySelectorAll(".pages a").forEach((link) => {
     link.addEventListener("mouseenter", () => {
       const tipId = link.querySelector("img")?.dataset.tip;
       const source = document.getElementById(tipId);
       if (!source) return;
 
       tooltipText.textContent = source.textContent;
-      tooltip.style.background = tooltipColors[tipId] || "rgba(96, 97, 159, 0.75)";
+      tooltip.style.background =
+        tooltipColors[tipId] || "rgba(96, 97, 159, 0.75)";
 
       placeTooltipToIcon(link);
 
       tooltip.classList.remove("show");
-      void tooltip.offsetWidth; 
+      void tooltip.offsetWidth;
       tooltip.classList.add("show");
     });
 
@@ -139,33 +143,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // page load
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const body = document.body;
-      const html = document.documentElement;          
-      const title = document.querySelector(".title");
+window.addEventListener("DOMContentLoaded", () => {
+  const body = document.body;
+  const html = document.documentElement;
+  const title = document.querySelector(".title");
 
-      body.classList.add("intro");
-      html.classList.add("intro");                 
+  body.classList.add("intro");
+  html.classList.add("intro");
 
+  function measureFinalTitlePosition() {
+    body.classList.add("measure-final");
+    body.classList.remove("intro");
+    html.classList.remove("intro");
 
-      function measureFinalTitlePosition() {
-        body.classList.add("measure-final");
-        body.classList.remove("intro");             
-        html.classList.remove("intro");              
+    const finalRect = title.getBoundingClientRect();
 
-        const finalRect = title.getBoundingClientRect();
+    // restore intro state
+    body.classList.add("intro");
+    html.classList.add("intro");
+    body.classList.remove("measure-final");
 
-        // restore intro state
-        body.classList.add("intro");                
-        html.classList.add("intro");                 
-        body.classList.remove("measure-final");
+    return finalRect;
+  }
 
-        return finalRect;
-      }
-
-      // Create CSS for measuring (injected once)
-      const style = document.createElement("style");
-      style.textContent = `
+  // Create CSS for measuring (injected once)
+  const style = document.createElement("style");
+  style.textContent = `
     body.measure-final .title{
       position: relative !important;
       left: auto !important;
@@ -179,35 +182,37 @@ document.addEventListener("DOMContentLoaded", () => {
       visibility: hidden !important;
     }
   `;
-      document.head.appendChild(style);
+  document.head.appendChild(style);
 
-      // Measure where it should land
-      const finalRect = measureFinalTitlePosition();
+  // Measure where it should land
+  const finalRect = measureFinalTitlePosition();
 
-      // Current center position (fixed)
-      const startRect = title.getBoundingClientRect();
+  // Current center position (fixed)
+  const startRect = title.getBoundingClientRect();
 
-      // Compute delta from center -> final
-      const dx = (finalRect.left - startRect.left) + "px";
-      const dy = (finalRect.top - startRect.top) + "px";
+  // Compute delta from center -> final
+  const dx = finalRect.left - startRect.left + "px";
+  const dy = finalRect.top - startRect.top + "px";
 
-      // Store deltas as CSS vars
-      title.style.setProperty("--dx", dx);
-      title.style.setProperty("--dy", dy);
+  // Store deltas as CSS vars
+  title.style.setProperty("--dx", dx);
+  title.style.setProperty("--dy", dy);
 
-      // Start intro: after 2s fly up smoothly
-      setTimeout(() => {
-        body.classList.add("intro-fly");
+  // Start intro: after 2s fly up smoothly
+  setTimeout(() => {
+    body.classList.add("intro-fly");
 
-        // When animation ends:
-        title.addEventListener("animationend", () => {
-          body.classList.add("intro-done");
+    // When animation ends:
+    title.addEventListener(
+      "animationend",
+      () => {
+        body.classList.add("intro-done");
 
-          body.classList.remove("intro");
-          body.classList.remove("intro-fly");
-          html.classList.remove("intro");             
-
-        }, { once: true });
-
-      }, 1000);
-    });
+        body.classList.remove("intro");
+        body.classList.remove("intro-fly");
+        html.classList.remove("intro");
+      },
+      { once: true },
+    );
+  }, 1000);
+});

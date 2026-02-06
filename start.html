@@ -34,7 +34,7 @@
               </div>
               <img src="./assets/images/flower1.png" />
               
-              <span class="num num1" data-lang-key="num.1"></span>
+              <span class="num num1" data-lang-key="num.1">1</span>
             </a>
           </div>
           <div class="flower flower2">
@@ -43,7 +43,7 @@
                 <p style="color: #FBB040;" data-lang-key="title2"></p>
               </div>
               <img src="./assets/images/flower2.png" alt="" />
-              <span class="num num2" data-lang-key="num.2"></span>
+              <span class="num num2" data-lang-key="num.2">2</span>
             </a>
           </div>
           <div class="flower3 flower" id="flower3">
@@ -53,7 +53,7 @@
               </div>
               <img src="./assets/images/flower3.png" alt="" />
 
-              <span class="num num3" data-lang-key="num.3"></span>
+              <span class="num num3" data-lang-key="num.3">3</span>
             </a>
           </div>
         </div>
@@ -61,101 +61,89 @@
     </main>
 
     <script>
-      (() => {
-        const LANG_KEY = "selectedLanguage";
-        const DEFAULT_LANG = "English";
-        let translations = null;
+     (() => {
+  const LANG_KEY = "selectedLanguage";
+  const DEFAULT_LANG = "English";
+  let translations = null;
 
-        async function loadTranslations() {
-          if (translations) return translations;
-          try {
-            const res = await fetch("./json/data.json");
-            if (!res.ok) throw new Error("JSON not found");
-            translations = await res.json();
-          } catch (err) {
-            translations = {};
-          }
-          return translations;
-        }
+  async function loadTranslations() {
+    if (translations) return translations;
+    try {
+      const res = await fetch("./json/data.json");
+      if (!res.ok) throw new Error("JSON not found");
+      translations = await res.json();
+    } catch (err) {
+      console.error("Translation load failed:", err);
+      translations = {};
+    }
+    return translations;
+  }
 
-        function setActiveUI(lang) {
-          const container = document.querySelector(".navbar-language");
-          if (!container) return;
+  function setActiveUI(lang) {
+    const container = document.querySelector(".navbar-language");
+    if (!container) return;
 
-          container.classList.remove("lang-left", "lang-right");
-          if (lang === "English") container.classList.add("lang-left");
-          if (lang === "Gujarati") container.classList.add("lang-right");
+container.classList.remove("lang-left", "lang-right", "lang-middle");
 
-          document.querySelectorAll(".navbar-language > div").forEach((btn) => {
-            btn.classList.remove("lang-active");
-          });
+if (lang === "English") container.classList.add("lang-left");
+else if (lang === "Gujarati") container.classList.add("lang-right");
+else if (lang === "Hindi") container.classList.add("lang-middle");
 
-          const mapBtn = {
-            English: ".english-button",
-            Hindi: ".hindi-button",
-            Gujarati: ".gujrati-button",
-          };
+    document.querySelectorAll(".navbar-language > div").forEach((btn) => {
+      btn.classList.remove("lang-active");
+    });
 
-          document.querySelector(mapBtn[lang])?.classList.add("lang-active");
-        }
-        function applyLanguage(lang) {
-          setActiveUI(lang);
-          if (!translations || !translations[lang]) return;
+    const mapBtn = {
+      English: ".english-button",
+      Hindi: ".hindi-button",
+      Gujarati: ".gujrati-button",
+    };
 
-          document.querySelectorAll("[data-lang-key]").forEach((el) => {
-            if (el.children.length > 0) return;
-            const key = el.getAttribute("data-lang-key");
-            const value = translations[lang][key];
-            if (value == null) return;
-            if (String(value).includes("<br")) el.innerHTML = value;
-            else el.textContent = value;
-          });
+    document.querySelector(mapBtn[lang])?.classList.add("lang-active");
+  }
 
-          localStorage.setItem(LANG_KEY, lang);
+  function applyLanguage(lang) {
+    setActiveUI(lang);
+    if (!translations || !translations[lang]) return;
 
-          if (window.swiper && typeof window.swiper.realIndex === "number") {
-            const idx = Math.min(
-              (window.swiper.realIndex ?? 0) + 1,
-              MAX_SLIDES,
-            );
+    document.querySelectorAll("[data-lang-key]").forEach((el) => {
+      // ❌ this line can block updates if element has child tags
+      // if (el.children.length > 0) return;
 
-            const board2 = document.getElementById("boardText");
-            const slideKey = `board2.slide${Math.min(idx, 5)}`;
-            const txt = translations[lang][slideKey];
-            if (board2 && txt) board2.innerHTML = `<h2>${txt}</h2>`;
-          }
-        }
+      const key = el.getAttribute("data-lang-key");
+      const value = translations[lang][key];
+      if (value == null) return;
 
-        async function initLang() {
-          await loadTranslations();
+      if (String(value).includes("<br")) el.innerHTML = value;
+      else el.textContent = value;
+    });
 
-          const saved = DEFAULT_LANG;
-          localStorage.setItem(LANG_KEY, saved);
-          setActiveUI(saved);
+    localStorage.setItem(LANG_KEY, lang);
+  }
 
-          const waitIntro = () => {
-            if (!document.body.classList.contains("intro")) {
-              applyLanguage(saved);
-              return;
-            }
-            requestAnimationFrame(waitIntro);
-          };
-          waitIntro();
+  async function initLang() {
+    await loadTranslations();
 
-          document
-            .querySelector(".english-button")
-            ?.addEventListener("click", () => applyLanguage("English"));
-          document
-            .querySelector(".hindi-button")
-            ?.addEventListener("click", () => applyLanguage("Hindi"));
-          document
-            .querySelector(".gujrati-button")
-            ?.addEventListener("click", () => applyLanguage("Gujarati"));
-        }
+    // ✅ Always reset to English on refresh
+    localStorage.removeItem(LANG_KEY);
+    applyLanguage(DEFAULT_LANG);
 
-        document.addEventListener("DOMContentLoaded", initLang);
-        window.setLanguage = (lang) => applyLanguage(lang);
-      })();
+    document
+      .querySelector(".english-button")
+      ?.addEventListener("click", () => applyLanguage("English"));
+    document
+      .querySelector(".hindi-button")
+      ?.addEventListener("click", () => applyLanguage("Hindi"));
+    document
+      .querySelector(".gujrati-button")
+      ?.addEventListener("click", () => applyLanguage("Gujarati"));
+
+    window.setLanguage = applyLanguage;
+  }
+
+  document.addEventListener("DOMContentLoaded", initLang);
+})();
+
     </script>
   </body>
 </html>
