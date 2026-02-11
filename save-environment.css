@@ -119,55 +119,36 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 1vw 2vw;
+  z-index: 999;
 }
-
-/* =========================
-   LANGUAGE CONTAINER
-========================= */
 
 .navbar-language {
   display: flex;
   align-items: center;
-  justify-content: center;
-
+  justify-content: space-between;
   background-color: #ffffff;
   color: #FAA22C;
-
   width: 11vw;
-  height: 8vh;
-  gap: 1vh;
-  padding: 0.5vw;
-
-  border-radius: 15vb;
-  z-index: 999;
-
+  height: 3.7vw!important;
+  object-fit: contain;
+  padding: 0vh 0.4vw;
+  border-radius: 50vb;
   transition: border-radius 0.35s ease;
 }
 
-/* =========================
-   LANGUAGE BUTTONS (BASE)
-========================= */
 
 .navbar-language > div {
-  display: grid;
-  place-items: center;
-
   width: 3vw;
-  height: auto;
-
+  height: 3vw;
   font-size: 1.7vw;
   font-weight: bold;
   text-align: center;
-
   border: 0.8vb solid #FAA22C;
   background: transparent;
   color: #FAA22C;
-
   cursor: pointer;
   opacity: 0.75;
-
   border-radius: 15vb;
-
   transition:
     border-radius 0.35s ease,
     transform 0.2s ease,
@@ -176,13 +157,11 @@ nav {
     opacity 0.25s ease;
 }
 
-/* Hover */
 .navbar-language > div:hover {
   opacity: 1;
   background-color: rgba(250, 162, 44, 0.18);
 }
 
-/* Active visual */
 .navbar-language > div.lang-active {
   opacity: 1;
   transform: scale(1.08);
@@ -190,63 +169,52 @@ nav {
   border-radius: 0.3vb;
 }
 
-/* =========================
-   STATE: ENGLISH SELECTED
-========================= */
-
 .navbar-language.lang-left {
-  border-top-left-radius: 5vb;
-  border-bottom-left-radius: 5vb;
-  border-top-right-radius: 15vb;
-  border-bottom-right-radius: 15vb;
+  border-top-left-radius: 15vb;
+  border-bottom-left-radius: 15vb;
+  border-top-right-radius: 50vb;
+  border-bottom-right-radius: 50vb;
 }
 
 .navbar-language.lang-left .english-button {
-  border-radius: 2vb;
+  border-radius:15vb;
 }
 
 .navbar-language.lang-left .hindi-button,
 .navbar-language.lang-left .gujrati-button {
-  border-radius: 15vb;
+  border-radius:50vb;
 }
 
-/* =========================
-   STATE: GUJARATI SELECTED
-========================= */
 
 .navbar-language.lang-right {
-  border-top-right-radius: 5vb;
-  border-bottom-right-radius: 5vb;
-  border-top-left-radius: 15vb;
-  border-bottom-left-radius: 15vb;
+  border-top-right-radius: 15vb;
+  border-bottom-right-radius: 15vb;
+  border-top-left-radius: 50vb;
+  border-bottom-left-radius: 50vb;
 }
 
 .navbar-language.lang-right .gujrati-button {
-  border-radius: 2vb;
+  border-radius: 15vb;
 }
 
 .navbar-language.lang-right .english-button,
 .navbar-language.lang-right .hindi-button {
-  border-radius: 15vb;
+  border-radius: 50vb;
 }
 
-/* =========================
-   STATE: HINDI SELECTED
-========================= */
 
 .navbar-language.lang-middle {
-  border-radius: 15vb;
+  border-radius: 50vb;
 }
 
 .navbar-language.lang-middle .english-button,
 .navbar-language.lang-middle .gujrati-button {
-  border-radius: 15vb;
+  border-radius: 50vb;
 }
 
 .navbar-language.lang-middle .hindi-button {
-  border-radius: 2vb;
+  border-radius: 15vb;
 }
-
 
 .title {
   width: 50vw;

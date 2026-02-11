@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Pranam</title>
   <link rel="stylesheet" href="pranam.css">
 </head>
 <body>
@@ -69,7 +69,7 @@
   async function loadTranslations() {
     if (translations) return translations;
     try {
-      const res = await fetch("./json/data.json");
+      const res = await fetch("/json/data.json");
       if (!res.ok) throw new Error("JSON not found");
       translations = await res.json();
     } catch (err) {
