@@ -6,7 +6,7 @@
   async function loadTranslations() {
     if (translations) return translations;
     try {
-      const res = await fetch("/json/data.json");
+      const res = await fetch("/JSON/data.json");
       if (!res.ok) throw new Error("JSON not found");
       translations = await res.json();
     } catch (err) {
@@ -18,11 +18,11 @@
   function setActiveUI(lang) {
     const container = document.querySelector(".navbar-language");
     if (!container) return;
-container.classList.remove("lang-left", "lang-right", "lang-middle");
+    container.classList.remove("lang-left", "lang-right", "lang-middle");
 
-  if (lang === "English") container.classList.add("lang-left");
-  else if (lang === "Gujarati") container.classList.add("lang-right");
-  else if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "English") container.classList.add("lang-left");
+    else if (lang === "Gujarati") container.classList.add("lang-right");
+    else if (lang === "Hindi") container.classList.add("lang-middle");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");
@@ -36,8 +36,8 @@ container.classList.remove("lang-left", "lang-right", "lang-middle");
 
     document.querySelector(mapBtn[lang])?.classList.add("lang-active");
   }
-const BOARD_PREFIX = "board2";
-const MAX_SLIDES = 4; // ✅ only 4 slides
+  const BOARD_PREFIX = "board2";
+  const MAX_SLIDES = 4; // ✅ only 4 slides
 
   function applyLanguage(lang) {
     setActiveUI(lang);
@@ -56,7 +56,7 @@ const MAX_SLIDES = 4; // ✅ only 4 slides
 
     if (window.swiper && typeof window.swiper.realIndex === "number") {
       const idx = Math.min((window.swiper.realIndex ?? 0) + 1, MAX_SLIDES);
-      
+
       const board2 = document.getElementById("boardText");
       const slideKey = `board2.slide${Math.min(idx, 5)}`;
       const txt = translations[lang][slideKey];
