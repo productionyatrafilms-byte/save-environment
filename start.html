@@ -30,30 +30,36 @@
       <div class="board">
         <img src="./assets/images/bord-frame2.png" alt="" />
         <div class="title">
-           <h1 data-lang-key="head">Save Environment</h1>
+          <h1 data-lang-key="head">Save Environment</h1>
         </div>
         <!-- flowers container -->
         <div class="flower-container">
-          <a href="./destroying-environment.html" class="flower flower1" style="color: #AD93C5;"
-            ><p data-lang-key="title1" ></p>
-            <img src="./assets/images/flower1.png" alt=""
-          />
-        <span class="num num1" data-lang-key="num.1"></span>
-        </a>
-          <a href="./benefit-from-nature.html" class="flower flower2" style="color: #FBB040;"
-            >
-            <p data-lang-key="title2" ></p>
-            <img src="./assets/images/flower2.png" alt=""
-          />
-          <span class="num num2" data-lang-key="num.2"></span>
-        </a>
-          <a href="./save-environment.html" class="flower flower3" style="color: #F69D9B;"
-            >
-            <p data-lang-key="title1" ></p>
-            <img src="./assets/images/flower3.png" alt=""
-          />
-        <span class="num num3" data-lang-key="num.3"></span>
-        </a>
+          <a
+            href="./destroying-environment.html"
+            class="flower flower1"
+            style="color: #ad93c5"
+            ><p data-lang-key="title1"></p>
+            <img src="./assets/images/flower1.png" alt="" />
+            <span class="num num1" data-lang-key="num.1"></span>
+          </a>
+          <a
+            href="./benefit-from-nature.html"
+            class="flower flower2"
+            style="color: #fbb040"
+          >
+            <p data-lang-key="title2"></p>
+            <img src="./assets/images/flower2.png" alt="" />
+            <span class="num num2" data-lang-key="num.2"></span>
+          </a>
+          <a
+            href="./save-environment.html"
+            class="flower flower3"
+            style="color: #f69d9b"
+          >
+            <p data-lang-key="title1"></p>
+            <img src="./assets/images/flower3.png" alt="" />
+            <span class="num num3" data-lang-key="num.3"></span>
+          </a>
         </div>
       </div>
       <!--board end -->
@@ -68,7 +74,7 @@
         async function loadTranslations() {
           if (translations) return translations;
           try {
-            const res = await fetch("./json/data.json");
+            const res = await fetch("./JSON/data.json");
             if (!res.ok) throw new Error("JSON not found");
             translations = await res.json();
           } catch (err) {
