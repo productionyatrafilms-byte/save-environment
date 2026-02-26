@@ -55,11 +55,12 @@ html[lang="Hindi"] body {
 
 html[lang="Gujarati"] body {
   font-family: "GujaratiRegular", "Noto Sans Gujarati", sans-serif !important;
-} 
-body {
-  /* position: relative ; */
-  font-family: "BalooRegular", sans-serif;
+}
 
+html, body{
+  font-family: "BalooRegular", sans-serif;
+}
+body {
     opacity: 0;
   transform: scale(0.985);
   animation: pageIn 0.8s ease forwards;

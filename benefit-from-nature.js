@@ -40,6 +40,11 @@
   const MAX_SLIDES = 4; // ✅ only 4 slides
 
   function applyLanguage(lang) {
+    document.documentElement.setAttribute("lang", lang);
+document.body.setAttribute(
+  "data-lang",
+  lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en"
+);
     setActiveUI(lang);
     if (!translations || !translations[lang]) return;
 

@@ -21,9 +21,9 @@
 
     container.classList.remove("lang-left", "lang-right", "lang-middle");
 
-  if (lang === "English") container.classList.add("lang-left");
-  else if (lang === "Gujarati") container.classList.add("lang-right");
-  else if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "English") container.classList.add("lang-left");
+    else if (lang === "Gujarati") container.classList.add("lang-right");
+    else if (lang === "Hindi") container.classList.add("lang-middle");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");
@@ -41,6 +41,11 @@
   const MAX_SLIDES = 7; // ✅ only 4 slides
 
   function applyLanguage(lang) {
+    document.documentElement.setAttribute("lang", lang);
+    document.body.setAttribute(
+      "data-lang",
+      lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en",
+    );
     setActiveUI(lang);
     if (!translations || !translations[lang]) return;
 

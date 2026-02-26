@@ -90,7 +90,7 @@ nav {
   align-items: center;
   padding: 1vw 2vw;
   z-index: 999;
-    font-family: "BalooRegular", sans-serif!important;
+    font-family:"BalooRegular",!important;
 }
 
 .navbar-language {
@@ -105,6 +105,7 @@ nav {
   padding: 0vh 0.4vw;
   border-radius: 50vb;
   transition: border-radius 0.35s ease;
+  font-family: "BalooRegular"!important;
 }
 
 
@@ -126,6 +127,7 @@ nav {
     box-shadow 0.25s ease,
     background-color 0.25s ease,
     opacity 0.25s ease;
+        font-family: "BalooRegular" !important;
 }
 
 .navbar-language > div:hover {
@@ -397,7 +399,7 @@ main {
 
 @keyframes pagePop{
   0%   { transform: scale(1); }
-  60%  { transform: scale(1.35); }
+  60%  { transform: scale(1.25); }
   100% { transform: scale(1.25); }
 }
 /* Hover pop */
@@ -493,6 +495,7 @@ main {
 .swiper-slide video {
   width: 57vw;
   height: 67vh;
+  object-fit: contain!important;
 }
 
 .board-text-overlay {
@@ -613,7 +616,7 @@ body.intro .title{
   position: fixed !important;
   left: 50%;
   top: 50%;
-  transform:  translate(-50%, -50%) scale(1.35);
+  transform:  translate(-55%, -50%) scale(1.25);
   z-index: 999999;
   will-change: transform, filter;
   filter: blur(0);
@@ -625,15 +628,15 @@ body.intro.intro-fly .title{
 
 @keyframes flyToNav {
   0% {
-    transform: translate(-50%, -50%) scale(1.42);
+    transform: translate(-55%, -50%) scale(1.25);
     filter: blur(0px);
   }
   45% {
-    transform: translate(-50%, -50%) scale(1.35);   
+    transform: translate(-55%, -50%) scale(1.25);   
     filter: blur(0.2px);
   }
   100% {
-    transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(1);
+    transform: translate(-55%, -50%) translate(var(--dx), var(--dy)) scale(1);
     filter: blur(0px);
   }
 }

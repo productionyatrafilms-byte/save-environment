@@ -40,6 +40,11 @@ else if (lang === "Hindi") container.classList.add("lang-middle");
   }
 
   function applyLanguage(lang) {
+    document.documentElement.setAttribute("lang", lang);
+document.body.setAttribute(
+  "data-lang",
+  lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en"
+);
     setActiveUI(lang);
     if (!translations || !translations[lang]) return;
 
