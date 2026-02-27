@@ -2,6 +2,15 @@
   const LANG_KEY = "selectedLanguage";
   const DEFAULT_LANG = "English";
   let translations = null;
+  let popSfx = null;
+
+  const playPop = () => {
+    try {
+      if (!popSfx) return;
+      popSfx.currentTime = 0;
+      popSfx.play();
+    } catch (_) {}
+  };
 
   async function loadTranslations() {
     if (translations) return translations;
@@ -21,9 +30,9 @@
 
     container.classList.remove("lang-left", "lang-right", "lang-middle");
 
-  if (lang === "English") container.classList.add("lang-left");
-  else if (lang === "Gujarati") container.classList.add("lang-right");
-  else if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "English") container.classList.add("lang-left");
+    else if (lang === "Gujarati") container.classList.add("lang-right");
+    else if (lang === "Hindi") container.classList.add("lang-middle");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");
@@ -66,28 +75,25 @@
   async function initLang() {
     await loadTranslations();
 
-    const saved = DEFAULT_LANG;
-    localStorage.setItem(LANG_KEY, saved);
-    setActiveUI(saved);
+    localStorage.removeItem(LANG_KEY);
+    popSfx = document.getElementById("clickEffect"); // ✅ now it exists
+    applyLanguage(DEFAULT_LANG);
 
-    const waitIntro = () => {
-      if (!document.body.classList.contains("intro")) {
-        applyLanguage(saved);
-        return;
-      }
-      requestAnimationFrame(waitIntro);
-    };
-    waitIntro();
+    const englishBtn = document.querySelector(".english-button");
+    const hindiBtn = document.querySelector(".hindi-button");
+    const gujratiBtn = document.querySelector(".gujrati-button");
+    [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
+      if (!btn) return;
 
-    document
-      .querySelector(".english-button")
-      ?.addEventListener("click", () => applyLanguage("English"));
-    document
-      .querySelector(".hindi-button")
-      ?.addEventListener("click", () => applyLanguage("Hindi"));
-    document
-      .querySelector(".gujrati-button")
-      ?.addEventListener("click", () => applyLanguage("Gujarati"));
+      btn.addEventListener("click", () => {
+        playPop();
+        if (btn === englishBtn) applyLanguage("English");
+        if (btn === hindiBtn) applyLanguage("Hindi");
+        if (btn === gujratiBtn) applyLanguage("Gujarati");
+      });
+    });
+
+    window.setLanguage = applyLanguage;
   }
 
   document.addEventListener("DOMContentLoaded", initLang);

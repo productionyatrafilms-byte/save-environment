@@ -128,38 +128,143 @@
 
     <script src="benefit-from-nature.js"></script>
 
-    <!-- board text and swiper -->
-    <script>
-      const texts = [
-        `Trees give us Oxygen, Fruits, Flowers, Shade, etc.`,
-        `River <br/> gives us water`,
-        `We get Fresh Air`,
-        `Sun<br/>gives us Sunlight`,
-      ];
-      const boardText = document.getElementById("boardText");
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
+    <audio id="HomePage" preload="auto">
+      <source src="./assets/audio/startpage.wav" type="audio/wav" />
+    </audio>
+    <audio id="clickEffect" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="SwipeEffect" preload="auto">
+      <source
+        src="./assets/audio/742832__sadiquecat__woosh-metal-tea-strainer-1.wav"
+        type="audio/mpeg"
+      />
+    </audio>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const navClick = document.getElementById("NavigateClick");
+      const homeAudio = document.getElementById("HomePage");
+      const swipeEffect = document.getElementById("SwipeEffect");
+      const play = async (audio) => {
+        try {
+          if (!audio) return;
+          audio.currentTime = 0;
+          await audio.play();
+        } catch (_) {}
+      };
 
-      window.swiper = new Swiper(".imageSwiper", {
+      const playNav = () => play(swipeEffect);
+
+      const texts = [
+        `By <br/> Destroying Plants & <br/> trees`,
+        `By <br/> Wasting Water`,
+        `By <br/> Polluting Water`,
+        `By <br/> Wasting Electricity`,
+        `By <br/> Wasting Food`,
+      ];
+
+      const pages = document.querySelector(".pages");
+      const homeLink = document.querySelector(".home-btn a");
+
+      const swiper = new Swiper(".imageSwiper", {
         loop: false,
         speed: 600,
         pagination: { el: ".env-pagination", clickable: true },
         navigation: { nextEl: ".env-next", prevEl: ".env-prev" },
-
         on: {
           init: function () {
-            this.navigation.prevEl.style.visibility = "hidden";
+            if (this.navigation && this.navigation.prevEl) {
+              this.navigation.prevEl.style.visibility = "hidden";
+            }
+
             const saved = localStorage.getItem("selectedLanguage") || "English";
             window.setLanguage?.(saved);
+
+            if (this.navigation && this.navigation.nextEl) {
+              this.navigation.nextEl.addEventListener("click", playNav);
+            }
+            if (this.navigation && this.navigation.prevEl) {
+              this.navigation.prevEl.addEventListener("click", playNav);
+            }
+
+            if (this.pagination && this.pagination.el) {
+              this.pagination.el.addEventListener("click", (e) => {
+                if (e.target && e.target.closest(".swiper-pagination-bullet"))
+                  playNav();
+              });
+            }
           },
+
+          touchEnd: function () {
+            if (this.touches && this.touches.diff !== 0) playNav();
+          },
+
           slideChange: function () {
-            this.navigation.prevEl.style.visibility = this.isBeginning
-              ? "hidden"
-              : "visible";
+            if (this.navigation && this.navigation.prevEl) {
+              this.navigation.prevEl.style.visibility = this.isBeginning
+                ? "hidden"
+                : "visible";
+            }
             const saved = localStorage.getItem("selectedLanguage") || "English";
             window.setLanguage?.(saved);
           },
         },
       });
-    </script>
-    <script></script>
-  </body>
+
+      if (pages && navClick) {
+        pages.addEventListener("click", (e) => {
+          const a = e.target.closest("a");
+          if (!a || !pages.contains(a)) return;
+          if (document.body.classList.contains("intro")) return;
+
+          e.preventDefault();
+          const href = a.getAttribute("href");
+          if (!href) return;
+
+          play(navClick);
+          setTimeout(() => {
+            window.location.href = href;
+          }, 500);
+        });
+      }
+
+      if (homeLink && homeAudio) {
+        homeLink.addEventListener("click", (e) => {
+          if (document.body.classList.contains("intro")) return;
+
+          e.preventDefault();
+          const href = homeLink.getAttribute("href");
+          if (!href) return;
+
+          play(homeAudio);
+          setTimeout(() => {
+            window.location.href = href;
+          }, 800);
+        });
+      }
+
+      const unlock = async () => {
+        try {
+          if (!navClick) return;
+          navClick.muted = true;
+          await navClick.play();
+          navClick.pause();
+          navClick.currentTime = 0;
+          navClick.muted = false;
+        } catch (_) {}
+        document.removeEventListener("pointerdown", unlock);
+        document.removeEventListener("touchstart", unlock);
+      };
+
+      document.addEventListener("pointerdown", unlock, { once: true });
+      document.addEventListener("touchstart", unlock, { once: true });
+    });
+  </script>
 </html>

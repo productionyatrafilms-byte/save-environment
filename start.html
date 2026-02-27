@@ -142,7 +142,7 @@
           await loadTranslations();
 
           localStorage.removeItem(LANG_KEY);
-          popSfx = document.getElementById("flowerClickSfx"); // ✅ now it exists
+          popSfx = document.getElementById("clickEffect"); // ✅ now it exists
           applyLanguage(DEFAULT_LANG);
 
           const englishBtn = document.querySelector(".english-button");
@@ -169,15 +169,22 @@
     <audio id="clickSfx" preload="auto">
       <source src="./assets/audio/back.flac" type="audio/wav" />
     </audio>
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
 
-    <audio id="flowerClickSfx" preload="auto">
+    <audio id="clickEffect" preload="auto">
       <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
     </audio>
     <script>
       window.addEventListener("load", () => {
         const wrap = document.querySelector(".flower-container");
         const homeLink = document.querySelector(".back-btn a");
-        const clickSfx = document.getElementById("flowerClickSfx");
+        const flowerSfx = document.getElementById("NavigateClick");
+        const clickSfx = document.getElementById("clickEffect");
         if ((!wrap && !homeLink) || !clickSfx) return;
 
         const play = async (audio) => {
@@ -206,17 +213,23 @@
         // FLOWERS hover + click
         // =========================
         if (wrap) {
-          let lastHoverEl = null;
-
-          wrap.addEventListener("click", async (e) => {
+          wrap.addEventListener("click", (e) => {
             const a = e.target.closest("a.flower");
             if (!a || !wrap.contains(a)) return;
 
             e.preventDefault();
             const href = a.getAttribute("href");
 
-            await play(clickSfx);
-            setTimeout(() => (window.location.href = href), 200);
+            // play sound immediately
+            play(NavigateClick);
+
+            // start exit animation
+            document.body.classList.add("page-exit");
+
+            // navigate after 3 seconds
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
           });
         }
       });

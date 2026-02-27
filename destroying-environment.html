@@ -13,12 +13,13 @@
 
   <body style="background-color: #afe2fd" class="intro">
     <nav>
-      <div class="home-btn" style="">
+      <div class="home-btn">
         <a href="index.html"
-          ><img src="./assets/images/home-btn.png" alt="" alt="Home"
+          ><img src="./assets/images/home-btn.png" alt="Home"
         /></a>
         <span class="home-label" data-lang-key="homeTooltip">Home</span>
       </div>
+
       <div class="title" style="position: relative; color: #ad93c5">
         <img class="rectangle" src="./assets/images/Rectangle.png" alt="" />
         <h2 data-lang-key="title1">How we are destroying Environment?</h2>
@@ -27,13 +28,14 @@
           <span data-lang-key="num.1">1</span>
         </div>
       </div>
+
       <div class="navbar-language">
         <div class="english-button">E</div>
         <div class="hindi-button">H</div>
         <div class="gujrati-button">G</div>
       </div>
     </nav>
-    <!-- Tooltip box -->
+
     <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
       <span class="tooltip-text"></span>
     </div>
@@ -42,27 +44,22 @@
       <div class="vector1"></div>
       <div class="vector2"></div>
       <img class="shadow" src="./assets/images/shadow.png" alt="" />
-      <!-- pages -->
+
       <div class="pages">
-        <a class="num num1" href="destroying-environment.html"
-          ><img src="./assets/images/circle.png" alt="" data-tip="destroy" />
-          <span data-lang-key="num.1">1</span></a
-        >
-        <a class="num num2" href="benefit-from-nature.html"
-          ><img
-            src="./assets/images/circle.png"
-            alt=""
-            data-tip="nature"
-          /><span data-lang-key="num.2">2</span></a
-        >
-        <a class="num num3" href="save-environment.html"
-          ><img src="./assets/images/circle.png" alt="" data-tip="save" /><span
-            data-lang-key="num.3"
-            >3</span
-          ></a
-        >
+        <a class="num num1" href="destroying-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span>
+        </a>
+        <a class="num num2" href="benefit-from-nature.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="nature" />
+          <span data-lang-key="num.2">2</span>
+        </a>
+        <a class="num num3" href="save-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="save" />
+          <span data-lang-key="num.3">3</span>
+        </a>
       </div>
-      <!-- tooltip content -->
+
       <div class="tooltip-content" hidden>
         <div id="destroy" data-lang-key="page.destroy">
           How are we destroying Environment?
@@ -74,8 +71,6 @@
           How can we Save Environment
         </div>
       </div>
-
-      <!-- pages ends -->
 
       <main>
         <div class="board" style="position: absolute">
@@ -92,29 +87,60 @@
             </h2>
           </div>
         </div>
+
         <div class="image-board">
           <div class="swiper imageSwiper">
-            <!-- Wrapper for slides -->
             <div class="swiper-wrapper">
               <div class="swiper-slide">
-                <video src="./assets/videos/destroy1.mp4" autoplay loop></video>
+                <video
+                  src="./assets/videos/destroy1.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
               </div>
               <div class="swiper-slide">
-                <video src="./assets/videos/destroy2.mp4" autoplay loop></video>
+                <video
+                  src="./assets/videos/destroy2.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
               </div>
               <div class="swiper-slide">
-                <video src="./assets/videos/destroy3.mp4" autoplay loop></video>
+                <video
+                  src="./assets/videos/destroy3.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
               </div>
               <div class="swiper-slide">
-                <video src="./assets/videos/destroy4.mp4" autoplay loop></video>
+                <video
+                  src="./assets/videos/destroy4.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
               </div>
               <div class="swiper-slide">
-                <video src="./assets/videos/destroy5.mp4" autoplay loop></video>
+                <video
+                  src="./assets/videos/destroy5.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
               </div>
             </div>
           </div>
         </div>
       </main>
+
       <div class="bottom-swiper-ui">
         <button class="env-prev" type="button" aria-label="Previous">
           <img src="./assets/images/prev-btn.png" alt="Previous" />
@@ -127,44 +153,144 @@
         </button>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
+    <audio id="HomePage" preload="auto">
+      <source src="./assets/audio/startpage.wav" type="audio/wav" />
+    </audio>
+    <audio id="clickEffect" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="destroying-environment.js"></script>
 
-    <!-- board text and swiper -->
     <script>
-      const texts = [
-        `By <br/> Destroying Plants & <br/> trees`,
-        `By <br/> Wasting Water`,
-        `By <br/> Polluting Water`,
-        `By <br/> Wasting Electricity`,
-        `By <br/> Wasting Food`,
-      ];
-      const boardText = document.getElementById("boardText");
-      window.swiper = new Swiper(".imageSwiper", {
-        loop: false,
-        speed: 600,
-        pagination: { el: ".env-pagination", clickable: true },
-        navigation: { nextEl: ".env-next", prevEl: ".env-prev" },
+      document.addEventListener("DOMContentLoaded", () => {
+        const navClick = document.getElementById("NavigateClick");
+        const homeAudio = document.getElementById("HomePage");
 
-        on: {
-          init: function () {
-            this.navigation.prevEl.style.visibility = "hidden";
-            // let lang.js set the correct board text
-            const saved = localStorage.getItem("selectedLanguage") || "English";
-            window.setLanguage?.(saved);
-          },
+        const play = async (audio) => {
+          try {
+            if (!audio) return;
+            audio.currentTime = 0;
+            await audio.play();
+          } catch (_) {}
+        };
 
-          slideChange: function () {
-            this.navigation.prevEl.style.visibility = this.isBeginning
-              ? "hidden"
-              : "visible";
-            const saved = localStorage.getItem("selectedLanguage") || "English";
-            window.setLanguage?.(saved);
+        const playNav = () => play(navClick);
+
+        const texts = [
+          `By <br/> Destroying Plants & <br/> trees`,
+          `By <br/> Wasting Water`,
+          `By <br/> Polluting Water`,
+          `By <br/> Wasting Electricity`,
+          `By <br/> Wasting Food`,
+        ];
+
+        const pages = document.querySelector(".pages");
+        const homeLink = document.querySelector(".home-btn a");
+
+        const swiper = new Swiper(".imageSwiper", {
+          loop: false,
+          speed: 600,
+          pagination: { el: ".env-pagination", clickable: true },
+          navigation: { nextEl: ".env-next", prevEl: ".env-prev" },
+          on: {
+            init: function () {
+              if (this.navigation && this.navigation.prevEl) {
+                this.navigation.prevEl.style.visibility = "hidden";
+              }
+
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+              window.setLanguage?.(saved);
+
+              if (this.navigation && this.navigation.nextEl) {
+                this.navigation.nextEl.addEventListener("click", playNav);
+              }
+              if (this.navigation && this.navigation.prevEl) {
+                this.navigation.prevEl.addEventListener("click", playNav);
+              }
+
+              if (this.pagination && this.pagination.el) {
+                this.pagination.el.addEventListener("click", (e) => {
+                  if (e.target && e.target.closest(".swiper-pagination-bullet"))
+                    playNav();
+                });
+              }
+            },
+
+            touchEnd: function () {
+              if (this.touches && this.touches.diff !== 0) playNav();
+            },
+
+            slideChange: function () {
+              if (this.navigation && this.navigation.prevEl) {
+                this.navigation.prevEl.style.visibility = this.isBeginning
+                  ? "hidden"
+                  : "visible";
+              }
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+              window.setLanguage?.(saved);
+            },
           },
-        },
+        });
+
+        if (pages && navClick) {
+          pages.addEventListener("click", (e) => {
+            const a = e.target.closest("a");
+            if (!a || !pages.contains(a)) return;
+            if (document.body.classList.contains("intro")) return;
+
+            e.preventDefault();
+            const href = a.getAttribute("href");
+            if (!href) return;
+
+            play(navClick);
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
+          });
+        }
+
+        if (homeLink && homeAudio) {
+          homeLink.addEventListener("click", (e) => {
+            if (document.body.classList.contains("intro")) return;
+
+            e.preventDefault();
+            const href = homeLink.getAttribute("href");
+            if (!href) return;
+
+            play(homeAudio);
+            setTimeout(() => {
+              window.location.href = href;
+            }, 800);
+          });
+        }
+
+        const unlock = async () => {
+          try {
+            if (!navClick) return;
+            navClick.muted = true;
+            await navClick.play();
+            navClick.pause();
+            navClick.currentTime = 0;
+            navClick.muted = false;
+          } catch (_) {}
+          document.removeEventListener("pointerdown", unlock);
+          document.removeEventListener("touchstart", unlock);
+        };
+
+        document.addEventListener("pointerdown", unlock, { once: true });
+        document.addEventListener("touchstart", unlock, { once: true });
       });
     </script>
-    <script></script>
   </body>
 </html>

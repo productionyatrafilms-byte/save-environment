@@ -2,6 +2,15 @@
   const LANG_KEY = "selectedLanguage";
   const DEFAULT_LANG = "English";
   let translations = null;
+  let popSfx = null;
+
+  const playPop = () => {
+    try {
+      if (!popSfx) return;
+      popSfx.currentTime = 0;
+      popSfx.play();
+    } catch (_) {}
+  };
 
   async function loadTranslations() {
     if (translations) return translations;
@@ -18,6 +27,7 @@
   function setActiveUI(lang) {
     const container = document.querySelector(".navbar-language");
     if (!container) return;
+
     container.classList.remove("lang-left", "lang-right", "lang-middle");
 
     if (lang === "English") container.classList.add("lang-left");
@@ -36,16 +46,10 @@
 
     document.querySelector(mapBtn[lang])?.classList.add("lang-active");
   }
-  const BOARD_PREFIX = "board2";
-  const MAX_SLIDES = 4; // ✅ only 4 slides
 
   function applyLanguage(lang) {
-    document.documentElement.setAttribute("lang", lang);
-document.body.setAttribute(
-  "data-lang",
-  lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en"
-);
     setActiveUI(lang);
+    document.documentElement.setAttribute("lang", lang);
     if (!translations || !translations[lang]) return;
 
     document.querySelectorAll("[data-lang-key]").forEach((el) => {
@@ -60,40 +64,36 @@ document.body.setAttribute(
     localStorage.setItem(LANG_KEY, lang);
 
     if (window.swiper && typeof window.swiper.realIndex === "number") {
-      const idx = Math.min((window.swiper.realIndex ?? 0) + 1, MAX_SLIDES);
-
-      const board2 = document.getElementById("boardText");
-      const slideKey = `board2.slide${Math.min(idx, 5)}`;
+      const idx = window.swiper.realIndex + 1;
+      const board1 = document.getElementById("boardText");
+      const slideKey = `board1.slide${Math.min(idx, 5)}`;
       const txt = translations[lang][slideKey];
-      if (board2 && txt) board2.innerHTML = `<h2>${txt}</h2>`;
+      if (board1 && txt) board1.innerHTML = `<h2>${txt}</h2>`;
     }
   }
 
   async function initLang() {
     await loadTranslations();
 
-    const saved = DEFAULT_LANG;
-    localStorage.setItem(LANG_KEY, saved);
-    setActiveUI(saved);
+    localStorage.removeItem(LANG_KEY);
+    popSfx = document.getElementById("clickEffect"); // ✅ now it exists
+    applyLanguage(DEFAULT_LANG);
 
-    const waitIntro = () => {
-      if (!document.body.classList.contains("intro")) {
-        applyLanguage(saved);
-        return;
-      }
-      requestAnimationFrame(waitIntro);
-    };
-    waitIntro();
+    const englishBtn = document.querySelector(".english-button");
+    const hindiBtn = document.querySelector(".hindi-button");
+    const gujratiBtn = document.querySelector(".gujrati-button");
+    [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
+      if (!btn) return;
 
-    document
-      .querySelector(".english-button")
-      ?.addEventListener("click", () => applyLanguage("English"));
-    document
-      .querySelector(".hindi-button")
-      ?.addEventListener("click", () => applyLanguage("Hindi"));
-    document
-      .querySelector(".gujrati-button")
-      ?.addEventListener("click", () => applyLanguage("Gujarati"));
+      btn.addEventListener("click", () => {
+        playPop();
+        if (btn === englishBtn) applyLanguage("English");
+        if (btn === hindiBtn) applyLanguage("Hindi");
+        if (btn === gujratiBtn) applyLanguage("Gujarati");
+      });
+    });
+
+    window.setLanguage = applyLanguage;
   }
 
   document.addEventListener("DOMContentLoaded", initLang);
