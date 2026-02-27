@@ -65,7 +65,7 @@
           <img src="assets/images/bord.png" alt="" style="" />
           <div class="save-environment">
             <div id="save-env" data-lang-key="head">
-              Save <br />
+              Save <br/>
               Environment
             </div>
             <div class="start-btn" style="position: relative">
@@ -191,19 +191,64 @@
         />
       </div>
     </div>
-  </body>
-  <script src="script.js"></script>
-  <script>
-    document
-      .getElementById("startLink")
-      .addEventListener("click", function (e) {
-        e.preventDefault();
+    <script src="script.js"></script>
 
-        document.body.classList.add("open-from-center");
+    <audio id="startSfx" preload="auto">
+      <source src="./assets/audio/startPage.wav" type="audio/wav" />
+    </audio>
 
-        setTimeout(() => {
-          window.location.href = this.href;
-        }, 900); // match animation duration
+    <script>
+      window.addEventListener("load", () => {
+        const startSfx = document.getElementById("startSfx");
+
+        // ✅ catch clicks on the whole start button area (more reliable)
+        const startArea = document.querySelector(".start-btn");
+        const startLink = document.getElementById("startLink");
+
+        if (!startArea || !startLink || !startSfx) {
+          console.log("Missing:", { startArea, startLink, startSfx });
+          return;
+        }
+
+        // optional: unlock audio once (helps on some browsers)
+        const unlock = () => {
+          startSfx.muted = true;
+          startSfx
+            .play()
+            .then(() => {
+              startSfx.pause();
+              startSfx.currentTime = 0;
+              startSfx.muted = false;
+            })
+            .catch(() => {});
+          document.removeEventListener("click", unlock);
+        };
+        document.addEventListener("click", unlock, { once: true });
+
+        startArea.addEventListener("click", async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          console.log("START CLICKED");
+
+          document.body.classList.add("open-from-center");
+
+          try {
+            startSfx.currentTime = 0;
+            await startSfx.play();
+            console.log("AUDIO PLAYING");
+          } catch (err) {
+            console.log("Audio failed:", err);
+          }
+
+          setTimeout(() => {
+            window.location.href = startLink.href;
+          }, 1300);
+        });
       });
-  </script>
+    </script>
+    <audio id="flowerClickSfx" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+  </body>
 </html>

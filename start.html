@@ -70,6 +70,15 @@
         const LANG_KEY = "selectedLanguage";
         const DEFAULT_LANG = "English";
         let translations = null;
+        let popSfx = null;
+
+        const playPop = () => {
+          try {
+            if (!popSfx) return;
+            popSfx.currentTime = 0;
+            popSfx.play();
+          } catch (_) {}
+        };
 
         async function loadTranslations() {
           if (translations) return translations;
@@ -109,10 +118,11 @@
 
         function applyLanguage(lang) {
           document.documentElement.setAttribute("lang", lang);
-document.body.setAttribute(
-  "data-lang",
-  lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en"
-);
+          document.body.setAttribute(
+            "data-lang",
+            lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en",
+          );
+
           setActiveUI(lang);
           if (!translations || !translations[lang]) return;
 
@@ -132,23 +142,84 @@ document.body.setAttribute(
           await loadTranslations();
 
           localStorage.removeItem(LANG_KEY);
+          popSfx = document.getElementById("flowerClickSfx"); // ✅ now it exists
           applyLanguage(DEFAULT_LANG);
 
-          document
-            .querySelector(".english-button")
-            ?.addEventListener("click", () => applyLanguage("English"));
-          document
-            .querySelector(".hindi-button")
-            ?.addEventListener("click", () => applyLanguage("Hindi"));
-          document
-            .querySelector(".gujrati-button")
-            ?.addEventListener("click", () => applyLanguage("Gujarati"));
+          const englishBtn = document.querySelector(".english-button");
+          const hindiBtn = document.querySelector(".hindi-button");
+          const gujratiBtn = document.querySelector(".gujrati-button");
+          [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
+            if (!btn) return;
+
+            btn.addEventListener("click", () => {
+              playPop();
+              if (btn === englishBtn) applyLanguage("English");
+              if (btn === hindiBtn) applyLanguage("Hindi");
+              if (btn === gujratiBtn) applyLanguage("Gujarati");
+            });
+          });
 
           window.setLanguage = applyLanguage;
         }
 
         document.addEventListener("DOMContentLoaded", initLang);
       })();
+    </script>
+
+    <audio id="clickSfx" preload="auto">
+      <source src="./assets/audio/back.flac" type="audio/wav" />
+    </audio>
+
+    <audio id="flowerClickSfx" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+    <script>
+      window.addEventListener("load", () => {
+        const wrap = document.querySelector(".flower-container");
+        const homeLink = document.querySelector(".back-btn a");
+        const clickSfx = document.getElementById("flowerClickSfx");
+        if ((!wrap && !homeLink) || !clickSfx) return;
+
+        const play = async (audio) => {
+          try {
+            audio.currentTime = 0;
+            await audio.play();
+          } catch (_) {}
+        };
+
+        // =========================
+        // HOME/BACK hover + click
+        // =========================
+        if (homeLink) {
+          // ✅ CLICK sound
+          homeLink.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const href = homeLink.getAttribute("href");
+
+            await play(clickSfx);
+
+            setTimeout(() => (window.location.href = href), 200);
+          });
+        }
+
+        // =========================
+        // FLOWERS hover + click
+        // =========================
+        if (wrap) {
+          let lastHoverEl = null;
+
+          wrap.addEventListener("click", async (e) => {
+            const a = e.target.closest("a.flower");
+            if (!a || !wrap.contains(a)) return;
+
+            e.preventDefault();
+            const href = a.getAttribute("href");
+
+            await play(clickSfx);
+            setTimeout(() => (window.location.href = href), 200);
+          });
+        }
+      });
     </script>
   </body>
 </html>
