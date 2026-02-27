@@ -531,7 +531,7 @@ html[lang="Hindi"] .save-environment {
 /* Page opens from center */
 body.open-from-center {
   transform-origin: 50% 50%;
-  animation: openFromCenter 10s cubic-bezier(0.22, 0.8, 0.25, 1) forwards;
+  animation: openFromCenter 0.5s cubic-bezier(0.22, 0.8, 0.25, 1) forwards;
 }
 
 @keyframes openFromCenter {
