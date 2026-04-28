@@ -14,9 +14,9 @@
   <body style="background-color: #afe2fd" class="intro">
     <nav>
       <div class="home-btn">
-        <a href="index.html"
-          ><img src="./assets/images/home-btn.png" alt="Home"
-        /></a>
+        <a href="index.html">
+          <img src="./assets/images/home-btn.png" alt="Home" />
+        </a>
         <span class="home-label" data-lang-key="homeTooltip">Home</span>
       </div>
 
@@ -80,11 +80,7 @@
             style="position: absolute"
             id="boardText"
           >
-            <h2>
-              By <br />
-              Destroying Plants & <br />
-              trees
-            </h2>
+            <h2></h2>
           </div>
         </div>
 
@@ -160,9 +156,11 @@
         type="audio/wav"
       />
     </audio>
+
     <audio id="HomePage" preload="auto">
       <source src="./assets/audio/startpage.wav" type="audio/wav" />
     </audio>
+
     <audio id="clickEffect" preload="auto">
       <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
     </audio>
@@ -185,57 +183,68 @@
 
         const playNav = () => play(navClick);
 
-        const texts = [
-          `By <br/> Destroying Plants & <br/> trees`,
-          `By <br/> Wasting Water`,
-          `By <br/> Polluting Water`,
-          `By <br/> Wasting Electricity`,
-          `By <br/> Wasting Food`,
-        ];
-
         const pages = document.querySelector(".pages");
         const homeLink = document.querySelector(".home-btn a");
 
-        const swiper = new Swiper(".imageSwiper", {
+        window.swiper = new Swiper(".imageSwiper", {
           loop: false,
           speed: 600,
-          pagination: { el: ".env-pagination", clickable: true },
-          navigation: { nextEl: ".env-next", prevEl: ".env-prev" },
+          pagination: {
+            el: ".env-pagination",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".env-next",
+            prevEl: ".env-prev",
+          },
+
           on: {
             init: function () {
-              if (this.navigation && this.navigation.prevEl) {
-                this.navigation.prevEl.style.visibility = "hidden";
-              }
+              const updateNavState = () => {
+                const prevBtn = this.navigation?.prevEl;
+                const nextBtn = this.navigation?.nextEl;
+
+                if (prevBtn) {
+                  const disabled = this.isBeginning;
+                  prevBtn.disabled = disabled;
+                  prevBtn.style.opacity = disabled ? "0.4" : "1";
+                  prevBtn.style.pointerEvents = disabled ? "none" : "auto";
+                }
+
+                if (nextBtn) {
+                  const disabled = this.isEnd;
+                  nextBtn.disabled = disabled;
+                  nextBtn.style.opacity = disabled ? "0.4" : "1";
+                  nextBtn.style.pointerEvents = disabled ? "none" : "auto";
+                }
+              };
+
+              this._updateNavState = updateNavState;
+              updateNavState();
 
               const saved =
                 localStorage.getItem("selectedLanguage") || "English";
               window.setLanguage?.(saved);
 
-              if (this.navigation && this.navigation.nextEl) {
-                this.navigation.nextEl.addEventListener("click", playNav);
-              }
-              if (this.navigation && this.navigation.prevEl) {
-                this.navigation.prevEl.addEventListener("click", playNav);
-              }
+              this.navigation?.nextEl?.addEventListener("click", playNav);
+              this.navigation?.prevEl?.addEventListener("click", playNav);
 
-              if (this.pagination && this.pagination.el) {
-                this.pagination.el.addEventListener("click", (e) => {
-                  if (e.target && e.target.closest(".swiper-pagination-bullet"))
-                    playNav();
-                });
-              }
+              this.pagination?.el?.addEventListener("click", (e) => {
+                if (e.target && e.target.closest(".swiper-pagination-bullet")) {
+                  playNav();
+                }
+              });
             },
 
             touchEnd: function () {
-              if (this.touches && this.touches.diff !== 0) playNav();
+              if (this.touches && this.touches.diff !== 0) {
+                playNav();
+              }
             },
 
             slideChange: function () {
-              if (this.navigation && this.navigation.prevEl) {
-                this.navigation.prevEl.style.visibility = this.isBeginning
-                  ? "hidden"
-                  : "visible";
-              }
+              this._updateNavState?.();
+
               const saved =
                 localStorage.getItem("selectedLanguage") || "English";
               window.setLanguage?.(saved);
@@ -250,10 +259,12 @@
             if (document.body.classList.contains("intro")) return;
 
             e.preventDefault();
+
             const href = a.getAttribute("href");
             if (!href) return;
 
             play(navClick);
+
             setTimeout(() => {
               window.location.href = href;
             }, 500);
@@ -265,10 +276,12 @@
             if (document.body.classList.contains("intro")) return;
 
             e.preventDefault();
+
             const href = homeLink.getAttribute("href");
             if (!href) return;
 
             play(homeAudio);
+
             setTimeout(() => {
               window.location.href = href;
             }, 800);
@@ -278,12 +291,14 @@
         const unlock = async () => {
           try {
             if (!navClick) return;
+
             navClick.muted = true;
             await navClick.play();
             navClick.pause();
             navClick.currentTime = 0;
             navClick.muted = false;
           } catch (_) {}
+
           document.removeEventListener("pointerdown", unlock);
           document.removeEventListener("touchstart", unlock);
         };

@@ -4,6 +4,22 @@
   let translations = null;
   let popSfx = null;
 
+  const savedBeforeLoad = localStorage.getItem(LANG_KEY);
+
+  if (savedBeforeLoad) {
+    document.documentElement.setAttribute("lang", savedBeforeLoad);
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.setAttribute(
+        "data-lang",
+        savedBeforeLoad === "Hindi"
+          ? "hi"
+          : savedBeforeLoad === "Gujarati"
+            ? "gu"
+            : "en",
+      );
+    });
+  }
+
   const playPop = () => {
     try {
       if (!popSfx) return;
@@ -14,14 +30,16 @@
 
   async function loadTranslations() {
     if (translations) return translations;
+
     try {
-      const res = await fetch("/JSON/data.json");
+      const res = await fetch("./JSON/data.json");
       if (!res.ok) throw new Error("JSON not found");
       translations = await res.json();
     } catch (err) {
       console.error("Translation load failed:", err);
       translations = {};
     }
+
     return translations;
   }
 
@@ -49,21 +67,32 @@
   }
 
   function applyLanguage(lang) {
+    if (!translations || !translations[lang]) {
+      lang = DEFAULT_LANG;
+    }
+
     document.documentElement.setAttribute("lang", lang);
+
     document.body.setAttribute(
       "data-lang",
       lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en",
     );
+
     setActiveUI(lang);
+
     if (!translations || !translations[lang]) return;
 
     document.querySelectorAll("[data-lang-key]").forEach((el) => {
       const key = el.getAttribute("data-lang-key");
       const value = translations[lang][key];
+
       if (value == null) return;
 
-      if (String(value).includes("<br")) el.innerHTML = value;
-      else el.textContent = value;
+      if (String(value).includes("<br")) {
+        el.innerHTML = value;
+      } else {
+        el.textContent = value;
+      }
     });
 
     localStorage.setItem(LANG_KEY, lang);
@@ -72,18 +101,24 @@
   async function initLang() {
     await loadTranslations();
 
-    localStorage.removeItem(LANG_KEY);
-    popSfx = document.getElementById("flowerClickSfx"); // ✅ now it exists
-    applyLanguage(DEFAULT_LANG);
+    popSfx = document.getElementById("clickEffect");
+
+    const savedLang = localStorage.getItem(LANG_KEY);
+    const currentLang =
+      savedLang && translations[savedLang] ? savedLang : DEFAULT_LANG;
+
+    applyLanguage(currentLang);
 
     const englishBtn = document.querySelector(".english-button");
     const hindiBtn = document.querySelector(".hindi-button");
     const gujratiBtn = document.querySelector(".gujrati-button");
+
     [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
       if (!btn) return;
 
       btn.addEventListener("click", () => {
         playPop();
+
         if (btn === englishBtn) applyLanguage("English");
         if (btn === hindiBtn) applyLanguage("Hindi");
         if (btn === gujratiBtn) applyLanguage("Gujarati");

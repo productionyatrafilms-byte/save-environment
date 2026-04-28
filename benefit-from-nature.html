@@ -1,9 +1,43 @@
 <!doctype html>
-<html lang="English">
+<html lang="en" class="lang-loading">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>What do we benefit from Nature?</title>
+    <title data-lang-key="title2">What do we benefit from Nature?</title>
+
+    <script>
+      const savedLangBeforeLoad =
+        localStorage.getItem("selectedLanguage") || "English";
+
+      document.documentElement.setAttribute(
+        "lang",
+        savedLangBeforeLoad === "Hindi"
+          ? "hi"
+          : savedLangBeforeLoad === "Gujarati"
+            ? "gu"
+            : "en"
+      );
+
+      document.documentElement.setAttribute(
+        "data-lang",
+        savedLangBeforeLoad === "Hindi"
+          ? "hi"
+          : savedLangBeforeLoad === "Gujarati"
+            ? "gu"
+            : "en"
+      );
+    </script>
+
+    <style>
+      html.lang-loading body {
+        visibility: hidden;
+      }
+
+      html.lang-ready body {
+        visibility: visible;
+      }
+    </style>
+
     <link rel="stylesheet" href="benefit-from-nature.css" />
     <link
       rel="stylesheet"
@@ -13,27 +47,30 @@
 
   <body style="background-color: #afe2fd" class="intro">
     <nav>
-      <div class="home-btn" style="">
-        <a href="index.html"
-          ><img src="./assets/images/home-btn.png" alt="" alt="Home"
-        /></a>
+      <div class="home-btn">
+        <a href="index.html">
+          <img src="./assets/images/home-btn.png" alt="Home" />
+        </a>
         <span class="home-label" data-lang-key="homeTooltip">Home</span>
       </div>
+
       <div class="title" style="position: relative; color: #fbb040">
         <img class="rectangle" src="./assets/images/Rectangle.png" alt="" />
         <h2 data-lang-key="title2">What do we benefit from Nature?</h2>
+
         <div class="circle">
           <img src="./assets/images/circle.png" alt="" />
           <span data-lang-key="num.2">2</span>
         </div>
       </div>
+
       <div class="navbar-language">
         <div class="english-button">E</div>
         <div class="hindi-button">H</div>
         <div class="gujrati-button">G</div>
       </div>
     </nav>
-    <!-- Tooltip box -->
+
     <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
       <span class="tooltip-text"></span>
     </div>
@@ -41,77 +78,78 @@
     <div class="page-content">
       <div class="vector1"></div>
       <div class="vector2"></div>
+
       <img class="shadow" src="./assets/images/shadow.png" alt="" />
-      <!-- pages -->
+
       <div class="pages">
-        <a class="num num1" href="destroying-environment.html"
-          ><img src="./assets/images/circle.png" alt="" data-tip="destroy" />
-          <span data-lang-key="num.1">1</span></a
-        >
-        <a class="num num2" href="benefit-from-nature.html"
-          ><img
-            src="./assets/images/circle.png"
-            alt=""
-            data-tip="nature"
-          /><span data-lang-key="num.2">2</span></a
-        >
-        <a class="num num3" href="save-environment.html"
-          ><img src="./assets/images/circle.png" alt="" data-tip="save" /><span
-            data-lang-key="num.3"
-            >3</span
-          ></a
-        >
+        <a class="num num1" href="destroying-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span>
+        </a>
+
+        <a class="num num2" href="benefit-from-nature.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="nature" />
+          <span data-lang-key="num.2">2</span>
+        </a>
+
+        <a class="num num3" href="save-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="save" />
+          <span data-lang-key="num.3">3</span>
+        </a>
       </div>
-      <!-- tooltip content -->
+
       <div class="tooltip-content" hidden>
         <div id="destroy" data-lang-key="page.destroy">
           How are we destroying Environment?
         </div>
         <div id="nature" data-lang-key="page.nature">
-          what do we benefit from the Nature?
+          What do we benefit from Nature?
         </div>
         <div id="save" data-lang-key="page.save">
-          How can we Save Environment
+          How can we Save Environment?
         </div>
       </div>
-
-      <!-- pages ends -->
 
       <main>
         <div class="board" style="position: absolute">
           <img src="./assets/images/bord.png" alt="" />
+
           <div
             class="board-text-overlay"
             style="position: absolute"
             id="boardText"
           >
-            <h2>
-              By <br />
-              Destroying Plants & <br />
-              trees
+            <h2 data-lang-key="board2.slide1">
+              Trees give us <br />
+              Oxygen, Fruits, Flowers,<br />
+              Shade, etc.
             </h2>
           </div>
         </div>
+
         <div class="image-board">
           <div class="swiper imageSwiper">
-            <!-- Wrapper for slides -->
             <div class="swiper-wrapper">
               <div class="swiper-slide">
-                <video src="./assets/videos/nature1.mp4" autoplay loop></video>
+                <video src="./assets/videos/nature1.mp4" autoplay muted loop playsinline></video>
               </div>
+
               <div class="swiper-slide">
-                <video src="./assets/videos/nature2.mp4" autoplay loop></video>
+                <video src="./assets/videos/nature2.mp4" autoplay muted loop playsinline></video>
               </div>
+
               <div class="swiper-slide">
-                <video src="./assets/videos/nature3.mp4" autoplay loop></video>
+                <video src="./assets/videos/nature3.mp4" autoplay muted loop playsinline></video>
               </div>
+
               <div class="swiper-slide">
-                <video src="./assets/videos/nature4.mp4" autoplay loop></video>
+                <video src="./assets/videos/nature4.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
           </div>
         </div>
       </main>
+
       <div class="bottom-swiper-ui">
         <button class="env-prev" type="button" aria-label="Previous">
           <img src="./assets/images/prev-btn.png" alt="Previous" />
@@ -124,9 +162,6 @@
         </button>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-    <script src="benefit-from-nature.js"></script>
 
     <audio id="NavigateClick" preload="auto">
       <source
@@ -134,137 +169,23 @@
         type="audio/wav"
       />
     </audio>
+
     <audio id="HomePage" preload="auto">
       <source src="./assets/audio/startpage.wav" type="audio/wav" />
     </audio>
+
     <audio id="clickEffect" preload="auto">
       <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
     </audio>
+
     <audio id="SwipeEffect" preload="auto">
       <source
         src="./assets/audio/742832__sadiquecat__woosh-metal-tea-strainer-1.wav"
         type="audio/mpeg"
       />
     </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="benefit-from-nature.js"></script>
   </body>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const navClick = document.getElementById("NavigateClick");
-      const homeAudio = document.getElementById("HomePage");
-      const swipeEffect = document.getElementById("SwipeEffect");
-      const play = async (audio) => {
-        try {
-          if (!audio) return;
-          audio.currentTime = 0;
-          await audio.play();
-        } catch (_) {}
-      };
-
-      const playNav = () => play(swipeEffect);
-
-      const texts = [
-        `By <br/> Destroying Plants & <br/> trees`,
-        `By <br/> Wasting Water`,
-        `By <br/> Polluting Water`,
-        `By <br/> Wasting Electricity`,
-        `By <br/> Wasting Food`,
-      ];
-
-      const pages = document.querySelector(".pages");
-      const homeLink = document.querySelector(".home-btn a");
-
-      const swiper = new Swiper(".imageSwiper", {
-        loop: false,
-        speed: 600,
-        pagination: { el: ".env-pagination", clickable: true },
-        navigation: { nextEl: ".env-next", prevEl: ".env-prev" },
-        on: {
-          init: function () {
-            if (this.navigation && this.navigation.prevEl) {
-              this.navigation.prevEl.style.visibility = "hidden";
-            }
-
-            const saved = localStorage.getItem("selectedLanguage") || "English";
-            window.setLanguage?.(saved);
-
-            if (this.navigation && this.navigation.nextEl) {
-              this.navigation.nextEl.addEventListener("click", playNav);
-            }
-            if (this.navigation && this.navigation.prevEl) {
-              this.navigation.prevEl.addEventListener("click", playNav);
-            }
-
-            if (this.pagination && this.pagination.el) {
-              this.pagination.el.addEventListener("click", (e) => {
-                if (e.target && e.target.closest(".swiper-pagination-bullet"))
-                  playNav();
-              });
-            }
-          },
-
-          touchEnd: function () {
-            if (this.touches && this.touches.diff !== 0) playNav();
-          },
-
-          slideChange: function () {
-            if (this.navigation && this.navigation.prevEl) {
-              this.navigation.prevEl.style.visibility = this.isBeginning
-                ? "hidden"
-                : "visible";
-            }
-            const saved = localStorage.getItem("selectedLanguage") || "English";
-            window.setLanguage?.(saved);
-          },
-        },
-      });
-
-      if (pages && navClick) {
-        pages.addEventListener("click", (e) => {
-          const a = e.target.closest("a");
-          if (!a || !pages.contains(a)) return;
-          if (document.body.classList.contains("intro")) return;
-
-          e.preventDefault();
-          const href = a.getAttribute("href");
-          if (!href) return;
-
-          play(navClick);
-          setTimeout(() => {
-            window.location.href = href;
-          }, 500);
-        });
-      }
-
-      if (homeLink && homeAudio) {
-        homeLink.addEventListener("click", (e) => {
-          if (document.body.classList.contains("intro")) return;
-
-          e.preventDefault();
-          const href = homeLink.getAttribute("href");
-          if (!href) return;
-
-          play(homeAudio);
-          setTimeout(() => {
-            window.location.href = href;
-          }, 800);
-        });
-      }
-
-      const unlock = async () => {
-        try {
-          if (!navClick) return;
-          navClick.muted = true;
-          await navClick.play();
-          navClick.pause();
-          navClick.currentTime = 0;
-          navClick.muted = false;
-        } catch (_) {}
-        document.removeEventListener("pointerdown", unlock);
-        document.removeEventListener("touchstart", unlock);
-      };
-
-      document.addEventListener("pointerdown", unlock, { once: true });
-      document.addEventListener("touchstart", unlock, { once: true });
-    });
-  </script>
 </html>

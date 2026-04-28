@@ -1,17 +1,52 @@
 (() => {
   const LANG_KEY = "selectedLanguage";
   const DEFAULT_LANG = "English";
+  const BOARD_PREFIX = "board3";
+  const MAX_SLIDES = 7;
+
   let translations = null;
+
+  const savedLang = normalizeLang(localStorage.getItem(LANG_KEY));
+
+  document.documentElement.classList.add("lang-loading");
+  setLangAttributes(savedLang);
+
+  function normalizeLang(lang) {
+    if (lang === "Hindi" || lang === "Gujarati" || lang === "English") {
+      return lang;
+    }
+    return DEFAULT_LANG;
+  }
+
+  function getLangCode(lang) {
+    if (lang === "Hindi") return "hi";
+    if (lang === "Gujarati") return "gu";
+    return "en";
+  }
+
+  function setLangAttributes(lang) {
+    const code = getLangCode(lang);
+
+    document.documentElement.setAttribute("lang", code);
+    document.documentElement.setAttribute("data-lang", code);
+
+    if (document.body) {
+      document.body.setAttribute("data-lang", code);
+    }
+  }
 
   async function loadTranslations() {
     if (translations) return translations;
+
     try {
-      const res = await fetch("/JSON/data.json");
+      const res = await fetch("/JSON/data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("JSON not found");
       translations = await res.json();
     } catch (err) {
+      console.error("Translation load failed:", err);
       translations = {};
     }
+
     return translations;
   }
 
@@ -22,8 +57,8 @@
     container.classList.remove("lang-left", "lang-right", "lang-middle");
 
     if (lang === "English") container.classList.add("lang-left");
-    else if (lang === "Gujarati") container.classList.add("lang-right");
-    else if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "Gujarati") container.classList.add("lang-right");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");
@@ -37,74 +72,104 @@
 
     document.querySelector(mapBtn[lang])?.classList.add("lang-active");
   }
-  const BOARD_PREFIX = "board3";
-  const MAX_SLIDES = 7; // ✅ only 4 slides
 
-  function applyLanguage(lang) {
-    document.documentElement.setAttribute("lang", lang);
-    document.body.setAttribute(
-      "data-lang",
-      lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en",
-    );
-    setActiveUI(lang);
+  function setElementText(el, value) {
+    if (value == null) return;
+
+    if (String(value).includes("<br")) {
+      el.innerHTML = value;
+    } else {
+      el.textContent = value;
+    }
+  }
+
+  function updateStaticLanguage(lang) {
     if (!translations || !translations[lang]) return;
 
     document.querySelectorAll("[data-lang-key]").forEach((el) => {
-      if (el.children.length > 0) return;
       const key = el.getAttribute("data-lang-key");
       const value = translations[lang][key];
-      if (value == null) return;
-      if (String(value).includes("<br")) el.innerHTML = value;
-      else el.textContent = value;
-    });
 
-    localStorage.setItem(LANG_KEY, lang);
+      if (value == null) return;
+      setElementText(el, value);
+    });
+  }
+
+  function updateBoardText(lang) {
+    if (!translations || !translations[lang]) return;
+
+    const boardText = document.getElementById("boardText");
+    if (!boardText) return;
+
+    let index = 1;
 
     if (window.swiper && typeof window.swiper.realIndex === "number") {
-      const idx = Math.min((window.swiper.realIndex ?? 0) + 1, MAX_SLIDES);
-
-      const board3 = document.getElementById("boardText");
-      const slideKey = `board3.slide${Math.min(idx, 7)}`;
-      const txt = translations[lang][slideKey];
-      if (board3 && txt) board3.innerHTML = `<h2>${txt}</h2>`;
+      index = window.swiper.realIndex + 1;
+    } else if (window.swiper && typeof window.swiper.activeIndex === "number") {
+      index = window.swiper.activeIndex + 1;
     }
+
+    index = Math.min(index, MAX_SLIDES);
+
+    const slideKey = `${BOARD_PREFIX}.slide${index}`;
+    const value = translations[lang][slideKey];
+
+    if (!value) return;
+
+    boardText.innerHTML = `<h2 data-lang-key="${slideKey}">${value}</h2>`;
+  }
+
+  function applyLanguage(lang) {
+    lang = normalizeLang(lang);
+
+    localStorage.setItem(LANG_KEY, lang);
+    setLangAttributes(lang);
+    setActiveUI(lang);
+    updateStaticLanguage(lang);
+    updateBoardText(lang);
+  }
+
+  function showPage() {
+    document.documentElement.classList.remove("lang-loading");
+    document.documentElement.classList.add("lang-ready");
   }
 
   async function initLang() {
     await loadTranslations();
 
-    const saved = DEFAULT_LANG;
-    localStorage.setItem(LANG_KEY, saved);
-    setActiveUI(saved);
+    const saved = normalizeLang(localStorage.getItem(LANG_KEY));
 
-    const waitIntro = () => {
-      if (!document.body.classList.contains("intro")) {
-        applyLanguage(saved);
-        return;
-      }
-      requestAnimationFrame(waitIntro);
-    };
-    waitIntro();
+    applyLanguage(saved);
 
     document
       .querySelector(".english-button")
       ?.addEventListener("click", () => applyLanguage("English"));
+
     document
       .querySelector(".hindi-button")
       ?.addEventListener("click", () => applyLanguage("Hindi"));
+
     document
       .querySelector(".gujrati-button")
       ?.addEventListener("click", () => applyLanguage("Gujarati"));
+
+    window.setLanguage = applyLanguage;
+
+    showPage();
   }
 
   document.addEventListener("DOMContentLoaded", initLang);
+
   window.setLanguage = (lang) => applyLanguage(lang);
 })();
 
-//  tooltip
+// tooltip
 document.addEventListener("DOMContentLoaded", () => {
   const tooltip = document.getElementById("pageTooltip");
+  if (!tooltip) return;
+
   const tooltipText = tooltip.querySelector(".tooltip-text");
+  if (!tooltipText) return;
 
   const tooltipColors = {
     destroy: "rgba(173, 147, 197, 0.65)",
@@ -115,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function placeTooltipToIcon(link) {
     const rect = link.getBoundingClientRect();
     const topVH = ((rect.top + rect.height / 2) / window.innerHeight) * 99;
+
     tooltip.style.top = `${topVH}vh`;
     tooltip.style.right = `1vw`;
     tooltip.style.left = `auto`;
@@ -124,6 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("mouseenter", () => {
       const tipId = link.querySelector("img")?.dataset.tip;
       const source = document.getElementById(tipId);
+
       if (!source) return;
 
       tooltipText.textContent = source.textContent;
@@ -144,16 +211,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("resize", () => {
     if (!tooltip.classList.contains("show")) return;
+
     const active = document.querySelector(".pages a:hover");
     if (active) placeTooltipToIcon(active);
   });
 });
-// page load
 
+// page load animation
 window.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   const html = document.documentElement;
   const title = document.querySelector(".title");
+
+  if (!title) return;
 
   body.classList.add("intro");
   html.classList.add("intro");
@@ -165,7 +235,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const finalRect = title.getBoundingClientRect();
 
-    // restore intro state
     body.classList.add("intro");
     html.classList.add("intro");
     body.classList.remove("measure-final");
@@ -173,43 +242,41 @@ window.addEventListener("DOMContentLoaded", () => {
     return finalRect;
   }
 
-  // Create CSS for measuring (injected once)
   const style = document.createElement("style");
   style.textContent = `
-    body.measure-final .title{
+    html.lang-loading body {
+      visibility: hidden;
+    }
+
+    html.lang-ready body {
+      visibility: visible;
+    }
+
+    body.measure-final .title {
       position: relative !important;
       left: auto !important;
       top: auto !important;
       transform: none !important;
       visibility: hidden !important;
     }
+
     body.measure-final .home-btn,
     body.measure-final .navbar-language,
-    body.measure-final .page-content{
+    body.measure-final .page-content {
       visibility: hidden !important;
     }
   `;
   document.head.appendChild(style);
 
-  // Measure where it should land
   const finalRect = measureFinalTitlePosition();
-
-  // Current center position (fixed)
   const startRect = title.getBoundingClientRect();
 
-  // Compute delta from center -> final
-  const dx = finalRect.left - startRect.left + "px";
-  const dy = finalRect.top - startRect.top + "px";
+  title.style.setProperty("--dx", finalRect.left - startRect.left + "px");
+  title.style.setProperty("--dy", finalRect.top - startRect.top + "px");
 
-  // Store deltas as CSS vars
-  title.style.setProperty("--dx", dx);
-  title.style.setProperty("--dy", dy);
-
-  // Start intro: after 2s fly up smoothly
   setTimeout(() => {
     body.classList.add("intro-fly");
 
-    // When animation ends:
     title.addEventListener(
       "animationend",
       () => {
@@ -219,7 +286,7 @@ window.addEventListener("DOMContentLoaded", () => {
         body.classList.remove("intro-fly");
         html.classList.remove("intro");
       },
-      { once: true },
+      { once: true }
     );
   }, 1000);
 });

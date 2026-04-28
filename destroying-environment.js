@@ -1,8 +1,33 @@
 (() => {
   const LANG_KEY = "selectedLanguage";
   const DEFAULT_LANG = "English";
+  const LANGS = ["English", "Hindi", "Gujarati"];
+
   let translations = null;
   let popSfx = null;
+  let pendingLang =
+    localStorage.getItem(LANG_KEY) && LANGS.includes(localStorage.getItem(LANG_KEY))
+      ? localStorage.getItem(LANG_KEY)
+      : DEFAULT_LANG;
+
+  function getLangCode(lang) {
+    if (lang === "Hindi") return "hi";
+    if (lang === "Gujarati") return "gu";
+    return "en";
+  }
+
+  // IMPORTANT: set selected language immediately before DOM paints fully
+  document.documentElement.setAttribute("lang", getLangCode(pendingLang));
+  document.documentElement.setAttribute("data-lang-loading", "true");
+
+  const antiFlashStyle = document.createElement("style");
+  antiFlashStyle.textContent = `
+    html[data-lang-loading="true"] [data-lang-key],
+    html[data-lang-loading="true"] #boardText {
+      visibility: hidden !important;
+    }
+  `;
+  document.head.appendChild(antiFlashStyle);
 
   const playPop = () => {
     try {
@@ -14,13 +39,16 @@
 
   async function loadTranslations() {
     if (translations) return translations;
+
     try {
-      const res = await fetch("/JSON/data.json");
+      const res = await fetch("/JSON/data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("JSON not found");
       translations = await res.json();
     } catch (err) {
+      console.error("Translation load failed:", err);
       translations = {};
     }
+
     return translations;
   }
 
@@ -31,8 +59,8 @@
     container.classList.remove("lang-left", "lang-right", "lang-middle");
 
     if (lang === "English") container.classList.add("lang-left");
-    else if (lang === "Gujarati") container.classList.add("lang-right");
-    else if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "Hindi") container.classList.add("lang-middle");
+    if (lang === "Gujarati") container.classList.add("lang-right");
 
     document.querySelectorAll(".navbar-language > div").forEach((btn) => {
       btn.classList.remove("lang-active");
@@ -47,63 +75,117 @@
     document.querySelector(mapBtn[lang])?.classList.add("lang-active");
   }
 
-  function applyLanguage(lang) {
-    setActiveUI(lang);
-    document.documentElement.setAttribute("lang", lang);
-    if (!translations || !translations[lang]) return;
+  function updateBoardText(lang) {
+    const swiperInstance =
+      window.swiper || document.querySelector(".imageSwiper")?.swiper;
 
-    document.querySelectorAll("[data-lang-key]").forEach((el) => {
-      if (el.children.length > 0) return;
-      const key = el.getAttribute("data-lang-key");
-      const value = translations[lang][key];
-      if (value == null) return;
-      if (String(value).includes("<br")) el.innerHTML = value;
-      else el.textContent = value;
-    });
+    const boardText = document.getElementById("boardText");
 
-    localStorage.setItem(LANG_KEY, lang);
+    if (!boardText || !translations?.[lang]) return;
 
-    if (window.swiper && typeof window.swiper.realIndex === "number") {
-      const idx = window.swiper.realIndex + 1;
-      const board1 = document.getElementById("boardText");
-      const slideKey = `board1.slide${Math.min(idx, 5)}`;
-      const txt = translations[lang][slideKey];
-      if (board1 && txt) board1.innerHTML = `<h2>${txt}</h2>`;
+    const index =
+      swiperInstance && typeof swiperInstance.realIndex === "number"
+        ? swiperInstance.realIndex + 1
+        : 1;
+
+    const slideKey = `board1.slide${Math.min(index, 5)}`;
+    const txt = translations[lang][slideKey];
+
+    if (txt) {
+      boardText.innerHTML = `<h2>${txt}</h2>`;
     }
   }
 
+  function applyLanguage(lang) {
+    if (!LANGS.includes(lang)) lang = DEFAULT_LANG;
+
+    // Do NOT switch to English unless selected language truly does not exist in JSON
+    if (!translations?.[lang]) {
+      console.warn(`${lang} translations not found`);
+      lang = DEFAULT_LANG;
+    }
+
+    document.documentElement.setAttribute("lang", getLangCode(lang));
+    document.body.setAttribute("data-lang", getLangCode(lang));
+
+    setActiveUI(lang);
+
+    document.querySelectorAll("[data-lang-key]").forEach((el) => {
+      const key = el.getAttribute("data-lang-key");
+      const value = translations?.[lang]?.[key];
+
+      if (value == null) return;
+
+      if (String(value).includes("<br")) {
+        el.innerHTML = value;
+      } else {
+        el.textContent = value;
+      }
+    });
+
+    updateBoardText(lang);
+
+    localStorage.setItem(LANG_KEY, lang);
+    pendingLang = lang;
+
+    document.documentElement.removeAttribute("data-lang-loading");
+  }
+
   async function initLang() {
+    document.body.setAttribute("data-lang", getLangCode(pendingLang));
+
     await loadTranslations();
 
-    localStorage.removeItem(LANG_KEY);
-    popSfx = document.getElementById("clickEffect"); // ✅ now it exists
-    applyLanguage(DEFAULT_LANG);
+    popSfx = document.getElementById("clickEffect");
+
+    const savedLang = localStorage.getItem(LANG_KEY);
+    const currentLang =
+      savedLang && LANGS.includes(savedLang) && translations?.[savedLang]
+        ? savedLang
+        : DEFAULT_LANG;
+
+    applyLanguage(currentLang);
 
     const englishBtn = document.querySelector(".english-button");
     const hindiBtn = document.querySelector(".hindi-button");
     const gujratiBtn = document.querySelector(".gujrati-button");
-    [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
-      if (!btn) return;
 
-      btn.addEventListener("click", () => {
-        playPop();
-        if (btn === englishBtn) applyLanguage("English");
-        if (btn === hindiBtn) applyLanguage("Hindi");
-        if (btn === gujratiBtn) applyLanguage("Gujarati");
-      });
+    englishBtn?.addEventListener("click", () => {
+      playPop();
+      applyLanguage("English");
+    });
+
+    hindiBtn?.addEventListener("click", () => {
+      playPop();
+      applyLanguage("Hindi");
+    });
+
+    gujratiBtn?.addEventListener("click", () => {
+      playPop();
+      applyLanguage("Gujarati");
     });
 
     window.setLanguage = applyLanguage;
   }
 
-  document.addEventListener("DOMContentLoaded", initLang);
-  window.setLanguage = (lang) => applyLanguage(lang);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLang);
+  } else {
+    initLang();
+  }
+
+  window.setLanguage = (lang) => {
+    pendingLang = lang;
+    if (translations) applyLanguage(lang);
+  };
 })();
 
-//  tooltip
+// tooltip
 document.addEventListener("DOMContentLoaded", () => {
   const tooltip = document.getElementById("pageTooltip");
-  const tooltipText = tooltip.querySelector(".tooltip-text");
+  const tooltipText = tooltip?.querySelector(".tooltip-text");
+
+  if (!tooltip || !tooltipText) return;
 
   const tooltipColors = {
     destroy: "rgba(173, 147, 197, 0.65)",
@@ -114,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function placeTooltipToIcon(link) {
     const rect = link.getBoundingClientRect();
     const topVH = ((rect.top + rect.height / 2) / window.innerHeight) * 99;
+
     tooltip.style.top = `${topVH}vh`;
     tooltip.style.right = `1vw`;
     tooltip.style.left = `auto`;
@@ -123,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("mouseenter", () => {
       const tipId = link.querySelector("img")?.dataset.tip;
       const source = document.getElementById(tipId);
+
       if (!source) return;
 
       tooltipText.textContent = source.textContent;
@@ -143,16 +227,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("resize", () => {
     if (!tooltip.classList.contains("show")) return;
+
     const active = document.querySelector(".pages a:hover");
     if (active) placeTooltipToIcon(active);
   });
 });
-// page load
 
+// page load animation
 window.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   const html = document.documentElement;
   const title = document.querySelector(".title");
+
+  if (!title) return;
 
   body.classList.add("intro");
   html.classList.add("intro");
@@ -164,7 +251,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const finalRect = title.getBoundingClientRect();
 
-    // restore intro state
     body.classList.add("intro");
     html.classList.add("intro");
     body.classList.remove("measure-final");
@@ -172,43 +258,35 @@ window.addEventListener("DOMContentLoaded", () => {
     return finalRect;
   }
 
-  // Create CSS for measuring (injected once)
   const style = document.createElement("style");
+
   style.textContent = `
-    body.measure-final .title{
+    body.measure-final .title {
       position: relative !important;
       left: auto !important;
       top: auto !important;
       transform: none !important;
       visibility: hidden !important;
     }
+
     body.measure-final .home-btn,
     body.measure-final .navbar-language,
-    body.measure-final .page-content{
+    body.measure-final .page-content {
       visibility: hidden !important;
     }
   `;
+
   document.head.appendChild(style);
 
-  // Measure where it should land
   const finalRect = measureFinalTitlePosition();
-
-  // Current center position (fixed)
   const startRect = title.getBoundingClientRect();
 
-  // Compute delta from center -> final
-  const dx = finalRect.left - startRect.left + "px";
-  const dy = finalRect.top - startRect.top + "px";
+  title.style.setProperty("--dx", finalRect.left - startRect.left + "px");
+  title.style.setProperty("--dy", finalRect.top - startRect.top + "px");
 
-  // Store deltas as CSS vars
-  title.style.setProperty("--dx", dx);
-  title.style.setProperty("--dy", dy);
-
-  // Start intro: after 2s fly up smoothly
   setTimeout(() => {
     body.classList.add("intro-fly");
 
-    // When animation ends:
     title.addEventListener(
       "animationend",
       () => {
@@ -218,7 +296,7 @@ window.addEventListener("DOMContentLoaded", () => {
         body.classList.remove("intro-fly");
         html.classList.remove("intro");
       },
-      { once: true },
+      { once: true }
     );
   }, 1000);
 });

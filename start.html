@@ -6,42 +6,46 @@
     <title>save-envrionment</title>
     <link rel="stylesheet" href="start.css" />
   </head>
+
   <body class="page-fade">
     <nav>
-      <div class="back-btn" style="">
-        <a href="index.html"
-          ><img src="./assets/images/back-btn.png" alt="" alt="Home"
-        /></a>
+      <div class="back-btn">
+        <a href="index.html">
+          <img src="./assets/images/back-btn.png" alt="Home" />
+        </a>
         <span class="back-label" data-lang-key="back">Back</span>
       </div>
+
       <div class="navbar-language">
         <div class="english-button">E</div>
         <div class="hindi-button">H</div>
         <div class="gujrati-button">G</div>
       </div>
     </nav>
-    <!-- Tooltip box -->
+
     <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
       <span class="tooltip-text"></span>
     </div>
-    <!-- main start -->
+
     <main>
-      <!-- board staart -->
       <div class="board">
         <img src="./assets/images/bord-frame2.png" alt="" />
+
         <div class="title">
-          <h1 data-lang-key="head">Save Environment</h1>
+          <h1 data-lang-key="head"></h1>
         </div>
-        <!-- flowers container -->
+
         <div class="flower-container">
           <a
             href="./destroying-environment.html"
             class="flower flower1"
             style="color: #ad93c5"
-            ><p data-lang-key="title1"></p>
+          >
+            <p data-lang-key="title1"></p>
             <img src="./assets/images/flower1.png" alt="" />
             <span class="num num1" data-lang-key="num.1"></span>
           </a>
+
           <a
             href="./benefit-from-nature.html"
             class="flower flower2"
@@ -51,6 +55,7 @@
             <img src="./assets/images/flower2.png" alt="" />
             <span class="num num2" data-lang-key="num.2"></span>
           </a>
+
           <a
             href="./save-environment.html"
             class="flower flower3"
@@ -62,15 +67,31 @@
           </a>
         </div>
       </div>
-      <!--board end -->
     </main>
-    <!-- main end -->
+
     <script>
       (() => {
         const LANG_KEY = "selectedLanguage";
         const DEFAULT_LANG = "English";
         let translations = null;
         let popSfx = null;
+
+        const savedBeforeLoad = localStorage.getItem(LANG_KEY);
+
+        if (savedBeforeLoad) {
+          document.documentElement.setAttribute("lang", savedBeforeLoad);
+
+          document.addEventListener("DOMContentLoaded", () => {
+            document.body.setAttribute(
+              "data-lang",
+              savedBeforeLoad === "Hindi"
+                ? "hi"
+                : savedBeforeLoad === "Gujarati"
+                  ? "gu"
+                  : "en",
+            );
+          });
+        }
 
         const playPop = () => {
           try {
@@ -82,6 +103,7 @@
 
         async function loadTranslations() {
           if (translations) return translations;
+
           try {
             const res = await fetch("./JSON/data.json");
             if (!res.ok) throw new Error("JSON not found");
@@ -90,6 +112,7 @@
             console.error("Translation load failed:", err);
             translations = {};
           }
+
           return translations;
         }
 
@@ -117,22 +140,32 @@
         }
 
         function applyLanguage(lang) {
+          if (!translations || !translations[lang]) {
+            lang = DEFAULT_LANG;
+          }
+
           document.documentElement.setAttribute("lang", lang);
+
           document.body.setAttribute(
             "data-lang",
             lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en",
           );
 
           setActiveUI(lang);
+
           if (!translations || !translations[lang]) return;
 
           document.querySelectorAll("[data-lang-key]").forEach((el) => {
             const key = el.getAttribute("data-lang-key");
             const value = translations[lang][key];
+
             if (value == null) return;
 
-            if (String(value).includes("<br")) el.innerHTML = value;
-            else el.textContent = value;
+            if (String(value).includes("<br")) {
+              el.innerHTML = value;
+            } else {
+              el.textContent = value;
+            }
           });
 
           localStorage.setItem(LANG_KEY, lang);
@@ -141,18 +174,24 @@
         async function initLang() {
           await loadTranslations();
 
-          localStorage.removeItem(LANG_KEY);
-          popSfx = document.getElementById("clickEffect"); // ✅ now it exists
-          applyLanguage(DEFAULT_LANG);
+          popSfx = document.getElementById("clickEffect");
+
+          const savedLang = localStorage.getItem(LANG_KEY);
+          const currentLang =
+            savedLang && translations[savedLang] ? savedLang : DEFAULT_LANG;
+
+          applyLanguage(currentLang);
 
           const englishBtn = document.querySelector(".english-button");
           const hindiBtn = document.querySelector(".hindi-button");
           const gujratiBtn = document.querySelector(".gujrati-button");
+
           [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
             if (!btn) return;
 
             btn.addEventListener("click", () => {
               playPop();
+
               if (btn === englishBtn) applyLanguage("English");
               if (btn === hindiBtn) applyLanguage("Hindi");
               if (btn === gujratiBtn) applyLanguage("Gujarati");
@@ -169,6 +208,7 @@
     <audio id="clickSfx" preload="auto">
       <source src="./assets/audio/back.flac" type="audio/wav" />
     </audio>
+
     <audio id="NavigateClick" preload="auto">
       <source
         src="./assets/audio/554803__loafdv__glass-ding.wav"
@@ -179,12 +219,14 @@
     <audio id="clickEffect" preload="auto">
       <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
     </audio>
+
     <script>
       window.addEventListener("load", () => {
         const wrap = document.querySelector(".flower-container");
         const homeLink = document.querySelector(".back-btn a");
         const flowerSfx = document.getElementById("NavigateClick");
         const clickSfx = document.getElementById("clickEffect");
+
         if ((!wrap && !homeLink) || !clickSfx) return;
 
         const play = async (audio) => {
@@ -194,39 +236,33 @@
           } catch (_) {}
         };
 
-        // =========================
-        // HOME/BACK hover + click
-        // =========================
         if (homeLink) {
-          // ✅ CLICK sound
           homeLink.addEventListener("click", async (e) => {
             e.preventDefault();
+
             const href = homeLink.getAttribute("href");
 
             await play(clickSfx);
 
-            setTimeout(() => (window.location.href = href), 200);
+            setTimeout(() => {
+              window.location.href = href;
+            }, 200);
           });
         }
 
-        // =========================
-        // FLOWERS hover + click
-        // =========================
         if (wrap) {
           wrap.addEventListener("click", (e) => {
             const a = e.target.closest("a.flower");
             if (!a || !wrap.contains(a)) return;
 
             e.preventDefault();
+
             const href = a.getAttribute("href");
 
-            // play sound immediately
-            play(NavigateClick);
+            play(flowerSfx);
 
-            // start exit animation
             document.body.classList.add("page-exit");
 
-            // navigate after 3 seconds
             setTimeout(() => {
               window.location.href = href;
             }, 500);
