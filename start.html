@@ -61,7 +61,7 @@
             class="flower flower3"
             style="color: #f69d9b"
           >
-            <p data-lang-key="title1"></p>
+            <p data-lang-key="title3"></p>
             <img src="./assets/images/flower3.png" alt="" />
             <span class="num num3" data-lang-key="num.3"></span>
           </a>
@@ -69,12 +69,42 @@
       </div>
     </main>
 
+    <!-- Back button audio -->
+    <audio id="clickSfx" preload="auto">
+      <source src="./assets/audio/back.flac" type="audio/wav" />
+    </audio>
+
+    <!-- Flower navigation click audio -->
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
+
+    <!-- Hover pop audio -->
+    <audio id="clickEffect" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Language button click audios -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
+    </audio>
+
     <script>
       (() => {
         const LANG_KEY = "selectedLanguage";
         const DEFAULT_LANG = "English";
         let translations = null;
-        let popSfx = null;
 
         const savedBeforeLoad = localStorage.getItem(LANG_KEY);
 
@@ -92,14 +122,6 @@
             );
           });
         }
-
-        const playPop = () => {
-          try {
-            if (!popSfx) return;
-            popSfx.currentTime = 0;
-            popSfx.play();
-          } catch (_) {}
-        };
 
         async function loadTranslations() {
           if (translations) return translations;
@@ -122,9 +144,13 @@
 
           container.classList.remove("lang-left", "lang-right", "lang-middle");
 
-          if (lang === "English") container.classList.add("lang-left");
-          else if (lang === "Gujarati") container.classList.add("lang-right");
-          else if (lang === "Hindi") container.classList.add("lang-middle");
+          if (lang === "English") {
+            container.classList.add("lang-left");
+          } else if (lang === "Gujarati") {
+            container.classList.add("lang-right");
+          } else if (lang === "Hindi") {
+            container.classList.add("lang-middle");
+          }
 
           document.querySelectorAll(".navbar-language > div").forEach((btn) => {
             btn.classList.remove("lang-active");
@@ -171,10 +197,26 @@
           localStorage.setItem(LANG_KEY, lang);
         }
 
+        function playAudio(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+
+          audio.play().catch((err) => {
+            console.log("Audio play blocked:", err);
+          });
+        }
+
+        function stopAudio(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+        }
+
         async function initLang() {
           await loadTranslations();
-
-          popSfx = document.getElementById("clickEffect");
 
           const savedLang = localStorage.getItem(LANG_KEY);
           const currentLang =
@@ -186,17 +228,36 @@
           const hindiBtn = document.querySelector(".hindi-button");
           const gujratiBtn = document.querySelector(".gujrati-button");
 
-          [englishBtn, hindiBtn, gujratiBtn].forEach((btn) => {
-            if (!btn) return;
+          const clickEffect = document.getElementById("clickEffect");
+          const englishAudio = document.getElementById("englishAudio");
+          const hindiAudio = document.getElementById("hindiAudio");
+          const gujratiAudio = document.getElementById("gujratiAudio");
 
-            btn.addEventListener("click", () => {
-              playPop();
+          function addLanguageButtonAudio(button, lang, langAudio) {
+            if (!button) return;
 
-              if (btn === englishBtn) applyLanguage("English");
-              if (btn === hindiBtn) applyLanguage("Hindi");
-              if (btn === gujratiBtn) applyLanguage("Gujarati");
+            // pop.mp3 only on hover
+            button.addEventListener("mouseenter", (e) => {
+              if (e.buttons !== 0) return;
+              playAudio(clickEffect);
             });
-          });
+
+            // stop pop.mp3 before click
+            button.addEventListener("pointerdown", () => {
+              stopAudio(clickEffect);
+            });
+
+            // only language audio on click
+            button.addEventListener("click", () => {
+              stopAudio(clickEffect);
+              playAudio(langAudio);
+              applyLanguage(lang);
+            });
+          }
+
+          addLanguageButtonAudio(englishBtn, "English", englishAudio);
+          addLanguageButtonAudio(hindiBtn, "Hindi", hindiAudio);
+          addLanguageButtonAudio(gujratiBtn, "Gujarati", gujratiAudio);
 
           window.setLanguage = applyLanguage;
         }
@@ -205,36 +266,45 @@
       })();
     </script>
 
-    <audio id="clickSfx" preload="auto">
-      <source src="./assets/audio/back.flac" type="audio/wav" />
-    </audio>
-
-    <audio id="NavigateClick" preload="auto">
-      <source
-        src="./assets/audio/554803__loafdv__glass-ding.wav"
-        type="audio/wav"
-      />
-    </audio>
-
-    <audio id="clickEffect" preload="auto">
-      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
-    </audio>
-
     <script>
       window.addEventListener("load", () => {
         const wrap = document.querySelector(".flower-container");
+        const flowers = document.querySelectorAll(".flower-container .flower");
         const homeLink = document.querySelector(".back-btn a");
+
         const flowerSfx = document.getElementById("NavigateClick");
         const clickSfx = document.getElementById("clickEffect");
 
         if ((!wrap && !homeLink) || !clickSfx) return;
 
         const play = async (audio) => {
+          if (!audio) return;
+
           try {
+            audio.pause();
             audio.currentTime = 0;
             await audio.play();
           } catch (_) {}
         };
+
+        const stop = (audio) => {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+        };
+
+        /* Flower hover audio: pop.mp3 */
+        flowers.forEach((flower) => {
+          flower.addEventListener("mouseenter", (e) => {
+            if (e.buttons !== 0) return;
+            play(clickSfx);
+          });
+
+          flower.addEventListener("pointerdown", () => {
+            stop(clickSfx);
+          });
+        });
 
         if (homeLink) {
           homeLink.addEventListener("click", async (e) => {
@@ -259,6 +329,7 @@
 
             const href = a.getAttribute("href");
 
+            stop(clickSfx);
             play(flowerSfx);
 
             document.body.classList.add("page-exit");

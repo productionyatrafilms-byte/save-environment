@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Save Environment</title>
     <link rel="stylesheet" href="style.css" />
+
     <style>
       html {
         height: 100vh;
@@ -13,7 +14,6 @@
       .root-div {
         position: fixed;
         top: 2vh;
-
         z-index: 100;
       }
 
@@ -38,6 +38,7 @@
       alt=""
       style="width: 100%; position: absolute; top: 0; left: 0; height: 100%"
     />
+
     <div class="root-div">
       <nav>
         <div style="position: relative">
@@ -49,6 +50,7 @@
         </div>
       </nav>
     </div>
+
     <div
       style="
         width: 100%;
@@ -62,12 +64,14 @@
     >
       <div class="bord" style="z-index: 1">
         <div class="bord2">
-          <img src="assets/images/bord.png" alt="" style="" />
+          <img src="assets/images/bord.png" alt="" />
+
           <div class="save-environment">
             <div id="save-env" data-lang-key="head">
               Save <br />
               Environment
             </div>
+
             <div class="start-btn" style="position: relative">
               <a
                 href="start.html"
@@ -84,6 +88,7 @@
                 <div class="ring ring1"></div>
                 <div class="ring ring2"></div>
                 <div class="ring ring3"></div>
+
                 <div class="play-button">
                   <img
                     src="assets/images/Frame 27.png"
@@ -91,6 +96,7 @@
                     style="line-height: 0"
                   />
                 </div>
+
                 <span
                   id="startbtn"
                   data-lang-key="start"
@@ -100,12 +106,14 @@
                     position: absolute;
                     font-size: 1.8vw;
                   "
-                  >Start</span
                 >
+                  Start
+                </span>
               </a>
             </div>
           </div>
         </div>
+
         <div class="water" style="line-height: 0">
           <img src="assets/images/fish.png" alt="" />
         </div>
@@ -125,6 +133,7 @@
             alt=""
             style="width: 100%; height: auto; position: relative; z-index: 1"
           />
+
           <div
             style="
               position: absolute;
@@ -141,6 +150,7 @@
             />
           </div>
         </div>
+
         <div
           class="boy1"
           style="
@@ -156,6 +166,7 @@
             alt=""
             style="width: 100%; height: auto; position: relative; z-index: 1"
           />
+
           <div
             style="
               position: absolute;
@@ -173,6 +184,7 @@
           </div>
         </div>
       </div>
+
       <div
         class="grass2"
         style="
@@ -191,64 +203,136 @@
         />
       </div>
     </div>
+
     <script src="script.js"></script>
 
+    <!-- Start button audio -->
     <audio id="startSfx" preload="auto">
       <source src="./assets/audio/startpage.wav" type="audio/wav" />
     </audio>
 
+    <!-- Language button hover audio only -->
+    <audio id="clickEffect" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Language button click audio -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
+    </audio>
+
     <script>
       window.addEventListener("load", () => {
-        const startSfx = document.getElementById("startSfx");
+        /* ==============================
+           START BUTTON AUDIO + REDIRECT
+        ============================== */
 
-        // ✅ catch clicks on the whole start button area (more reliable)
+        const startSfx = document.getElementById("startSfx");
         const startArea = document.querySelector(".start-btn");
         const startLink = document.getElementById("startLink");
 
-        if (!startArea || !startLink || !startSfx) {
-          console.log("Missing:", { startArea, startLink, startSfx });
-          return;
-        }
+        if (startArea && startLink && startSfx) {
+          const unlockStartAudio = () => {
+            startSfx.muted = true;
 
-        // optional: unlock audio once (helps on some browsers)
-        const unlock = () => {
-          startSfx.muted = true;
-          startSfx
-            .play()
-            .then(() => {
+            startSfx
+              .play()
+              .then(() => {
+                startSfx.pause();
+                startSfx.currentTime = 0;
+                startSfx.muted = false;
+              })
+              .catch(() => {});
+
+            document.removeEventListener("click", unlockStartAudio);
+          };
+
+          document.addEventListener("click", unlockStartAudio, { once: true });
+
+          startArea.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            document.body.classList.add("open-from-center");
+
+            try {
               startSfx.pause();
               startSfx.currentTime = 0;
-              startSfx.muted = false;
-            })
-            .catch(() => {});
-          document.removeEventListener("click", unlock);
-        };
-        document.addEventListener("click", unlock, { once: true });
+              await startSfx.play();
+            } catch (err) {
+              console.log("Start audio failed:", err);
+            }
 
-        startArea.addEventListener("click", async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
+            setTimeout(() => {
+              window.location.href = startLink.href;
+            }, 1000);
+          });
+        }
 
-          console.log("START CLICKED");
+        /* ==============================
+           LANGUAGE BUTTON AUDIO
+        ============================== */
 
-          document.body.classList.add("open-from-center");
+        const englishBtn = document.querySelector(".english-button");
+        const hindiBtn = document.querySelector(".hindi-button");
+        const gujratiBtn = document.querySelector(".gujrati-button");
 
-          try {
-            startSfx.currentTime = 0;
-            await startSfx.play();
-            console.log("AUDIO PLAYING");
-          } catch (err) {
-            console.log("Audio failed:", err);
-          }
+        const clickEffect = document.getElementById("clickEffect");
+        const englishAudio = document.getElementById("englishAudio");
+        const hindiAudio = document.getElementById("hindiAudio");
+        const gujratiAudio = document.getElementById("gujratiAudio");
 
-          setTimeout(() => {
-            window.location.href = startLink.href;
-          }, 1000);
-        });
+        function playSound(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+
+          audio.play().catch((err) => {
+            console.log("Audio play blocked:", err);
+          });
+        }
+
+        function stopSound(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+        }
+
+        function addLanguageAudio(button, languageAudio) {
+          if (!button) return;
+
+          /*
+            pop.mp3 only works on hover.
+            It will not play on click.
+          */
+          button.addEventListener("mouseenter", () => {
+            playSound(clickEffect);
+          });
+
+          /*
+            On click, stop pop.mp3 immediately
+            and play only selected language audio.
+          */
+          button.addEventListener("click", () => {
+            stopSound(clickEffect);
+            playSound(languageAudio);
+          });
+        }
+
+        addLanguageAudio(englishBtn, englishAudio);
+        addLanguageAudio(hindiBtn, hindiAudio);
+        addLanguageAudio(gujratiBtn, gujratiAudio);
       });
     </script>
-    <audio id="flowerClickSfx" preload="auto">
-      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
-    </audio>
   </body>
 </html>

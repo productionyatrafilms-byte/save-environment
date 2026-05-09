@@ -102,9 +102,11 @@
         <div id="destroy" data-lang-key="page.destroy">
           How are we destroying Environment?
         </div>
+
         <div id="nature" data-lang-key="page.nature">
           What do we benefit from Nature?
         </div>
+
         <div id="save" data-lang-key="page.save">
           How can we Save Environment?
         </div>
@@ -131,19 +133,43 @@
           <div class="swiper imageSwiper">
             <div class="swiper-wrapper">
               <div class="swiper-slide">
-                <video src="./assets/videos/nature1.mp4" autoplay muted loop playsinline></video>
+                <video
+                  src="./assets/videos/nature1.mp4"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                ></video>
               </div>
 
               <div class="swiper-slide">
-                <video src="./assets/videos/nature2.mp4" autoplay muted loop playsinline></video>
+                <video
+                  src="./assets/videos/nature2.mp4"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                ></video>
               </div>
 
               <div class="swiper-slide">
-                <video src="./assets/videos/nature3.mp4" autoplay muted loop playsinline></video>
+                <video
+                  src="./assets/videos/nature3.mp4"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                ></video>
               </div>
 
               <div class="swiper-slide">
-                <video src="./assets/videos/nature4.mp4" autoplay muted loop playsinline></video>
+                <video
+                  src="./assets/videos/nature4.mp4"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                ></video>
               </div>
             </div>
           </div>
@@ -163,6 +189,11 @@
       </div>
     </div>
 
+    <!-- Page load audio -->
+    <audio id="pageLoadAudio" preload="auto">
+      <source src="./assets/audio/startpage1.mp3" type="audio/mpeg" />
+    </audio>
+
     <audio id="NavigateClick" preload="auto">
       <source
         src="./assets/audio/554803__loafdv__glass-ding.wav"
@@ -174,8 +205,22 @@
       <source src="./assets/audio/startpage.wav" type="audio/wav" />
     </audio>
 
+    <!-- Hover audio for language buttons, pages num, and home button -->
     <audio id="clickEffect" preload="auto">
       <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Language click audios -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
     </audio>
 
     <audio id="SwipeEffect" preload="auto">
@@ -187,5 +232,174 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="benefit-from-nature.js"></script>
+
+<script>
+  window.addEventListener("load", () => {
+    const englishBtn = document.querySelector(".english-button");
+    const hindiBtn = document.querySelector(".hindi-button");
+    const gujratiBtn = document.querySelector(".gujrati-button");
+
+    const homeBtn = document.querySelector(".home-btn a");
+    const pageNums = document.querySelectorAll(".pages .num");
+
+    const pageLoadAudio = document.getElementById("pageLoadAudio");
+    const clickEffect = document.getElementById("clickEffect");
+    const englishAudio = document.getElementById("englishAudio");
+    const hindiAudio = document.getElementById("hindiAudio");
+    const gujratiAudio = document.getElementById("gujratiAudio");
+    const swipeEffect = document.getElementById("SwipeEffect");
+
+    function playAudio(audio) {
+      if (!audio) return;
+
+      audio.pause();
+      audio.currentTime = 0;
+
+      audio.play().catch(() => {});
+    }
+
+    function stopAudio(audio) {
+      if (!audio) return;
+
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    /* ==============================
+       PAGE LOAD AUDIO
+       Fixed:
+       - Plays only on page load
+       - Does NOT play on first swiper swipe
+    ============================== */
+
+    function playPageLoadAudio() {
+      if (!pageLoadAudio) return;
+
+      pageLoadAudio.pause();
+      pageLoadAudio.currentTime = 0;
+
+      pageLoadAudio.play().catch(() => {
+        /*
+          Browser may block autoplay.
+          We are NOT replaying it on pointerdown/touchstart,
+          because that caused the audio to play when first slide swiped.
+        */
+      });
+    }
+
+    playPageLoadAudio();
+
+    /* ==============================
+       AUDIO UNLOCK
+       Fixed:
+       - Unlocks audio safely
+       - Does NOT play pageLoadAudio after first user interaction
+    ============================== */
+
+    const unlockAudios = async () => {
+      const audios = [
+        clickEffect,
+        englishAudio,
+        hindiAudio,
+        gujratiAudio,
+        swipeEffect,
+      ];
+
+      for (const audio of audios) {
+        try {
+          if (!audio) continue;
+
+          audio.muted = true;
+          await audio.play();
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = false;
+        } catch (_) {}
+      }
+
+      document.removeEventListener("pointerdown", unlockAudios);
+      document.removeEventListener("touchstart", unlockAudios);
+    };
+
+    document.addEventListener("pointerdown", unlockAudios, { once: true });
+    document.addEventListener("touchstart", unlockAudios, { once: true });
+
+    /* ==============================
+       HOVER POP AUDIO
+    ============================== */
+
+    function addHoverPopAudio(element) {
+      if (!element) return;
+
+      element.addEventListener("mouseenter", (e) => {
+        if (e.buttons !== 0) return;
+        playAudio(clickEffect);
+      });
+
+      element.addEventListener("pointerdown", () => {
+        stopAudio(clickEffect);
+      });
+    }
+
+    /* ==============================
+       LANGUAGE BUTTON AUDIO
+    ============================== */
+
+    function addLanguageAudio(button, languageAudio) {
+      if (!button) return;
+
+      // pop.mp3 only on hover
+      button.addEventListener("mouseenter", (e) => {
+        if (e.buttons !== 0) return;
+        playAudio(clickEffect);
+      });
+
+      // stop pop.mp3 immediately before click
+      button.addEventListener("pointerdown", () => {
+        stopAudio(clickEffect);
+      });
+
+      // click plays only selected language audio
+      button.addEventListener("click", () => {
+        stopAudio(clickEffect);
+        playAudio(languageAudio);
+      });
+    }
+
+    addLanguageAudio(englishBtn, englishAudio);
+    addLanguageAudio(hindiBtn, hindiAudio);
+    addLanguageAudio(gujratiBtn, gujratiAudio);
+
+    /* ==============================
+       PAGES .NUM HOVER AUDIO
+    ============================== */
+
+    pageNums.forEach((num) => {
+      addHoverPopAudio(num);
+    });
+
+    /* ==============================
+       HOME BUTTON HOVER AUDIO
+    ============================== */
+
+    addHoverPopAudio(homeBtn);
+
+    /* ==============================
+       SWIPER SLIDE EFFECT AUDIO
+       Safe listener:
+       - Plays swipe audio only when slide changes
+       - Does not trigger page-load audio
+    ============================== */
+
+    setTimeout(() => {
+      if (window.swiper && typeof window.swiper.on === "function") {
+        window.swiper.on("slideChangeTransitionStart", () => {
+          stopAudio(clickEffect);
+          playAudio(swipeEffect);
+        });
+      }
+    }, 300);
+  });
+</script>
   </body>
 </html>
