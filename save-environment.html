@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How can we Save Environment?</title>
+    <link rel="stylesheet" href="save-environment.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <style>
+      .pranam-link{
+        position: fixed;
+        right: 2vw;
+        bottom: 2vw;
+        width: 10vw;
+        height: 7vw;
+        background-image: url("./assets/images/arowAsset.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+         opacity: 0;
+        visibility: hidden;
+      }
+
+      .pranam-link span{
+        position: absolute;
+        text-decoration: none;
+        color: white;
+        font-size: 1.7vw;
+        padding-right: 2vw;
+        text-shadow: 0.15vw 0.15vw 0.1vw rgba(0, 0, 0, 0.766);
+       
+      }
+
+@keyframes pranamPop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+  .pranam-link.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+    </style>
+  </head>
+
+  <body style="background-color: #afe2fd" class="intro">
+     <a href="./pranam.html" class="pranam-link">
+
+      <span data-lang-key="pranam"></span>
+    </a>
+    <nav>
+      <div class="home-btn">
+        <a href="index.html">
+          <img src="./assets/images/home-btn.png" alt="Home" />
+        </a>
+        <span class="home-label" data-lang-key="homeTooltip">Home</span>
+      </div>
+
+      <div class="title" style="position: relative; color: #f69d9b">
+        <img class="rectangle" src="./assets/images/Rectangle.png" alt="" />
+        <h2 data-lang-key="title3">How can we Save Environment</h2>
+
+        <div class="circle">
+          <img src="./assets/images/circle.png" alt="" />
+          <span data-lang-key="num.3">3</span>
+        </div>
+      </div>
+
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+
+    <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
+      <span class="tooltip-text"></span>
+    </div>
+
+    <div class="page-content">
+      <div class="vector1"></div>
+      <div class="vector2"></div>
+
+      <img class="shadow" src="./assets/images/shadow.png" alt="" />
+
+      <div class="pages">
+        <a class="num num1" href="destroying-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span>
+        </a>
+
+        <a class="num num2" href="benefit-from-nature.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="nature" />
+          <span data-lang-key="num.2">2</span>
+        </a>
+
+        <a class="num num3" href="save-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="save" />
+          <span data-lang-key="num.3">3</span>
+        </a>
+      </div>
+
+      <div class="tooltip-content" hidden>
+        <div id="destroy" data-lang-key="page.destroy"></div>
+        <div id="nature" data-lang-key="page.nature"></div>
+        <div id="save" data-lang-key="page.save"></div>
+      </div>
+
+      <main>
+        <div class="board" style="position: absolute">
+          <img src="./assets/images/bord.png" alt="" />
+
+          <div
+            class="board-text-overlay"
+            style="position: absolute"
+            id="boardText"
+          >
+            <h2>
+              By <br />
+              Destroying Plants & <br />
+              trees
+            </h2>
+          </div>
+        </div>
+
+        <div class="image-board">
+          <div class="swiper imageSwiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save1.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save2.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save3.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save4.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save5.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save6.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/save7.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div class="bottom-swiper-ui">
+        <button class="env-prev" type="button" aria-label="Previous">
+          <img src="./assets/images/prev-btn.png" alt="Previous" />
+        </button>
+
+        <div class="env-pagination" aria-label="Pagination"></div>
+
+        <button class="env-next" type="button" aria-label="Next">
+          <img src="./assets/images/next-btn.png" alt="Next" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Page load audio -->
+    <audio id="pageLoadAudio" preload="auto">
+      <source src="./assets/audio/startpage1.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Page navigation audio -->
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
+
+    <!-- Home button click audio -->
+    <audio id="HomePage" preload="auto">
+      <source src="./assets/audio/startpage.wav" type="audio/wav" />
+    </audio>
+
+    <!-- Slide / swiper effect audio -->
+    <audio id="SwipeEffect" preload="auto">
+      <source
+        src="./assets/audio/742832__sadiquecat__woosh-metal-tea-strainer-1.wav"
+        type="audio/wav"
+      />
+    </audio>
+
+    <!-- Language button click audio -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="save-environment.js"></script>
+
+    <script>
+      (() => {
+        const texts = [
+          `By <br/> Using cloth bags`,
+          `By <br/> Turning off lights, <br/> fans, etc. When not in <br/> use`,
+          `By <br/> Using reusable <br/> bottles or cups`,
+          `By <br/> Avoiding shower <br/> baths`,
+          `By <br/> Reducing <br/> paper wastage`,
+          `By <br/> Using glass of water <br/> for brushing`,
+          `By <br/> Reducing use of <br/> packaged <br/> food`,
+        ];
+
+        const boardText = document.getElementById("boardText");
+        const nextBtn = document.querySelector(".env-next");
+        const prevBtn = document.querySelector(".env-prev");
+        const pranamLink = document.querySelector(".pranam-link");
+
+        const pageLoadAudio = document.getElementById("pageLoadAudio");
+        const navAudio = document.getElementById("NavigateClick");
+        const homeAudio = document.getElementById("HomePage");
+        const swipeEffect = document.getElementById("SwipeEffect");
+
+        const englishAudio = document.getElementById("englishAudio");
+        const hindiAudio = document.getElementById("hindiAudio");
+        const gujratiAudio = document.getElementById("gujratiAudio");
+
+        const englishBtn = document.querySelector(".english-button");
+        const hindiBtn = document.querySelector(".hindi-button");
+        const gujratiBtn = document.querySelector(".gujrati-button");
+
+        const homeLink = document.querySelector(".home-btn a");
+        const pages = document.querySelector(".pages");
+
+        function playAudio(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+
+          audio.play().catch(() => {});
+        }
+
+        function stopAudio(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+        }
+
+        /* ==============================
+           PAGE LOAD AUDIO
+        ============================== */
+
+        function playPageLoadAudio() {
+          if (!pageLoadAudio) return;
+
+          pageLoadAudio.pause();
+          pageLoadAudio.currentTime = 0;
+
+          pageLoadAudio.play().catch(() => {
+            console.log("Page load audio blocked. It will play after first click.");
+          });
+        }
+
+        window.addEventListener("load", () => {
+          playPageLoadAudio();
+        });
+
+        document.addEventListener(
+          "pointerdown",
+          () => {
+            if (pageLoadAudio && pageLoadAudio.paused) {
+              playPageLoadAudio();
+            }
+          },
+          { once: true }
+        );
+
+        document.addEventListener(
+          "touchstart",
+          () => {
+            if (pageLoadAudio && pageLoadAudio.paused) {
+              playPageLoadAudio();
+            }
+          },
+          { once: true }
+        );
+
+        /* ==============================
+           LANGUAGE BUTTON AUDIO (click only)
+        ============================== */
+
+        function addLanguageButtonAudio(button, languageAudio) {
+          if (!button) return;
+
+          button.addEventListener("click", () => {
+            playAudio(languageAudio);
+          });
+        }
+
+        addLanguageButtonAudio(englishBtn, englishAudio);
+        addLanguageButtonAudio(hindiBtn, hindiAudio);
+        addLanguageButtonAudio(gujratiBtn, gujratiAudio);
+
+        function updateBoardText(index) {
+          if (!boardText) return;
+
+          const html = texts[index] ?? texts[0] ?? "";
+          boardText.innerHTML = `<h2>${html}</h2>`;
+        }
+
+        function fadeAndGo(url) {
+          document.documentElement.classList.add("page-exit");
+
+          window.setTimeout(() => {
+            window.location.href = url;
+          }, 200);
+        }
+
+        /* ==============================
+           SWIPER SLIDE EFFECT AUDIO
+        ============================== */
+
+        function playSlideEffect() {
+          playAudio(swipeEffect);
+        }
+
+        /* ==============================
+           PREV / NEXT BUTTON DISABLED STATE
+           (opacity only, never hidden)
+        ============================== */
+
+        function updatePrevBtnState(isBeginning) {
+          if (!prevBtn) return;
+
+          prevBtn.style.opacity = isBeginning ? "0.5" : "1";
+          prevBtn.style.pointerEvents = isBeginning ? "none" : "auto";
+        }
+
+        function updateNextBtnState(isEnd) {
+          if (!nextBtn) return;
+
+          nextBtn.style.opacity = isEnd ? "0.5" : "1";
+          nextBtn.style.pointerEvents = isEnd ? "none" : "auto";
+        }
+
+        /* ==============================
+           PRANAM LINK VISIBILITY
+           (hidden initially, shown on last slide)
+        ============================== */
+
+        function updatePranamLinkState(isEnd) {
+          if (!pranamLink) return;
+
+          pranamLink.classList.toggle("show", isEnd);
+        }
+
+        window.swiper = new Swiper(".imageSwiper", {
+          loop: false,
+          speed: 600,
+
+          pagination: {
+            el: ".env-pagination",
+            clickable: true,
+          },
+
+          navigation: {
+            prevEl: ".env-prev",
+          },
+
+          on: {
+            init: function () {
+              updatePrevBtnState(this.isBeginning);
+              updateNextBtnState(this.isEnd);
+              updatePranamLinkState(this.isEnd);
+              updateBoardText(this.realIndex);
+
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+              window.setLanguage?.(saved);
+            },
+
+            slideChangeTransitionStart: function () {
+              playSlideEffect();
+            },
+
+            slideChange: function () {
+              updatePrevBtnState(this.isBeginning);
+              updateNextBtnState(this.isEnd);
+              updatePranamLinkState(this.isEnd);
+              updateBoardText(this.realIndex);
+
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+              window.setLanguage?.(saved);
+            },
+          },
+        });
+
+        if (nextBtn) {
+          nextBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const s = window.swiper;
+            if (!s) return;
+
+            if (s.isEnd) return;
+
+            s.slideNext();
+          });
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener("click", () => {
+            const s = window.swiper;
+            if (!s || s.isBeginning) return;
+
+            s.slidePrev();
+          });
+        }
+
+        if (homeLink && homeAudio) {
+          homeLink.addEventListener("click", (e) => {
+            if (document.body.classList.contains("intro")) return;
+
+            e.preventDefault();
+
+            const href = homeLink.getAttribute("href");
+            if (!href) return;
+
+            playAudio(homeAudio);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 800);
+          });
+        }
+
+        if (pages && navAudio) {
+          pages.addEventListener("click", (e) => {
+            const a = e.target.closest("a");
+            if (!a || !pages.contains(a)) return;
+            if (document.body.classList.contains("intro")) return;
+
+            e.preventDefault();
+
+            const href = a.getAttribute("href");
+            if (!href) return;
+
+            playAudio(navAudio);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
+          });
+        }
+
+        const unlockAudio = async () => {
+          const audios = [
+            pageLoadAudio,
+            navAudio,
+            homeAudio,
+            swipeEffect,
+            englishAudio,
+            hindiAudio,
+            gujratiAudio,
+          ];
+
+          for (const audio of audios) {
+            try {
+              if (!audio) continue;
+
+              audio.muted = true;
+              await audio.play();
+              audio.pause();
+              audio.currentTime = 0;
+              audio.muted = false;
+            } catch (_) {}
+          }
+
+          document.removeEventListener("pointerdown", unlockAudio);
+          document.removeEventListener("touchstart", unlockAudio);
+        };
+
+        document.addEventListener("pointerdown", unlockAudio, { once: true });
+        document.addEventListener("touchstart", unlockAudio, { once: true });
+      })();
+    </script>
+  </body>
+</html>

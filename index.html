@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save Environment</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      html {
+        height: 100vh;
+      }
+
+      .root-div {
+        position: fixed;
+        top: 2vh;
+        z-index: 100;
+      }
+
+      .bord2 {
+        width: 100%;
+        position: absolute;
+        bottom: 25%;
+        left: 50%;
+        transform: translate(-50%, -25%);
+      }
+
+      .water {
+        position: relative;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <img
+      src="./assets/images/bg2.png"
+      alt=""
+      style="width: 100%; position: absolute; top: 0; left: 0; height: 100%"
+    />
+
+    <div class="root-div">
+      <nav>
+        <div style="position: relative">
+          <div class="navbar-language">
+            <div class="english-button">E</div>
+            <div class="hindi-button">H</div>
+            <div class="gujrati-button">G</div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div
+      style="
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        min-height: 100vh;
+        overflow: hidden;
+      "
+    >
+      <div class="bord" style="z-index: 1">
+        <div class="bord2">
+          <img src="assets/images/bord.png" alt="" />
+
+          <div class="save-environment">
+            <div id="save-env" data-lang-key="head">
+              Save <br />
+              Environment
+            </div>
+
+            <div class="start-btn" style="position: relative">
+              <a
+                href="start.html"
+                id="startLink"
+                style="
+                  width: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  text-decoration: none;
+                "
+              >
+                <div class="ring ring1"></div>
+                <div class="ring ring2"></div>
+                <div class="ring ring3"></div>
+
+                <div class="play-button">
+                  <img
+                    src="assets/images/Frame 27.png"
+                    alt=""
+                    style="line-height: 0"
+                  />
+                </div>
+
+                <span
+                  id="startbtn"
+                  data-lang-key="start"
+                  style="
+                    color: #34a1da;
+                    top: 13vh;
+                    position: absolute;
+                    font-size: 1.8vw;
+                  "
+                >
+                  Start
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="water" style="line-height: 0">
+          <img src="assets/images/fish.png" alt="" />
+        </div>
+
+        <div
+          class="girl1"
+          style="
+            width: 50%;
+            position: absolute;
+            bottom: 16vh;
+            left: -70%;
+            line-height: 0;
+          "
+        >
+          <img
+            src="./assets/images/image 32.png"
+            alt=""
+            style="width: 100%; height: auto; position: relative; z-index: 1"
+          />
+
+          <div
+            style="
+              position: absolute;
+              bottom: -4%;
+              left: 25%;
+              z-index: 0;
+              width: 88%;
+            "
+          >
+            <img
+              src="./assets/images/Ellipse 1.png"
+              alt=""
+              style="width: 100%; height: auto"
+            />
+          </div>
+        </div>
+
+        <div
+          class="boy1"
+          style="
+            width: 50%;
+            position: absolute;
+            bottom: 16vh;
+            right: -65%;
+            line-height: 0;
+          "
+        >
+          <img
+            src="./assets/images/image 33.png"
+            alt=""
+            style="width: 100%; height: auto; position: relative; z-index: 1"
+          />
+
+          <div
+            style="
+              position: absolute;
+              bottom: -5%;
+              left: -17%;
+              z-index: 0;
+              width: 90%;
+            "
+          >
+            <img
+              src="./assets/images/Ellipse 1.png"
+              alt=""
+              style="width: 100%; height: auto"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="grass2"
+        style="
+          position: absolute;
+          bottom: -2%;
+          left: 0;
+          width: 100%;
+          z-index: 0;
+          line-height: 0;
+        "
+      >
+        <img
+          src="./assets/images/bg1.png"
+          alt=""
+          style="width: 100%; height: auto"
+        />
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Start button audio -->
+    <audio id="startSfx" preload="auto">
+      <source src="./assets/audio/startpage.wav" type="audio/wav" />
+    </audio>
+
+    <!-- Language button click audio -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      window.addEventListener("load", () => {
+        /* ==============================
+           START BUTTON AUDIO + REDIRECT
+        ============================== */
+
+        const startSfx = document.getElementById("startSfx");
+        const startArea = document.querySelector(".start-btn");
+        const startLink = document.getElementById("startLink");
+
+        if (startArea && startLink && startSfx) {
+          const unlockStartAudio = () => {
+            startSfx.muted = true;
+
+            startSfx
+              .play()
+              .then(() => {
+                startSfx.pause();
+                startSfx.currentTime = 0;
+                startSfx.muted = false;
+              })
+              .catch(() => {});
+
+            document.removeEventListener("click", unlockStartAudio);
+          };
+
+          document.addEventListener("click", unlockStartAudio, { once: true });
+
+          startArea.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            document.body.classList.add("open-from-center");
+
+            try {
+              startSfx.pause();
+              startSfx.currentTime = 0;
+              await startSfx.play();
+            } catch (err) {
+              console.log("Start audio failed:", err);
+            }
+
+            setTimeout(() => {
+              window.location.href = startLink.href;
+            }, 1000);
+          });
+        }
+
+        /* ==============================
+           LANGUAGE BUTTON AUDIO (click only)
+        ============================== */
+
+        const englishBtn = document.querySelector(".english-button");
+        const hindiBtn = document.querySelector(".hindi-button");
+        const gujratiBtn = document.querySelector(".gujrati-button");
+
+        const englishAudio = document.getElementById("englishAudio");
+        const hindiAudio = document.getElementById("hindiAudio");
+        const gujratiAudio = document.getElementById("gujratiAudio");
+
+        function playSound(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+
+          audio.play().catch((err) => {
+            console.log("Audio play blocked:", err);
+          });
+        }
+
+        function addLanguageAudio(button, languageAudio) {
+          if (!button) return;
+
+          /*
+            On click, play only the selected language audio.
+          */
+          button.addEventListener("click", () => {
+            playSound(languageAudio);
+          });
+        }
+
+        addLanguageAudio(englishBtn, englishAudio);
+        addLanguageAudio(hindiBtn, hindiAudio);
+        addLanguageAudio(gujratiBtn, gujratiAudio);
+      });
+    </script>
+  </body>
+</html>

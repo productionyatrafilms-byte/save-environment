@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>save-envrionment</title>
+    <link rel="stylesheet" href="start.css" />
+  </head>
+
+  <body class="page-fade">
+    <nav>
+      <div class="back-btn">
+        <a href="index.html">
+          <img src="./assets/images/back-btn.png" alt="Home" />
+        </a>
+        <span class="back-label" data-lang-key="back">Back</span>
+      </div>
+
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+
+    <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
+      <span class="tooltip-text"></span>
+    </div>
+
+    <main>
+      <div class="board">
+        <img src="./assets/images/bord-frame2.png" alt="" />
+
+        <div class="title">
+          <h1 data-lang-key="head"></h1>
+        </div>
+
+        <div class="flower-container">
+          <a
+            href="./destroying-environment.html"
+            class="flower flower1"
+            style="color: #ad93c5"
+          >
+            <p data-lang-key="title1"></p>
+            <img src="./assets/images/flower1.png" alt="" />
+            <span class="num num1" data-lang-key="num.1"></span>
+          </a>
+
+          <a
+            href="./benefit-from-nature.html"
+            class="flower flower2"
+            style="color: #fbb040"
+          >
+            <p data-lang-key="title2"></p>
+            <img src="./assets/images/flower2.png" alt="" />
+            <span class="num num2" data-lang-key="num.2"></span>
+          </a>
+
+          <a
+            href="./save-environment.html"
+            class="flower flower3"
+            style="color: #f69d9b"
+          >
+            <p data-lang-key="title3"></p>
+            <img src="./assets/images/flower3.png" alt="" />
+            <span class="num num3" data-lang-key="num.3"></span>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Back button audio -->
+    <audio id="clickSfx" preload="auto">
+      <source src="./assets/audio/back.flac" type="audio/wav" />
+    </audio>
+
+    <!-- Flower navigation click audio -->
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
+
+    <!-- Click pop audio -->
+    <audio id="clickEffect" preload="auto">
+      <source src="./assets/audio/pop.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Language button click audios -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      (() => {
+        const LANG_KEY = "selectedLanguage";
+        const DEFAULT_LANG = "English";
+        let translations = null;
+
+        const savedBeforeLoad = localStorage.getItem(LANG_KEY);
+
+        if (savedBeforeLoad) {
+          document.documentElement.setAttribute("lang", savedBeforeLoad);
+
+          document.addEventListener("DOMContentLoaded", () => {
+            document.body.setAttribute(
+              "data-lang",
+              savedBeforeLoad === "Hindi"
+                ? "hi"
+                : savedBeforeLoad === "Gujarati"
+                  ? "gu"
+                  : "en",
+            );
+          });
+        }
+
+        async function loadTranslations() {
+          if (translations) return translations;
+
+          try {
+            const res = await fetch("./JSON/data.json");
+            if (!res.ok) throw new Error("JSON not found");
+            translations = await res.json();
+          } catch (err) {
+            console.error("Translation load failed:", err);
+            translations = {};
+          }
+
+          return translations;
+        }
+
+        function setActiveUI(lang) {
+          const container = document.querySelector(".navbar-language");
+          if (!container) return;
+
+          container.classList.remove("lang-left", "lang-right", "lang-middle");
+
+          if (lang === "English") {
+            container.classList.add("lang-left");
+          } else if (lang === "Gujarati") {
+            container.classList.add("lang-right");
+          } else if (lang === "Hindi") {
+            container.classList.add("lang-middle");
+          }
+
+          document.querySelectorAll(".navbar-language > div").forEach((btn) => {
+            btn.classList.remove("lang-active");
+          });
+
+          const mapBtn = {
+            English: ".english-button",
+            Hindi: ".hindi-button",
+            Gujarati: ".gujrati-button",
+          };
+
+          document.querySelector(mapBtn[lang])?.classList.add("lang-active");
+        }
+
+        function applyLanguage(lang) {
+          if (!translations || !translations[lang]) {
+            lang = DEFAULT_LANG;
+          }
+
+          document.documentElement.setAttribute("lang", lang);
+
+          document.body.setAttribute(
+            "data-lang",
+            lang === "Hindi" ? "hi" : lang === "Gujarati" ? "gu" : "en",
+          );
+
+          setActiveUI(lang);
+
+          if (!translations || !translations[lang]) return;
+
+          document.querySelectorAll("[data-lang-key]").forEach((el) => {
+            const key = el.getAttribute("data-lang-key");
+            const value = translations[lang][key];
+
+            if (value == null) return;
+
+            if (String(value).includes("<br")) {
+              el.innerHTML = value;
+            } else {
+              el.textContent = value;
+            }
+          });
+
+          localStorage.setItem(LANG_KEY, lang);
+        }
+
+        function playAudio(audio) {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+
+          audio.play().catch((err) => {
+            console.log("Audio play blocked:", err);
+          });
+        }
+
+        async function initLang() {
+          await loadTranslations();
+
+          const savedLang = localStorage.getItem(LANG_KEY);
+          const currentLang =
+            savedLang && translations[savedLang] ? savedLang : DEFAULT_LANG;
+
+          applyLanguage(currentLang);
+
+          const englishBtn = document.querySelector(".english-button");
+          const hindiBtn = document.querySelector(".hindi-button");
+          const gujratiBtn = document.querySelector(".gujrati-button");
+
+          const englishAudio = document.getElementById("englishAudio");
+          const hindiAudio = document.getElementById("hindiAudio");
+          const gujratiAudio = document.getElementById("gujratiAudio");
+
+          function addLanguageButtonAudio(button, lang, langAudio) {
+            if (!button) return;
+
+            // only language audio on click
+            button.addEventListener("click", () => {
+              playAudio(langAudio);
+              applyLanguage(lang);
+            });
+          }
+
+          addLanguageButtonAudio(englishBtn, "English", englishAudio);
+          addLanguageButtonAudio(hindiBtn, "Hindi", hindiAudio);
+          addLanguageButtonAudio(gujratiBtn, "Gujarati", gujratiAudio);
+
+          window.setLanguage = applyLanguage;
+        }
+
+        document.addEventListener("DOMContentLoaded", initLang);
+      })();
+    </script>
+
+    <script>
+      window.addEventListener("load", () => {
+        const wrap = document.querySelector(".flower-container");
+        const homeLink = document.querySelector(".back-btn a");
+
+        const flowerSfx = document.getElementById("NavigateClick");
+        const clickSfx = document.getElementById("clickEffect");
+
+        if ((!wrap && !homeLink) || !clickSfx) return;
+
+        const play = async (audio) => {
+          if (!audio) return;
+
+          try {
+            audio.pause();
+            audio.currentTime = 0;
+            await audio.play();
+          } catch (_) {}
+        };
+
+        const stop = (audio) => {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+        };
+
+        if (homeLink) {
+          homeLink.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            const href = homeLink.getAttribute("href");
+
+            await play(clickSfx);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 200);
+          });
+        }
+
+        if (wrap) {
+          wrap.addEventListener("click", (e) => {
+            const a = e.target.closest("a.flower");
+            if (!a || !wrap.contains(a)) return;
+
+            e.preventDefault();
+
+            const href = a.getAttribute("href");
+
+            stop(clickSfx);
+            play(flowerSfx);
+
+            document.body.classList.add("page-exit");
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>   

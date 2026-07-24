@@ -1,0 +1,405 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+@font-face {
+  font-family: "BalooRegular";
+  src: url("./fonts/Baloo Regular 400.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ArabotoBlack";
+  src: url("./fonts/Araboto Black 400.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ITFDevanagariBold";
+  src: url("./fonts/ITFDevanagari.ttc") format("truetype");
+  font-weight: 700!important;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChaparralProBold";
+  src: url("./fonts/ChaparralPro-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GujaratiRegular";
+  src:
+    url("./fonts/NotoSansGujarati-Regular.woff2") format("woff2"),
+    url("./fonts/NotoSansGujarati-Regular.ttf") format("truetype");
+  font-weight: 700!important;
+  font-style: normal;
+}
+html[lang="English"] body {
+  font-family: "BalooRegular", system-ui, sans-serif ;
+}
+
+html[lang="Hindi"] body {
+  font-family: "ITFDevanagariBold", "Noto Sans Devanagari", serif !important;
+}
+
+html[lang="Gujarati"] body {
+  font-family: "GujaratiRegular", "Noto Sans Gujarati", sans-serif !important;
+}
+
+html, body { 
+  height: 100%;
+    font-family: "BalooRegular", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: 'BalooRegular';
+  background-color:#AFE2FD;
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  transform: scale(0.985);
+  background-image: url("./assets/images/bg2-fram2.png");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+nav {
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vw 2vw;
+  z-index: 999;
+}
+
+.navbar-language {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  color: #FAA22C;
+  width: 11vw;
+  height: 3.7vw!important;
+  object-fit: contain;
+  padding: 0vh 0.4vw;
+  border-radius: 50vb;
+  transition: border-radius 0.35s ease;
+    font-family: "BalooRegular", sans-serif;}
+
+
+.navbar-language > div {
+  width: 3vw;
+  height: 3vw;
+  font-size: 1.7vw;
+  font-weight: bold;
+  text-align: center;
+  border: 0.8vb solid #FAA22C;
+  background: transparent;
+  color: #FAA22C;
+  cursor: pointer;
+  opacity: 0.75;
+  border-radius: 15vb;
+  transition:
+    border-radius 0.35s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    opacity 0.25s ease;
+        font-family: "BalooRegular", sans-serif;
+}
+
+.navbar-language > div:hover {
+  opacity: 1;
+  background-color: rgba(250, 162, 44, 0.18);
+}
+
+.navbar-language > div.lang-active {
+  opacity: 1;
+  transform: scale(1.08);
+  box-shadow: 0 0.35vw 0.7vw rgba(250, 162, 44, 0.45);
+  border-radius: 0.3vb;
+}
+
+.navbar-language.lang-left {
+  border-top-left-radius: 15vb;
+  border-bottom-left-radius: 15vb;
+  border-top-right-radius: 50vb;
+  border-bottom-right-radius: 50vb;
+}
+
+.navbar-language.lang-left .english-button {
+  border-radius:15vb;
+}
+
+.navbar-language.lang-left .hindi-button,
+.navbar-language.lang-left .gujrati-button {
+  border-radius:50vb;
+}
+
+
+.navbar-language.lang-right {
+  border-top-right-radius: 15vb;
+  border-bottom-right-radius: 15vb;
+  border-top-left-radius: 50vb;
+  border-bottom-left-radius: 50vb;
+}
+
+.navbar-language.lang-right .gujrati-button {
+  border-radius: 15vb;
+}
+
+.navbar-language.lang-right .english-button,
+.navbar-language.lang-right .hindi-button {
+  border-radius: 50vb;
+}
+
+
+.navbar-language.lang-middle {
+  border-radius: 50vb;
+}
+
+.navbar-language.lang-middle .english-button,
+.navbar-language.lang-middle .gujrati-button {
+  border-radius: 50vb;
+}
+
+.navbar-language.lang-middle .hindi-button {
+  border-radius: 15vb;
+}
+
+.back-btn {
+  background-color: white;
+  height: 4vw;
+  border-radius: 2vb;
+  width: 4vw;
+  z-index: 10;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  z-index: 9999;
+}
+
+.back-btn img {
+  opacity: 0.6;
+  width: 2vw;
+  display: block;
+  margin: auto;
+  padding: 2vh 0;
+  rotate:90deg;
+  transition:
+     rotate 0.5s,
+    opacity 0.5s,
+    filter 0.5s ;
+  transform-origin: center;
+}
+
+.back-btn:hover img {
+  rotate:0deg;
+  opacity: 1;
+  width: 3vw;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+  padding: 1vh 0;
+}
+
+.back-label{
+  position: absolute;
+  bottom: -2.2vw;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  color: #FAA22C;
+  font-size: 1.2vw;
+  font-weight: 600;
+  padding: 0.3vw 0.6vw;
+  border-radius: 0.4vw;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+.back-btn:hover .back-label{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+main{
+  position: relative;
+  height: 90vh;
+  width: 100vw;
+  padding: 0vw;
+  overflow: hidden;
+}
+.board{
+ position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 55vw;
+  height: auto;
+  margin: 0; 
+   
+}
+.board img{
+   width: 100%;
+  height: auto;
+  max-height: 90vh; 
+  object-fit: contain;
+  display: block;
+}
+.flower-container{
+  position: absolute;
+  padding: 0 7vw;
+  width: 100%;
+  height: 25vw;
+  display: flex; 
+  gap: 5vw;
+  bottom:-3vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.flower-container a img{
+  width: 100%;
+  height: 21vw;
+  /* background-color: pink; */
+}
+
+.flower-container a{
+  position: relative;
+  text-decoration: none;
+   z-index: 1!important;
+   display: block!important;
+    transform-origin: bottom center;
+  transition: transform 0.35s ease;
+}
+.flower-container a p{
+  width: 10vw;
+  height: 5vw;
+  font-size: 1.5vw;
+  line-height: 1.5vw;
+  padding:1vh 0.2vw;
+  text-align: center;
+}
+
+html[lang="Gujarati"] .flower-container a p {
+  font-weight: bolder!important;  
+    font-size: 1.4vw!important;
+    line-height: 1.8vw!important;
+}
+html[lang="Hindi"] .flower-container a p {
+  font-weight: bolder!important; 
+  font-size: 1.4vw; 
+  line-height: 1.8vw;
+}
+
+.flower-container a:hover{
+  transform: scale(1.12);
+  z-index: 9999; /* bring it above others */
+}
+
+.flower-container a:active{
+  transform: scale(1.12);
+  z-index: 9999;
+}
+
+.flower-container .flower1{
+    transform-origin: bottom center;
+  animation: flowerPop 2s ease-in-out 1s infinite; 
+  will-change: transform;
+}
+
+@keyframes flowerPop {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.05); }
+  40%  { transform: scale(0.98); }
+  60%  { transform: scale(1.08); }
+  80%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+.num{
+  position: absolute;
+  font-size: 2.8vw;
+  z-index: 10000;
+  pointer-events: none;
+  width: 20%;
+  height: 4vw;
+  text-align: center;
+}
+html[lang="Gujarati"] .num {
+  font-size: 2.5vw;
+  font-weight: bolder;  
+}
+html[lang="Hindi"] .num {
+  font-size: 2.5vw;
+  font-weight: bolder!important;  
+}
+
+.num1{
+    /* position: absolute; */
+  bottom: 12vw;
+  left: 38%;
+}
+.num2{
+  bottom: 11.5vw;
+  left: 36.9%;
+}
+.num3{
+  bottom: 11.2vw;
+  left: 42%;
+}
+/* title */
+.title{
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+.title h1{
+  font-size: 5vw!important;
+  line-height: 10vh;
+  text-align: center;
+  color:#006E90;
+   text-shadow: 0.2vw 0.4vw 0.4vw rgba(0, 110, 144, 0.35);
+}
+
+
+html[lang="Hindi"] .title h1 {
+ font-size: 4.6vw!important;
+ line-height: 5.5vw!important;
+}
+
+html[lang="Gujarati"] .title h1 {
+ font-size: 4.6vw!important;
+ line-height: 5.5vw!important;
+}
+
+
+.page-fade {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 5s ease, transform 5s ease;
+}
+
+.page-fade .page-exit {
+  opacity: 0;
+  transform: scale(0.985);
+  pointer-events: none;
+}
+
+.page-fade .page-exit .flower-container a {
+  transition: none !important;
+  transform: none !important;
+}

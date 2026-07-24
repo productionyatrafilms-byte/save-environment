@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="English">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How are we destroying Environment?</title>
+    <link rel="stylesheet" href="destroying-environment.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+  </head>
+
+  <body style="background-color: #afe2fd" class="intro">
+    <nav>
+      <div class="home-btn">
+        <a href="index.html">
+          <img src="./assets/images/home-btn.png" alt="Home" />
+        </a>
+        <span class="home-label" data-lang-key="homeTooltip">Home</span>
+      </div>
+
+      <div class="title" style="position: relative; color: #ad93c5">
+        <img class="rectangle" src="./assets/images/Rectangle.png" alt="" />
+        <h2 data-lang-key="title1">How we are destroying Environment?</h2>
+
+        <div class="circle">
+          <img src="./assets/images/circle.png" alt="" />
+          <span data-lang-key="num.1">1</span>
+        </div>
+      </div>
+
+      <div class="navbar-language">
+        <div class="english-button">E</div>
+        <div class="hindi-button">H</div>
+        <div class="gujrati-button">G</div>
+      </div>
+    </nav>
+
+    <div id="pageTooltip" class="page-tooltip" aria-hidden="true">
+      <span class="tooltip-text"></span>
+    </div>
+
+    <div class="page-content">
+      <div class="vector1"></div>
+      <div class="vector2"></div>
+
+      <img class="shadow" src="./assets/images/shadow.png" alt="" />
+
+      <div class="pages">
+        <a class="num num1" href="destroying-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="destroy" />
+          <span data-lang-key="num.1">1</span>
+        </a>
+
+        <a class="num num2" href="benefit-from-nature.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="nature" />
+          <span data-lang-key="num.2">2</span>
+        </a>
+
+        <a class="num num3" href="save-environment.html">
+          <img src="./assets/images/circle.png" alt="" data-tip="save" />
+          <span data-lang-key="num.3">3</span>
+        </a>
+      </div>
+
+      <div class="tooltip-content" hidden>
+        <div id="destroy" data-lang-key="page.destroy">
+          How are we destroying Environment?
+        </div>
+
+        <div id="nature" data-lang-key="page.nature">
+          what do we benefit from the Nature?
+        </div>
+
+        <div id="save" data-lang-key="page.save">
+          How can we Save Environment
+        </div>
+      </div>
+
+      <main>
+        <div class="board" style="position: absolute">
+          <img src="./assets/images/bord.png" alt="" />
+
+          <div
+            class="board-text-overlay"
+            style="position: absolute"
+            id="boardText"
+          >
+            <h2></h2>
+          </div>
+        </div>
+
+        <div class="image-board">
+          <div class="swiper imageSwiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/destroy1.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/destroy2.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/destroy3.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/destroy4.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+
+              <div class="swiper-slide">
+                <video
+                  src="./assets/videos/destroy5.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div class="bottom-swiper-ui">
+        <button class="env-prev" type="button" aria-label="Previous">
+          <img src="./assets/images/prev-btn.png" alt="Previous" />
+        </button>
+
+        <div class="env-pagination" aria-label="Pagination"></div>
+
+        <button class="env-next" type="button" aria-label="Next">
+          <img src="./assets/images/next-btn.png" alt="Next" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Page load audio -->
+    <audio id="pageLoadAudio" preload="auto">
+      <source src="./assets/audio/startpage1.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Page navigation click audio -->
+    <audio id="NavigateClick" preload="auto">
+      <source
+        src="./assets/audio/554803__loafdv__glass-ding.wav"
+        type="audio/wav"
+      />
+    </audio>
+
+    <!-- Home button click audio -->
+    <audio id="HomePage" preload="auto">
+      <source src="./assets/audio/startpage.wav" type="audio/wav" />
+    </audio>
+
+    <!-- Slide effect audio -->
+    <audio id="SwipeEffect" preload="auto">
+      <source
+        src="./assets/audio/742832__sadiquecat__woosh-metal-tea-strainer-1.wav"
+        type="audio/wav"
+      />
+    </audio>
+
+    <!-- Language button click audio -->
+    <audio id="englishAudio" preload="auto">
+      <source src="./assets/audio/Eng.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="hindiAudio" preload="auto">
+      <source src="./assets/audio/Hindi.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <audio id="gujratiAudio" preload="auto">
+      <source src="./assets/audio/Gujarati.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="destroying-environment.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const pageLoadAudio = document.getElementById("pageLoadAudio");
+        const navClick = document.getElementById("NavigateClick");
+        const homeAudio = document.getElementById("HomePage");
+        const swipeEffect = document.getElementById("SwipeEffect");
+
+        const englishAudio = document.getElementById("englishAudio");
+        const hindiAudio = document.getElementById("hindiAudio");
+        const gujratiAudio = document.getElementById("gujratiAudio");
+
+        const englishBtn = document.querySelector(".english-button");
+        const hindiBtn = document.querySelector(".hindi-button");
+        const gujratiBtn = document.querySelector(".gujrati-button");
+
+        const pages = document.querySelector(".pages");
+        const homeLink = document.querySelector(".home-btn a");
+
+        const play = async (audio) => {
+          try {
+            if (!audio) return;
+
+            audio.pause();
+            audio.currentTime = 0;
+
+            await audio.play();
+          } catch (_) {}
+        };
+
+        const stop = (audio) => {
+          if (!audio) return;
+
+          audio.pause();
+          audio.currentTime = 0;
+        };
+
+        /* ==============================
+           PAGE LOAD AUDIO
+        ============================== */
+
+        const playPageLoadAudio = async () => {
+          try {
+            if (!pageLoadAudio) return;
+
+            pageLoadAudio.pause();
+            pageLoadAudio.currentTime = 0;
+
+            await pageLoadAudio.play();
+          } catch (_) {
+            /*
+              Browser may block autoplay.
+              If blocked, it will play after first user interaction.
+            */
+          }
+        };
+
+        playPageLoadAudio();
+
+        const unlockPageLoadAudio = async () => {
+          if (pageLoadAudio && pageLoadAudio.paused) {
+            await play(pageLoadAudio);
+          }
+
+          document.removeEventListener("pointerdown", unlockPageLoadAudio);
+          document.removeEventListener("touchstart", unlockPageLoadAudio);
+        };
+
+        document.addEventListener("pointerdown", unlockPageLoadAudio, {
+          once: true,
+        });
+
+        document.addEventListener("touchstart", unlockPageLoadAudio, {
+          once: true,
+        });
+
+        /* ==============================
+           LANGUAGE BUTTON AUDIO (click only)
+        ============================== */
+
+        function addLanguageButtonAudio(button, languageAudio) {
+          if (!button) return;
+
+          button.addEventListener("click", () => {
+            play(languageAudio);
+          });
+        }
+
+        addLanguageButtonAudio(englishBtn, englishAudio);
+        addLanguageButtonAudio(hindiBtn, hindiAudio);
+        addLanguageButtonAudio(gujratiBtn, gujratiAudio);
+
+        /* ==============================
+           SWIPER SLIDE EFFECT AUDIO
+        ============================== */
+
+        const playSlideEffect = () => {
+          play(swipeEffect);
+        };
+
+        window.swiper = new Swiper(".imageSwiper", {
+          loop: false,
+          speed: 600,
+
+          pagination: {
+            el: ".env-pagination",
+            clickable: true,
+          },
+
+          navigation: {
+            nextEl: ".env-next",
+            prevEl: ".env-prev",
+          },
+
+          on: {
+            init: function () {
+              const updateNavState = () => {
+                const prevBtn = this.navigation?.prevEl;
+                const nextBtn = this.navigation?.nextEl;
+
+                if (prevBtn) {
+                  const disabled = this.isBeginning;
+
+                  prevBtn.disabled = disabled;
+                  prevBtn.style.opacity = disabled ? "0.4" : "1";
+                  prevBtn.style.pointerEvents = disabled ? "none" : "auto";
+                }
+
+                if (nextBtn) {
+                  const disabled = this.isEnd;
+
+                  nextBtn.disabled = disabled;
+                  nextBtn.style.opacity = disabled ? "0.4" : "1";
+                  nextBtn.style.pointerEvents = disabled ? "none" : "auto";
+                }
+              };
+
+              this._updateNavState = updateNavState;
+              updateNavState();
+
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+
+              window.setLanguage?.(saved);
+            },
+
+            slideChangeTransitionStart: function () {
+              playSlideEffect();
+            },
+
+            slideChange: function () {
+              this._updateNavState?.();
+
+              const saved =
+                localStorage.getItem("selectedLanguage") || "English";
+
+              window.setLanguage?.(saved);
+            },
+          },
+        });
+
+        /* ==============================
+           PAGES CLICK AUDIO + NAVIGATION
+        ============================== */
+
+        if (pages && navClick) {
+          pages.addEventListener("click", (e) => {
+            const a = e.target.closest("a");
+
+            if (!a || !pages.contains(a)) return;
+            if (document.body.classList.contains("intro")) return;
+
+            e.preventDefault();
+
+            const href = a.getAttribute("href");
+
+            if (!href) return;
+
+            play(navClick);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
+          });
+        }
+
+        /* ==============================
+           HOME CLICK AUDIO + NAVIGATION
+        ============================== */
+
+        if (homeLink && homeAudio) {
+          homeLink.addEventListener("click", (e) => {
+            if (document.body.classList.contains("intro")) return;
+
+            e.preventDefault();
+
+            const href = homeLink.getAttribute("href");
+
+            if (!href) return;
+
+            play(homeAudio);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 800);
+          });
+        }
+
+        /* ==============================
+           AUDIO UNLOCK
+        ============================== */
+
+        const unlock = async () => {
+          const audios = [
+            pageLoadAudio,
+            navClick,
+            homeAudio,
+            swipeEffect,
+            englishAudio,
+            hindiAudio,
+            gujratiAudio,
+          ];
+
+          for (const audio of audios) {
+            try {
+              if (!audio) continue;
+
+              audio.muted = true;
+              await audio.play();
+              audio.pause();
+              audio.currentTime = 0;
+              audio.muted = false;
+            } catch (_) {}
+          }
+
+          document.removeEventListener("pointerdown", unlock);
+          document.removeEventListener("touchstart", unlock);
+        };
+
+        document.addEventListener("pointerdown", unlock, { once: true });
+        document.addEventListener("touchstart", unlock, { once: true });
+      });
+    </script>
+  </body>
+</html>
