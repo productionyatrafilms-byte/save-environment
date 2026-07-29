@@ -602,6 +602,7 @@ html[lang="hi"] .board-text-overlay h2 {
   justify-content: space-between;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  pointer-events: auto;
 }
 
 .bottom-swiper-ui button {

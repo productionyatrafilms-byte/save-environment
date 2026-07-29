@@ -21,23 +21,22 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
-        z-index: 9999;
+        z-index: 999999;
         display: flex;
         justify-content: center;
         align-items: center;
          opacity: 0;
         visibility: hidden;
-      }
-
-      .pranam-link span{
-        position: absolute;
+         position: absolute;
         text-decoration: none;
+        pointer-events: auto;
+        cursor: pointer;
         color: white;
         font-size: 1.7vw;
         padding-right: 2vw;
         text-shadow: 0.15vw 0.15vw 0.1vw rgba(0, 0, 0, 0.766);
-       
       }
+
 
 @keyframes pranamPop {
   0% {
@@ -63,9 +62,8 @@
   </head>
 
   <body style="background-color: #afe2fd" class="intro">
-     <a href="./pranam.html" class="pranam-link">
-
-      <span data-lang-key="pranam"></span>
+     <a href="pranam.html" class="pranam-link" data-lang-key="pranam">
+  
     </a>
     <nav>
       <div class="home-btn">
