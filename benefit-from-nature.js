@@ -3,6 +3,28 @@
   const DEFAULT_LANG = "English";
   const BOARD_PREFIX = "board2";
 
+  // ================= LANDSCAPE ALERT =================
+
+let landscapeAlertShown = false;
+
+function checkScreenSize() {
+  const isMobile =
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+  if (isMobile && window.innerWidth < 768) {
+    if (!landscapeAlertShown) {
+      landscapeAlertShown = true;
+      alert("Please use Landscape!");
+    }
+  } else {
+    landscapeAlertShown = false;
+  }
+}
+
+window.addEventListener("load", checkScreenSize);
+window.addEventListener("resize", checkScreenSize);
+
+
   let translations = {};
   let currentLang = localStorage.getItem(LANG_KEY) || DEFAULT_LANG;
   let popSfx = null;
