@@ -413,15 +413,15 @@ main {
 }
 
 .pages .num1 span {
-  top: 1vh
+top:0.5vw;
 }
 
 .pages .num2 span {
-  top: 1vh
+  top:0.5vw;
 }
 
 .pages .num3 span {
-  top: 1vh
+ top:0.5vw;
 }
 
 .board {
@@ -475,9 +475,9 @@ main {
 
 .page-tooltip {
   position: fixed;
-  right: 1vh;
-  top: 50vh;
-  transform: translateY(-50%) translateX(0.1vw);
+  right: 1.4vw;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1000000;
   pointer-events: none;
   z-index: 100;
@@ -486,11 +486,15 @@ main {
   color: #fff;
   font-size: 1.1vw;
   font-weight: 600;
-  padding: 1vw 3vw 1vw 3vw;
-  border-radius: 15vb;
+  padding: 2vw;
+  padding-right: 3vw;
+  text-align: left;
+  border-radius: 10vw;
   width: 20vw;
-  height: 10vh;
+  height: 4.5vw;
   word-wrap: wrap;
+  display: flex;
+  align-items: center;
   opacity: 0;
   visibility: hidden;
   transform-origin: right center;
@@ -503,6 +507,7 @@ main {
 }
 
 .page-tooltip.show {
+    border-radius: 10vw;
   opacity: 1;
   visibility: visible;
   transform: translateY(-50%) scaleX(1);
@@ -596,7 +601,7 @@ html[lang="hi"] .board-text-overlay h2 {
   bottom: 5vh;
   transform: translateX(-50%);
   z-index: 99999;
-  width: 90vw;
+  width: 65vw;
   display: grid;
   align-items: center;
   justify-content: space-between;
@@ -610,8 +615,8 @@ html[lang="hi"] .board-text-overlay h2 {
   background: transparent;
   padding: 0;
   cursor: pointer;
-  width: 30vw;
-  height: 10vh;
+  width: 10vw;
+  height: 5vw;
   padding: 0 !important;
   display: grid;
   place-items: center;

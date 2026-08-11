@@ -351,16 +351,15 @@ html[lang="Hindi"] .num {
 }
 
 .num1{
-    /* position: absolute; */
-  bottom: 12vw;
+  bottom: 12.5vw;
   left: 38%;
 }
 .num2{
-  bottom: 11.5vw;
+  bottom: 12vw;
   left: 36.9%;
 }
 .num3{
-  bottom: 11.2vw;
+  bottom: 11.8vw;
   left: 42%;
 }
 /* title */

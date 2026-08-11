@@ -38,13 +38,431 @@
     </style>
 
     <link rel="stylesheet" href="benefit-from-nature.css" />
-    <link
-      rel="stylesheet"
-      href="./swiper-bundle.min.css"
-    />
+    <link rel="stylesheet" href="./swiper-bundle.min.css" />
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css" />
+
+    <style>
+      /* ================= VIDEO BUTTON (slide 2 only) ================= */
+
+      .video-btn {
+        position: fixed;
+        bottom: 2.5vw;
+        left: 10vw;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateX(-50%) translateY(1vw);
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease,
+          transform 0.35s ease;
+      }
+
+      .video-btn.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .start-video-btn {
+        border: none;
+        background-color: transparent;
+        background-image: url("./assets/images/watch.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 14vw;
+        height: 5vw;
+        transition:
+          transform 0.25s ease,
+          background 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .start-video-btn:active {
+        transform: scale(0.98);
+      }
+
+      .start-text {
+        font-size: 1.4vw;
+        font-weight: 900;
+        letter-spacing: 0.1vw;
+        color: #ffffff;
+        line-height: 1;
+        font-family: "BalooRegular";
+        text-align: end;
+        width: 100%;
+        padding-right: 1vw;
+      }
+
+      html[data-lang="hi"] .start-text,
+      body[data-lang="hi"] .start-text {
+        font-size: 1.5vw !important;
+      }
+
+      html[data-lang="gu"] .start-text,
+      body[data-lang="gu"] .start-text {
+        font-size: 1.5vw !important;
+      }
+
+      /* ================= BLUR WHILE POPUP OPEN ================= */
+
+      nav,
+      .page-content,
+      .page-tooltip {
+        transition:
+          filter 0.4s ease,
+          transform 0.4s ease;
+      }
+
+      body.video-open nav,
+      body.video-open .page-content,
+      body.video-open .page-tooltip {
+        filter: blur(0.45vw);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      /* ================= VIDEO POPUP ================= */
+
+      .close-video-btn i,
+      .video-center-play i,
+      .control-btn i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex: 0 0 auto;
+      }
+
+      .close-video-btn i {
+        width: 1.8vw;
+        min-width: 1.8vw;
+        max-width: 1.8vw;
+      }
+
+      .video-center-play i {
+        width: 2.2vw;
+        min-width: 2.2vw;
+        max-width: 2.2vw;
+      }
+
+      .control-btn i {
+        width: 1.4vw;
+        min-width: 1.4vw;
+        max-width: 1.4vw;
+      }
+
+      .video-popup {
+        position: fixed;
+        inset: 0;
+        z-index: 9999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.38);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+
+      .video-popup.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .video-box {
+        position: relative;
+        width: 68vw;
+        aspect-ratio: 16 / 9;
+        border-radius: 2vw;
+        background: #fbb040c2;
+        padding: 0.75vw;
+        border: 0.25vw solid white;
+        box-shadow: 0 1vw 3vw rgba(0, 0, 0, 0.45);
+        transform: scale(0.82);
+        opacity: 0;
+        transition:
+          transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.35s ease;
+        backdrop-filter: blur(0.5vw);
+        -webkit-backdrop-filter: blur(0.5vw);
+      }
+
+      .video-popup.active .video-box {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .popup-video-frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 1.4vw;
+        overflow: hidden;
+        background: #000;
+        border: 0.18vw solid #e58d2a;
+      }
+
+      .popup-video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        background: #000;
+      }
+
+      .close-video-btn {
+        position: absolute;
+        top: -1.35vw;
+        right: -1.35vw;
+        width: 3.4vw;
+        height: 3.4vw;
+        border: none;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #e58d2a;
+        font-size: 1.8vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 0.35vw 1vw rgba(0, 0, 0, 0.35);
+        transition:
+          transform 0.25s ease,
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .close-video-btn:hover {
+        transform: rotate(90deg) scale(1.08);
+        background: #e58d2a;
+        color: #ffffff;
+      }
+
+      .custom-controls {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 5;
+        padding: 1vw;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75vw;
+        background: linear-gradient(
+          to top,
+          rgba(251, 176, 64, 0.45),
+          rgba(229, 141, 42, 0.35),
+          rgba(229, 141, 42, 0)
+        );
+        opacity: 1;
+        transition: opacity 0.25s ease;
+      }
+
+      .popup-video-frame.controls-hidden .custom-controls {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .progress-wrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .video-progress {
+        width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        height: 0.45vw;
+        border-radius: 5vw;
+        background: rgba(255, 255, 255, 0.35);
+        cursor: pointer;
+        overflow: hidden;
+        pointer-events: auto;
+      }
+
+      .video-progress::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1vw;
+        height: 1vw;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: -70vw 0 0 69.6vw #ffffff;
+        cursor: pointer;
+      }
+
+      .video-progress::-moz-range-thumb {
+        width: 1vw;
+        height: 1vw;
+        border: none;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+      }
+
+      .video-progress::-moz-range-progress {
+        height: 0.45vw;
+        border-radius: 5vw;
+        background: #ffffff;
+      }
+
+      .control-row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1vw;
+      }
+
+      .control-left,
+      .control-right {
+        display: flex;
+        align-items: center;
+        gap: 0.8vw;
+      }
+
+      .control-btn {
+        width: 2.8vw;
+        min-width: 2.8vw;
+        max-width: 2.8vw;
+        height: 2.8vw;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.24);
+        color: #ffffff;
+        font-size: 1.2vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .control-btn:hover {
+        background: #ffffff;
+        color: #e58d2a;
+        transform: scale(1.08);
+      }
+
+      .time-text {
+        color: #ffffff;
+        font-size: 1.05vw;
+        font-weight: 700;
+        font-family: Arial, sans-serif;
+        letter-spacing: 0.05vw;
+        min-width: 8vw;
+      }
+
+      .volume-range {
+        width: 7vw;
+        appearance: none;
+        -webkit-appearance: none;
+        height: 0.4vw;
+        border-radius: 5vw;
+        background: rgba(255, 255, 255, 0.35);
+        cursor: pointer;
+      }
+
+      .volume-range::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 0.9vw;
+        height: 0.9vw;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+      }
+
+      .volume-range::-moz-range-thumb {
+        width: 0.9vw;
+        height: 0.9vw;
+        border: none;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+      }
+
+      .video-center-play {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 6vw;
+        min-width: 6vw;
+        max-width: 6vw;
+        height: 6vw;
+        border: 0.22vw solid rgba(255, 255, 255, 0.85);
+        border-radius: 50%;
+        background: #c9741d;
+        color: #ffffff;
+        font-size: 2.2vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transform: translate(-50%, -50%) scale(1);
+        z-index: 4;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .video-center-play.hide {
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+
+      .video-center-play:hover {
+        background: rgba(229, 141, 42, 0.82);
+        transform: translate(-50%, -50%) scale(1.08);
+      }
+
+      .video-box:fullscreen {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        padding: 0;
+        background: #000;
+      }
+
+      .video-box:fullscreen .popup-video-frame {
+        border-radius: 0;
+        border: none;
+      }
+
+      .video-box:fullscreen .close-video-btn {
+        top: 1.5vw;
+        right: 1.5vw;
+      }
+    </style>
   </head>
 
   <body style="background-color: #afe2fd" class="intro">
+    <!-- Video button (visible only on slide 2) -->
+    <div class="video-btn">
+      <button class="start-video-btn" type="button">
+        <span class="start-text" data-lang-key="watch">START</span>
+      </button>
+    </div>
+
     <nav>
       <div class="home-btn">
         <a href="index.html">
@@ -188,6 +606,76 @@
       </div>
     </div>
 
+    <!-- Video popup -->
+    <div class="video-popup">
+      <div class="video-box">
+        <button class="close-video-btn" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="popup-video-frame">
+          <!-- CHANGE THIS SRC to the nature video for this page -->
+          <video
+            class="popup-video"
+            src="./assets/videos/What is Environment And How To Keep It Clean_ Edited.webm"
+            preload="metadata"
+            controlsList="nodownload noplaybackrate"
+            disablePictureInPicture
+          ></video>
+
+          <button class="video-center-play" type="button">
+            <i class="fa-solid fa-play"></i>
+          </button>
+
+          <div class="custom-controls">
+            <div class="progress-wrap">
+              <input
+                class="video-progress"
+                type="range"
+                min="0"
+                max="100"
+                value="0"
+                step="0.1"
+              />
+            </div>
+
+            <div class="control-row">
+              <div class="control-left">
+                <button class="control-btn play-pause-btn" type="button">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+
+                <div class="time-text">
+                  <span class="current-time">0:00</span>
+                  /
+                  <span class="total-time">0:00</span>
+                </div>
+              </div>
+
+              <div class="control-right">
+                <button class="control-btn mute-btn" type="button">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+
+                <input
+                  class="volume-range"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="1"
+                />
+
+                <button class="control-btn fullscreen-btn" type="button">
+                  <i class="fa-solid fa-expand"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Page load audio -->
     <audio id="pageLoadAudio" preload="auto">
       <source src="./assets/audio/startpage1.mp3" type="audio/mpeg" />
@@ -226,117 +714,452 @@
 
     <script src="./swiper-bundle.min.js"></script>
     <script src="benefit-from-nature.js"></script>
-<script src="./djp.js"></script>
-<script>
-  window.addEventListener("load", () => {
-    const englishBtn = document.querySelector(".english-button");
-    const hindiBtn = document.querySelector(".hindi-button");
-    const gujratiBtn = document.querySelector(".gujrati-button");
+    <script src="./djp.js"></script>
 
-    const pageLoadAudio = document.getElementById("pageLoadAudio");
-    const englishAudio = document.getElementById("englishAudio");
-    const hindiAudio = document.getElementById("hindiAudio");
-    const gujratiAudio = document.getElementById("gujratiAudio");
-    const swipeEffect = document.getElementById("SwipeEffect");
+    <script>
+      window.addEventListener("load", () => {
+        const englishBtn = document.querySelector(".english-button");
+        const hindiBtn = document.querySelector(".hindi-button");
+        const gujratiBtn = document.querySelector(".gujrati-button");
 
-    function playAudio(audio) {
-      if (!audio) return;
+        const pageLoadAudio = document.getElementById("pageLoadAudio");
+        const englishAudio = document.getElementById("englishAudio");
+        const hindiAudio = document.getElementById("hindiAudio");
+        const gujratiAudio = document.getElementById("gujratiAudio");
+        const swipeEffect = document.getElementById("SwipeEffect");
 
-      audio.pause();
-      audio.currentTime = 0;
+        function playAudio(audio) {
+          if (!audio) return;
 
-      audio.play().catch(() => {});
-    }
-
-    /* ==============================
-       PAGE LOAD AUDIO
-       Fixed:
-       - Plays only on page load
-       - Does NOT play on first swiper swipe
-    ============================== */
-
-    function playPageLoadAudio() {
-      if (!pageLoadAudio) return;
-
-      pageLoadAudio.pause();
-      pageLoadAudio.currentTime = 0;
-
-      pageLoadAudio.play().catch(() => {
-        /*
-          Browser may block autoplay.
-          We are NOT replaying it on pointerdown/touchstart,
-          because that caused the audio to play when first slide swiped.
-        */
-      });
-    }
-
-    playPageLoadAudio();
-
-    /* ==============================
-       AUDIO UNLOCK
-       Fixed:
-       - Unlocks audio safely
-       - Does NOT play pageLoadAudio after first user interaction
-    ============================== */
-
-    const unlockAudios = async () => {
-      const audios = [
-        englishAudio,
-        hindiAudio,
-        gujratiAudio,
-        swipeEffect,
-      ];
-
-      for (const audio of audios) {
-        try {
-          if (!audio) continue;
-
-          audio.muted = true;
-          await audio.play();
           audio.pause();
           audio.currentTime = 0;
-          audio.muted = false;
-        } catch (_) {}
-      }
 
-      document.removeEventListener("pointerdown", unlockAudios);
-      document.removeEventListener("touchstart", unlockAudios);
-    };
+          audio.play().catch(() => {});
+        }
 
-    document.addEventListener("pointerdown", unlockAudios, { once: true });
-    document.addEventListener("touchstart", unlockAudios, { once: true });
+        /* ==============================
+           PAGE LOAD AUDIO
+           Fixed:
+           - Plays only on page load
+           - Does NOT play on first swiper swipe
+        ============================== */
 
-    /* ==============================
-       LANGUAGE BUTTON AUDIO (click only)
-    ============================== */
+        function playPageLoadAudio() {
+          if (!pageLoadAudio) return;
 
-    function addLanguageAudio(button, languageAudio) {
-      if (!button) return;
+          pageLoadAudio.pause();
+          pageLoadAudio.currentTime = 0;
 
-      button.addEventListener("click", () => {
-        playAudio(languageAudio);
+          pageLoadAudio.play().catch(() => {
+            /*
+              Browser may block autoplay.
+              We are NOT replaying it on pointerdown/touchstart,
+              because that caused the audio to play when first slide swiped.
+            */
+          });
+        }
+
+        playPageLoadAudio();
+
+        /* ==============================
+           AUDIO UNLOCK
+        ============================== */
+
+        const unlockAudios = async () => {
+          const audios = [englishAudio, hindiAudio, gujratiAudio, swipeEffect];
+
+          for (const audio of audios) {
+            try {
+              if (!audio) continue;
+
+              audio.muted = true;
+              await audio.play();
+              audio.pause();
+              audio.currentTime = 0;
+              audio.muted = false;
+            } catch (_) {}
+          }
+
+          document.removeEventListener("pointerdown", unlockAudios);
+          document.removeEventListener("touchstart", unlockAudios);
+        };
+
+        document.addEventListener("pointerdown", unlockAudios, { once: true });
+        document.addEventListener("touchstart", unlockAudios, { once: true });
+
+        /* ==============================
+           LANGUAGE BUTTON AUDIO (click only)
+        ============================== */
+
+        function addLanguageAudio(button, languageAudio) {
+          if (!button) return;
+
+          button.addEventListener("click", () => {
+            playAudio(languageAudio);
+          });
+        }
+
+        addLanguageAudio(englishBtn, englishAudio);
+        addLanguageAudio(hindiBtn, hindiAudio);
+        addLanguageAudio(gujratiBtn, gujratiAudio);
+
+        /* ==============================
+           SWIPER HOOKS
+           - Swipe sound
+           - Video button visibility (slide 2 only)
+        ============================== */
+
+        // 2nd slide (zero-based index)
+        const VIDEO_SLIDE_INDEX = 1;
+
+        const videoBtnWrap = document.querySelector(".video-btn");
+
+        function updateVideoBtnState(index) {
+          if (!videoBtnWrap) return;
+
+          const shouldShow = index === VIDEO_SLIDE_INDEX;
+
+          videoBtnWrap.classList.toggle("show", shouldShow);
+
+          // If the user swipes away while the popup is open, close it
+          if (!shouldShow) {
+            window.closeEnvVideoPopup?.();
+          }
+        }
+
+        function bindSwiperHooks() {
+          const s = window.swiper;
+
+          if (!s || typeof s.on !== "function") return false;
+
+          s.on("slideChangeTransitionStart", () => {
+            playAudio(swipeEffect);
+          });
+
+          s.on("slideChange", function () {
+            updateVideoBtnState(this.realIndex ?? this.activeIndex ?? 0);
+          });
+
+          updateVideoBtnState(s.realIndex ?? s.activeIndex ?? 0);
+
+          return true;
+        }
+
+        // Swiper is created inside benefit-from-nature.js, so wait for it
+        if (!bindSwiperHooks()) {
+          let tries = 0;
+
+          const swiperWaiter = setInterval(() => {
+            tries++;
+
+            if (bindSwiperHooks() || tries > 40) {
+              clearInterval(swiperWaiter);
+            }
+          }, 100);
+        }
       });
-    }
+    </script>
 
-    addLanguageAudio(englishBtn, englishAudio);
-    addLanguageAudio(hindiBtn, hindiAudio);
-    addLanguageAudio(gujratiBtn, gujratiAudio);
+    <!-- ================= VIDEO POPUP PLAYER ================= -->
+    <script>
+      (() => {
+        const videoPlayClickSound = new Audio("./assets/audio/5.mp3");
 
-    /* ==============================
-       SWIPER SLIDE EFFECT AUDIO
-       Safe listener:
-       - Plays swipe audio only when slide changes
-       - Does not trigger page-load audio
-    ============================== */
+        function playClickSound(audio) {
+          audio.currentTime = 0;
+          audio.play().catch((err) => {
+            console.error("Error playing click sound:", err);
+          });
+        }
 
-    setTimeout(() => {
-      if (window.swiper && typeof window.swiper.on === "function") {
-        window.swiper.on("slideChangeTransitionStart", () => {
-          playAudio(swipeEffect);
+        const startVideoBtn = document.querySelector(".start-video-btn");
+        const videoPopup = document.querySelector(".video-popup");
+        const videoBox = document.querySelector(".video-box");
+        const closeVideoBtn = document.querySelector(".close-video-btn");
+        const popupVideo = document.querySelector(".popup-video");
+        const popupVideoFrame = document.querySelector(".popup-video-frame");
+
+        if (!videoPopup || !popupVideo) return;
+
+        const centerPlayBtn = document.querySelector(".video-center-play");
+        const playPauseBtn = document.querySelector(".play-pause-btn");
+        const playPauseIcon = playPauseBtn.querySelector("i");
+        const centerPlayIcon = centerPlayBtn.querySelector("i");
+
+        const videoProgress = document.querySelector(".video-progress");
+        const currentTimeText = document.querySelector(".current-time");
+        const totalTimeText = document.querySelector(".total-time");
+
+        const muteBtn = document.querySelector(".mute-btn");
+        const muteIcon = muteBtn.querySelector("i");
+        const volumeRange = document.querySelector(".volume-range");
+
+        const fullscreenBtn = document.querySelector(".fullscreen-btn");
+        const fullscreenIcon = fullscreenBtn.querySelector("i");
+
+        // Background slide videos (paused while the popup is open)
+        const slideVideos = document.querySelectorAll(".imageSwiper video");
+
+        let controlsTimer;
+        let lastVolume = 1;
+        let savedVideoTime = 0;
+        let isProgressDragging = false;
+
+        function formatTime(time) {
+          if (!time || isNaN(time)) return "0:00";
+
+          const minutes = Math.floor(time / 60);
+          const seconds = Math.floor(time % 60);
+
+          return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        }
+
+        function updatePlayIcons() {
+          if (popupVideo.paused) {
+            playPauseIcon.className = "fa-solid fa-play";
+            centerPlayIcon.className = "fa-solid fa-play";
+            centerPlayBtn.classList.remove("hide");
+          } else {
+            playPauseIcon.className = "fa-solid fa-pause";
+            centerPlayIcon.className = "fa-solid fa-pause";
+            centerPlayBtn.classList.add("hide");
+          }
+        }
+
+        function updateProgress() {
+          if (!popupVideo.duration) return;
+
+          savedVideoTime = popupVideo.currentTime;
+
+          if (!isProgressDragging) {
+            const progressValue =
+              (popupVideo.currentTime / popupVideo.duration) * 100;
+
+            videoProgress.value = progressValue;
+          }
+
+          currentTimeText.textContent = formatTime(popupVideo.currentTime);
+          totalTimeText.textContent = formatTime(popupVideo.duration);
+        }
+
+        // Free scrubbing: user can drag forward or backward anywhere on the bar
+        function handleProgressInput() {
+          if (!popupVideo.duration) return;
+
+          isProgressDragging = true;
+
+          const selectedTime =
+            (Number(videoProgress.value) / 100) * popupVideo.duration;
+
+          currentTimeText.textContent = formatTime(selectedTime);
+        }
+
+        function handleProgressChange() {
+          if (!popupVideo.duration) return;
+
+          const selectedTime =
+            (Number(videoProgress.value) / 100) * popupVideo.duration;
+
+          popupVideo.currentTime = selectedTime;
+          savedVideoTime = selectedTime;
+
+          isProgressDragging = false;
+          updateProgress();
+        }
+
+        function updateMuteIcon() {
+          if (popupVideo.muted || popupVideo.volume === 0) {
+            muteIcon.className = "fa-solid fa-volume-xmark";
+          } else if (popupVideo.volume < 0.5) {
+            muteIcon.className = "fa-solid fa-volume-low";
+          } else {
+            muteIcon.className = "fa-solid fa-volume-high";
+          }
+        }
+
+        function togglePlay() {
+          if (popupVideo.paused) {
+            popupVideo.play().catch(() => {});
+          } else {
+            popupVideo.pause();
+          }
+        }
+
+        function openVideoPopup() {
+          document.body.classList.add("video-open");
+          videoPopup.classList.add("active");
+
+          slideVideos.forEach((v) => v.pause());
+
+          popupVideo.volume = Number(volumeRange.value);
+          popupVideo.muted = false;
+
+          if (savedVideoTime > 0) {
+            popupVideo.currentTime = savedVideoTime;
+          }
+
+          updateMuteIcon();
+          updatePlayIcons();
+          updateProgress();
+
+          setTimeout(() => {
+            popupVideo.play().catch(() => {});
+          }, 250);
+        }
+
+        function closeVideoPopup() {
+          if (!videoPopup.classList.contains("active")) return;
+
+          savedVideoTime = popupVideo.currentTime;
+
+          popupVideo.pause();
+
+          videoPopup.classList.remove("active");
+          document.body.classList.remove("video-open");
+
+          slideVideos.forEach((v) => v.play().catch(() => {}));
+
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          }
+
+          updatePlayIcons();
+        }
+
+        // Exposed so the swiper can close the popup when leaving slide 2
+        window.closeEnvVideoPopup = closeVideoPopup;
+
+        function toggleMute() {
+          if (popupVideo.muted || popupVideo.volume === 0) {
+            popupVideo.muted = false;
+            popupVideo.volume = lastVolume || 1;
+            volumeRange.value = popupVideo.volume;
+          } else {
+            lastVolume = popupVideo.volume;
+            popupVideo.muted = true;
+            volumeRange.value = 0;
+          }
+
+          updateMuteIcon();
+        }
+
+        function changeVolume() {
+          const volumeValue = Number(volumeRange.value);
+
+          popupVideo.volume = volumeValue;
+          popupVideo.muted = volumeValue === 0;
+
+          if (volumeValue > 0) {
+            lastVolume = volumeValue;
+          }
+
+          updateMuteIcon();
+        }
+
+        function toggleFullscreen() {
+          if (!document.fullscreenElement) {
+            videoBox.requestFullscreen().catch(() => {});
+          } else {
+            document.exitFullscreen().catch(() => {});
+          }
+        }
+
+        function updateFullscreenIcon() {
+          fullscreenIcon.className = document.fullscreenElement
+            ? "fa-solid fa-compress"
+            : "fa-solid fa-expand";
+        }
+
+        function showControlsTemporarily() {
+          popupVideoFrame.classList.remove("controls-hidden");
+
+          clearTimeout(controlsTimer);
+
+          if (!popupVideo.paused) {
+            controlsTimer = setTimeout(() => {
+              popupVideoFrame.classList.add("controls-hidden");
+            }, 2200);
+          }
+        }
+
+        if (startVideoBtn) {
+          startVideoBtn.addEventListener("click", () => {
+            playClickSound(videoPlayClickSound);
+            openVideoPopup();
+          });
+        }
+
+        if (closeVideoBtn) {
+          closeVideoBtn.addEventListener("click", closeVideoPopup);
+        }
+
+        videoPopup.addEventListener("click", (e) => {
+          if (e.target === videoPopup) {
+            closeVideoPopup();
+          }
         });
-      }
-    }, 300);
-  });
-</script>
+
+        popupVideo.addEventListener("click", togglePlay);
+        popupVideo.addEventListener("play", updatePlayIcons);
+        popupVideo.addEventListener("pause", updatePlayIcons);
+        popupVideo.addEventListener("timeupdate", updateProgress);
+        popupVideo.addEventListener("loadedmetadata", updateProgress);
+
+        popupVideo.addEventListener("ended", () => {
+          savedVideoTime = 0;
+          videoProgress.value = 0;
+          currentTimeText.textContent = "0:00";
+          updatePlayIcons();
+        });
+
+        popupVideo.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+        });
+
+        videoProgress.addEventListener("input", handleProgressInput);
+        videoProgress.addEventListener("change", handleProgressChange);
+
+        videoProgress.addEventListener("mousedown", () => {
+          isProgressDragging = true;
+        });
+
+        videoProgress.addEventListener("touchstart", () => {
+          isProgressDragging = true;
+        });
+
+        centerPlayBtn.addEventListener("click", togglePlay);
+        playPauseBtn.addEventListener("click", togglePlay);
+        muteBtn.addEventListener("click", toggleMute);
+        volumeRange.addEventListener("input", changeVolume);
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+        popupVideoFrame.addEventListener("mousemove", showControlsTemporarily);
+        popupVideoFrame.addEventListener("click", showControlsTemporarily);
+
+        document.addEventListener("fullscreenchange", updateFullscreenIcon);
+
+        document.addEventListener("keydown", (e) => {
+          if (!videoPopup.classList.contains("active")) return;
+          if (!e.key) return;
+
+          if (e.key === "Escape") {
+            closeVideoPopup();
+          }
+
+          if (e.code === "Space") {
+            e.preventDefault();
+            togglePlay();
+          }
+
+          if (e.key.toLowerCase() === "m") {
+            toggleMute();
+          }
+
+          if (e.key.toLowerCase() === "f") {
+            toggleFullscreen();
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
