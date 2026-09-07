@@ -53,14 +53,8 @@ window.addEventListener("resize", checkScreenSize);
   async function loadTranslations() {
     if (translations) return translations;
 
-    try {
-      const res = await fetch("./JSON/data.json");
-      if (!res.ok) throw new Error("JSON not found");
-      translations = await res.json();
-    } catch (err) {
-      console.error("Translation load failed:", err);
-      translations = {};
-    }
+    // translations come from data.js, which must be loaded first
+    translations = typeof data !== "undefined" ? data : {};
 
     return translations;
   }
