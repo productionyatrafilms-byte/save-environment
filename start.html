@@ -410,12 +410,6 @@
   </head>
 
   <body class="page-fade">
-    <div class="video-btn">
-      <button class="start-video-btn" type="button">
-        <span class="start-text" data-lang-key="watch">START</span>
-      </button>
-    </div>
-
     <nav>
       <div class="back-btn">
         <a href="index.html">
@@ -477,74 +471,6 @@
       </div>
     </main>
 
-    <!-- Video popup -->
-    <div class="video-popup">
-      <div class="video-box">
-        <button class="close-video-btn" type="button">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <div class="popup-video-frame">
-          <video
-            class="popup-video"
-            src="./assets/videos/Milo Learn to Respect Nature_Edited.webm"
-            preload="metadata"
-            controlsList="nodownload noplaybackrate"
-            disablePictureInPicture
-          ></video>
-
-          <button class="video-center-play" type="button">
-            <i class="fa-solid fa-play"></i>
-          </button>
-
-          <div class="custom-controls">
-            <div class="progress-wrap">
-              <input
-                class="video-progress"
-                type="range"
-                min="0"
-                max="100"
-                value="0"
-                step="0.1"
-              />
-            </div>
-
-            <div class="control-row">
-              <div class="control-left">
-                <button class="control-btn play-pause-btn" type="button">
-                  <i class="fa-solid fa-play"></i>
-                </button>
-
-                <div class="time-text">
-                  <span class="current-time">0:00</span>
-                  /
-                  <span class="total-time">0:00</span>
-                </div>
-              </div>
-
-              <div class="control-right">
-                <button class="control-btn mute-btn" type="button">
-                  <i class="fa-solid fa-volume-high"></i>
-                </button>
-
-                <input
-                  class="volume-range"
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value="1"
-                />
-
-                <button class="control-btn fullscreen-btn" type="button">
-                  <i class="fa-solid fa-expand"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Back button audio -->
     <audio id="clickSfx" preload="auto">
