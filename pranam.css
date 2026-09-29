@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: "ITFDevanagariBold";
-  src: url("./fonts/ITFDevanagari-Bold.ttf") format("truetype");
+  src: url("./fonts/ITFDevanagari-Bold-02.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
