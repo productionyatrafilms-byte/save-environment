@@ -572,57 +572,57 @@
                   autoplay
                   loop
                   muted
-                  playsinline
+                  playsinline preload="auto"
                 ></video>
               </div>
 
               <div class="swiper-slide">
                 <video
                   src="./assets/videos/save2.mp4"
-                  autoplay
+                 
                   loop
                   muted
-                  playsinline
+                  playsinline preload="none"
                 ></video>
               </div>
 
               <div class="swiper-slide">
                 <video
                   src="./assets/videos/save3.mp4"
-                  autoplay
+                 
                   loop
                   muted
-                  playsinline
+                  playsinline preload="none"
                 ></video>
               </div>
 
               <div class="swiper-slide">
                 <video
                   src="./assets/videos/save4.mp4"
-                  autoplay
+                 
                   loop
                   muted
-                  playsinline
+                  playsinline preload="none"
                 ></video>
               </div>
 
               <div class="swiper-slide">
                 <video
                   src="./assets/videos/save5.mp4"
-                  autoplay
+                 
                   loop
                   muted
-                  playsinline
+                  playsinline preload="none"
                 ></video>
               </div>
 
               <div class="swiper-slide">
                 <video
                   src="./assets/videos/save6.mp4"
-                  autoplay
+                 
                   loop
                   muted
-                  playsinline
+                  playsinline preload="none"
                 ></video>
               </div>
             </div>
@@ -654,7 +654,7 @@
           <video
             class="popup-video"
             src="./assets/videos/ext1.mp4"
-            preload="metadata"
+            preload="none"
             controlsList="nodownload noplaybackrate"
             disablePictureInPicture
           ></video>
@@ -754,7 +754,6 @@
     <script src="./swiper-bundle.min.js"></script>
     <script src="./data.js"></script>
     <script src="save-environment.js"></script>
-    <script src="./djp.js"></script>
 
     <script>
       (() => {
@@ -944,10 +943,6 @@
           pagination: {
             el: ".env-pagination",
             clickable: true,
-          },
-
-          navigation: {
-            prevEl: ".env-prev",
           },
 
           on: {
@@ -1372,5 +1367,50 @@
         });
       })();
     </script>
-  </body>
+  
+    <script>
+      /* Only the active slide's video loads and plays; every other slide stays unloaded */
+      (function () {
+        function syncSlideVideos(swiper) {
+          swiper.slides.forEach(function (slide, index) {
+            slide.querySelectorAll("video").forEach(function (video) {
+              if (index === swiper.activeIndex) {
+                video.preload = "auto";
+
+                if (video.paused) {
+                  video.currentTime = 0;
+                  video.play().catch(function () {});
+                }
+              } else {
+                video.pause();
+                video.preload = "none";
+              }
+            });
+          });
+        }
+
+        function bind() {
+          var swiper = window.swiper || (document.querySelector(".imageSwiper") || {}).swiper;
+
+          if (!swiper || typeof swiper.on !== "function") return false;
+
+          swiper.on("slideChange", function () {
+            syncSlideVideos(this);
+          });
+
+          syncSlideVideos(swiper);
+          return true;
+        }
+
+        // the Swiper is created by the page's own script, so wait for it
+        if (!bind()) {
+          var tries = 0;
+          var waiter = setInterval(function () {
+            tries++;
+            if (bind() || tries > 40) clearInterval(waiter);
+          }, 100);
+        }
+      })();
+    </script>
+</body>
 </html>

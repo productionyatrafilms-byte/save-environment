@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: "BalooRegular";
-  src: url("./fonts/Baloo Regular 400.ttf") format("truetype");
+  src: url("./fonts/Baloo-Regular-400.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: "ArabotoBlack";
-  src: url("./fonts/Araboto Black 400.ttf") format("truetype");
+  src: url("./fonts/Araboto-Black-400.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -40,7 +40,6 @@
 @font-face {
   font-family: "GujaratiRegular";
   src:
-    url("./fonts/NotoSansGujarati-Regular.woff2") format("woff2"),
     url("./fonts/NotoSansGujarati-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
